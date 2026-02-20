@@ -198,34 +198,18 @@ if (isset($aiResult['error'])) {
 // Fetch images
 $images = fetchPexelsImages($aiResult['imageSearchTerms'] ?? ['mountains', 'sunset', 'river', 'eagle', 'forest']);
 
-// Select a background audio from available free tracks
-$audioTracks = [
-    'peaceful' => [
-        'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3',
-        'https://cdn.pixabay.com/audio/2022/02/22/audio_d1718ab41b.mp3',
-        'https://cdn.pixabay.com/audio/2022/08/03/audio_54ca0ffa52.mp3'
-    ],
-    'joyful' => [
-        'https://cdn.pixabay.com/audio/2022/05/16/audio_eca419c4a3.mp3',
-        'https://cdn.pixabay.com/audio/2022/10/09/audio_4d1cf20d84.mp3'
-    ],
-    'powerful' => [
-        'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3',
-        'https://cdn.pixabay.com/audio/2022/11/22/audio_febc508520.mp3'
-    ],
-    'reflective' => [
-        'https://cdn.pixabay.com/audio/2021/11/25/audio_91b32e02f9.mp3',
-        'https://cdn.pixabay.com/audio/2022/08/03/audio_54ca0ffa52.mp3'
-    ],
-    'uplifting' => [
-        'https://cdn.pixabay.com/audio/2023/04/11/audio_79e6a47a1a.mp3',
-        'https://cdn.pixabay.com/audio/2023/10/18/audio_2a55e9726a.mp3'
-    ]
+// Select a background audio - ONLY verified working URLs
+$verifiedAudio = [
+    'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3',
+    'https://cdn.pixabay.com/audio/2022/02/22/audio_d1718ab41b.mp3',
+    'https://cdn.pixabay.com/audio/2022/08/03/audio_54ca0ffa52.mp3',
+    'https://cdn.pixabay.com/audio/2021/11/25/audio_91b32e02f9.mp3',
+    'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3',
+    'https://cdn.pixabay.com/audio/2022/11/22/audio_febc508520.mp3',
+    'https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a73467.mp3'
 ];
 
-$mood = $aiResult['mood'] ?? 'peaceful';
-$tracks = $audioTracks[$mood] ?? $audioTracks['peaceful'];
-$selectedAudio = $tracks[array_rand($tracks)];
+$selectedAudio = $verifiedAudio[array_rand($verifiedAudio)];
 
 // Build final response
 $response = [

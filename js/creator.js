@@ -269,7 +269,6 @@ function startVideoExperience(video) {
   if (video.audio) {
     audioEl.src = video.audio;
     audioEl.volume = 0.7;
-    audioEl.crossOrigin = 'anonymous';
     audioEl.load();
   }
 
