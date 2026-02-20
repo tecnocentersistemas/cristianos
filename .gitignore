@@ -14,3 +14,10 @@ Thumbs.db
 
 # Node
 node_modules/
+
+# Media files (downloaded/generated on VPS only)
+media/images/**/*.jpg
+media/images/**/*.png
+media/audio/**/*.mp3
+media/videos/**/*.mp4
+media/videos/**/*.jpg

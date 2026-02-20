@@ -77,6 +77,14 @@ var THEME_LABELS = {
   strength:  {es:'Fortaleza',en:'Strength',pt:'Fortaleza'}
 };
 
+// ===== Video Files Available =====
+// Maps catalog IDs to real video files on server
+var VIDEO_FILES = {
+  1:  { file: 'montanas_de_fe.mp4', thumb: 'montanas_de_fe_thumb.jpg' },
+  2:  { file: 'aguilas_del_cielo.mp4', thumb: 'aguilas_del_cielo_thumb.jpg' },
+  3:  { file: 'rios_de_paz.mp4', thumb: 'rios_de_paz_thumb.jpg' }
+};
+
 function renderCatalog(filter) {
   var grid = document.getElementById('catalogGrid');
   if (!grid) return;
@@ -85,10 +93,17 @@ function renderCatalog(filter) {
   grid.innerHTML = items.map(function(v) {
     var t = v.title[lang] || v.title.es;
     var thLabel = THEME_LABELS[v.theme] ? (THEME_LABELS[v.theme][lang] || THEME_LABELS[v.theme].es) : v.theme;
-    return '<div class="catalog-card" data-theme-filter="'+v.theme+'">' +
-      '<div class="catalog-thumb" style="background:'+v.bg+'">' +
-        '<i class="fas '+v.icon+' catalog-thumb-icon"></i>' +
-        '<div class="catalog-play"><i class="fas fa-play"></i></div>' +
+    var hasVideo = VIDEO_FILES[v.id];
+    var thumbStyle = hasVideo
+      ? 'background:url(media/videos/'+hasVideo.thumb+') center/cover no-repeat, '+v.bg
+      : 'background:'+v.bg;
+    var playClass = hasVideo ? 'catalog-play catalog-play-real' : 'catalog-play';
+    var videoBadge = hasVideo ? '<span class="video-ready-badge"><i class="fas fa-check-circle"></i> VIDEO</span>' : '';
+    return '<div class="catalog-card" data-theme-filter="'+v.theme+'" data-video-id="'+v.id+'" onclick="openVideo('+v.id+')">' +
+      '<div class="catalog-thumb" style="'+thumbStyle+'">' +
+        (hasVideo ? '' : '<i class="fas '+v.icon+' catalog-thumb-icon"></i>') +
+        videoBadge +
+        '<div class="'+playClass+'"><i class="fas fa-play"></i></div>' +
         '<span class="catalog-genre-tag">'+v.genre.charAt(0).toUpperCase()+v.genre.slice(1)+'</span>' +
         '<div class="catalog-langs">'+v.langs.map(function(l){return '<span class="catalog-lang-badge">'+l.toUpperCase()+'</span>';}).join('')+'</div>' +
       '</div>' +
@@ -96,6 +111,54 @@ function renderCatalog(filter) {
     '</div>';
   }).join('');
 }
+
+// ===== Video Player =====
+function openVideo(id) {
+  var vf = VIDEO_FILES[id];
+  if (!vf) {
+    var lang = document.documentElement.lang || 'es';
+    var msgs = {
+      es: 'Este video estará disponible pronto. ¡Estamos generando contenido nuevo!',
+      en: 'This video will be available soon. We are generating new content!',
+      pt: 'Este vídeo estará disponível em breve. Estamos gerando novo conteúdo!'
+    };
+    alert(msgs[lang] || msgs.es);
+    return;
+  }
+  var item = CATALOG.find(function(c){ return c.id === id; });
+  var lang = document.documentElement.lang || 'es';
+  var modal = document.getElementById('videoModal');
+  var player = document.getElementById('videoPlayer');
+  var title = document.getElementById('videoTitle');
+  var desc = document.getElementById('videoDesc');
+
+  player.src = 'media/videos/' + vf.file;
+  title.textContent = item ? (item.title[lang] || item.title.es) : '';
+
+  var descs = {
+    es: 'Video musical cristiano con paisajes inspiradores y versículos bíblicos.',
+    en: 'Christian music video with inspiring landscapes and Bible verses.',
+    pt: 'Vídeo musical cristão com paisagens inspiradoras e versículos bíblicos.'
+  };
+  desc.textContent = descs[lang] || descs.es;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  player.play().catch(function(){});
+}
+
+function closeVideoModal() {
+  var modal = document.getElementById('videoModal');
+  var player = document.getElementById('videoPlayer');
+  player.pause();
+  player.src = '';
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeVideoModal();
+});
 
 // Catalog filters
 document.addEventListener('click', function(e) {
