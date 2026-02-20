@@ -406,3 +406,18 @@
   .slideshow-ref { font-size: 0.85rem; bottom: 42px; }
   .player-info { padding: 1rem; }
 }
+
+/* Photographer credit */
+.slideshow-credit {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: rgba(0,0,0,0.5);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.65rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.slideshow-credit.visible { opacity: 1; }
