@@ -264,9 +264,13 @@ function startVideoExperience(video) {
 
   // Setup audio
   var audioEl = document.getElementById('bgAudio');
+  audioEl.pause();
+  audioEl.currentTime = 0;
   if (video.audio) {
     audioEl.src = video.audio;
-    audioEl.volume = 0.4;
+    audioEl.volume = 0.7;
+    audioEl.crossOrigin = 'anonymous';
+    audioEl.load();
   }
 
   // Start playback
@@ -284,10 +288,17 @@ function startPlayback() {
   var btn = document.getElementById('playPauseBtn');
   btn.innerHTML = '<i class="fas fa-pause"></i>';
 
-  // Play audio
+  // Play audio - handle autoplay policy
   var audioEl = document.getElementById('bgAudio');
   if (audioEl.src) {
-    audioEl.play().catch(function() {});
+    var playPromise = audioEl.play();
+    if (playPromise !== undefined) {
+      playPromise.then(function() {
+        hideUnmuteBtn();
+      }).catch(function() {
+        showUnmuteBtn();
+      });
+    }
   }
 
   showSlide(0);
@@ -369,6 +380,27 @@ function restartPlayback() {
   audioEl.currentTime = 0;
   slideshow.currentSlide = 0;
   startPlayback();
+}
+
+function showUnmuteBtn() {
+  var existing = document.getElementById('unmuteBtn');
+  if (existing) return;
+  var container = document.getElementById('slideshowContainer');
+  if (!container) return;
+  var btn = document.createElement('button');
+  btn.id = 'unmuteBtn';
+  btn.className = 'unmute-btn';
+  btn.innerHTML = '<i class="fas fa-volume-up"></i> Activar Música';
+  btn.onclick = function() {
+    var a = document.getElementById('bgAudio');
+    a.play().then(function() { hideUnmuteBtn(); }).catch(function(){});
+  };
+  container.appendChild(btn);
+}
+
+function hideUnmuteBtn() {
+  var btn = document.getElementById('unmuteBtn');
+  if (btn) btn.remove();
 }
 
 // ===== Init =====
