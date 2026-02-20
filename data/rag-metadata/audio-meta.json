@@ -1,0 +1,72 @@
+{
+  "version": "1.0.0",
+  "description": "Metadatos de instrumentales para vectorización RAG. Cada audio tiene tags descriptivos para búsqueda semántica inteligente.",
+  "genres": {
+    "country": {
+      "label": { "es": "Country", "en": "Country", "pt": "Country" },
+      "description": { "es": "Melodías suaves con guitarra acústica y paisajes rurales", "en": "Soft melodies with acoustic guitar and rural landscapes", "pt": "Melodias suaves com violão e paisagens rurais" },
+      "tracks": [
+        { "file": "country/country_gentle_faith_01.mp3", "title": "Gentle Faith", "bpm": 95, "key": "G", "duration": 180, "mood": ["suave", "esperanzador", "cálido"], "instruments": ["guitarra acústica", "banjo ligero", "bajo", "percusión suave"], "energy": "low", "bestFor": ["faith", "peace"], "tags": ["suave", "acústico", "pastoral", "campo", "tranquilo"], "status": "pending" },
+        { "file": "country/country_warm_love_01.mp3", "title": "Warm Love", "bpm": 105, "key": "D", "duration": 185, "mood": ["cálido", "amoroso", "nostálgico"], "instruments": ["guitarra acústica", "steel guitar", "violín", "bajo"], "energy": "medium-low", "bestFor": ["love", "gratitude"], "tags": ["cálido", "romántico", "tierno", "campo", "atardecer"], "status": "pending" },
+        { "file": "country/country_gentle_hope_01.mp3", "title": "Gentle Hope", "bpm": 88, "key": "C", "duration": 190, "mood": ["gentil", "esperanzador", "amanecer"], "instruments": ["guitarra acústica", "armónica", "bajo acústico"], "energy": "low", "bestFor": ["hope", "peace"], "tags": ["amanecer", "suave", "delicado", "renovación", "mañana"], "status": "pending" },
+        { "file": "country/country_hopeful_desert_01.mp3", "title": "Hopeful Desert", "bpm": 100, "key": "A", "duration": 195, "mood": ["esperanzador", "resiliente", "creciente"], "instruments": ["guitarra acústica", "mandolina", "percusión ligera"], "energy": "medium", "bestFor": ["hope", "strength"], "tags": ["desierto", "esperanza", "crecimiento", "resiliencia", "florecimiento"], "status": "pending" },
+        { "file": "country/country_festive_gratitude_01.mp3", "title": "Festive Gratitude", "bpm": 115, "key": "E", "duration": 195, "mood": ["festivo", "alegre", "agradecido"], "instruments": ["guitarra acústica", "banjo", "violín", "bajo", "percusión"], "energy": "medium-high", "bestFor": ["gratitude", "love"], "tags": ["fiesta", "cosecha", "alegría", "celebración", "agradecimiento"], "status": "pending" }
+      ]
+    },
+    "rock": {
+      "label": { "es": "Rock", "en": "Rock", "pt": "Rock" },
+      "description": { "es": "Energía y fuerza con guitarras eléctricas y montañas", "en": "Energy and strength with electric guitars and mountains", "pt": "Energia e força com guitarras elétricas e montanhas" },
+      "tracks": [
+        { "file": "rock/rock_powerful_hope_01.mp3", "title": "Powerful Hope", "bpm": 130, "key": "Em", "duration": 210, "mood": ["poderoso", "esperanzador", "elevador"], "instruments": ["guitarra eléctrica", "bajo eléctrico", "batería", "teclado"], "energy": "high", "bestFor": ["hope", "strength"], "tags": ["poder", "energía", "elevación", "fuerza", "vuelo"], "status": "pending" },
+        { "file": "rock/rock_energetic_faith_01.mp3", "title": "Energetic Faith", "bpm": 140, "key": "Am", "duration": 215, "mood": ["enérgico", "decidido", "valiente"], "instruments": ["guitarra eléctrica", "guitarra rítmica", "bajo", "batería pesada"], "energy": "high", "bestFor": ["faith", "strength"], "tags": ["energía", "valentía", "decisión", "fuerza", "conquista"], "status": "pending" },
+        { "file": "rock/rock_mighty_strength_01.mp3", "title": "Mighty Strength", "bpm": 125, "key": "Dm", "duration": 205, "mood": ["potente", "imponente", "guerrero"], "instruments": ["guitarra eléctrica pesada", "bajo", "batería", "orquesta ligera"], "energy": "very-high", "bestFor": ["strength", "faith"], "tags": ["potencia", "guerrero", "batalla", "victoria", "imponente"], "status": "pending" },
+        { "file": "rock/rock_triumphant_strength_01.mp3", "title": "Triumphant Strength", "bpm": 135, "key": "E", "duration": 200, "mood": ["triunfal", "victorioso", "celebratorio"], "instruments": ["guitarra eléctrica", "bajo", "batería", "teclado", "coro ligero"], "energy": "very-high", "bestFor": ["strength", "gratitude"], "tags": ["triunfo", "victoria", "cumbre", "celebración", "logro"], "status": "pending" },
+        { "file": "rock/rock_energetic_gratitude_01.mp3", "title": "Energetic Gratitude", "bpm": 128, "key": "G", "duration": 210, "mood": ["enérgico", "agradecido", "vibrante"], "instruments": ["guitarra eléctrica", "bajo", "batería", "teclado"], "energy": "high", "bestFor": ["gratitude", "hope"], "tags": ["energía", "alabanza", "vibrante", "torrente", "fuerza"], "status": "pending" }
+      ]
+    },
+    "gospel": {
+      "label": { "es": "Gospel", "en": "Gospel", "pt": "Gospel" },
+      "description": { "es": "Coros poderosos con cielos abiertos y luz divina", "en": "Powerful choirs with open skies and divine light", "pt": "Corais poderosos com céus abertos e luz divina" },
+      "tracks": [
+        { "file": "gospel/gospel_powerful_faith_01.mp3", "title": "Powerful Faith", "bpm": 110, "key": "Bb", "duration": 200, "mood": ["poderoso", "espiritual", "elevador"], "instruments": ["piano", "órgano", "coro", "bajo", "batería"], "energy": "high", "bestFor": ["faith", "strength"], "tags": ["coro", "espiritual", "elevación", "poder", "iglesia"], "status": "pending" },
+        { "file": "gospel/gospel_soft_peace_01.mp3", "title": "Soft Peace", "bpm": 78, "key": "F", "duration": 190, "mood": ["suave", "pacífico", "reconfortante"], "instruments": ["piano", "órgano suave", "coro suave", "cuerdas"], "energy": "low", "bestFor": ["peace", "love"], "tags": ["suave", "paz", "reconfortar", "espiritual", "descanso"], "status": "pending" },
+        { "file": "gospel/gospel_epic_strength_01.mp3", "title": "Epic Strength", "bpm": 120, "key": "C", "duration": 210, "mood": ["épico", "grandioso", "triunfal"], "instruments": ["piano", "órgano", "coro masivo", "cuerdas", "metales", "batería"], "energy": "very-high", "bestFor": ["strength", "faith"], "tags": ["épico", "grandioso", "coro", "majestuoso", "poder"], "status": "pending" },
+        { "file": "gospel/gospel_jubilant_hope_01.mp3", "title": "Jubilant Hope", "bpm": 115, "key": "D", "duration": 210, "mood": ["jubiloso", "alegre", "esperanzador"], "instruments": ["piano", "coro", "palmas", "bajo", "batería"], "energy": "high", "bestFor": ["hope", "gratitude"], "tags": ["jubiloso", "alegría", "celebración", "esperanza", "palmas"], "status": "pending" },
+        { "file": "gospel/gospel_pastoral_love_01.mp3", "title": "Pastoral Love", "bpm": 85, "key": "G", "duration": 205, "mood": ["pastoral", "tierno", "amoroso"], "instruments": ["piano", "órgano", "coro suave", "cuerdas ligeras"], "energy": "medium-low", "bestFor": ["love", "peace"], "tags": ["pastoral", "tierno", "rebaño", "cuidado", "amor"], "status": "pending" }
+      ]
+    },
+    "folk": {
+      "label": { "es": "Folk", "en": "Folk", "pt": "Folk" },
+      "description": { "es": "Sonidos acústicos con bosques y ríos cristalinos", "en": "Acoustic sounds with forests and crystal-clear rivers", "pt": "Sons acústicos com florestas e rios cristalinos" },
+      "tracks": [
+        { "file": "folk/folk_acoustic_hope_01.mp3", "title": "Acoustic Hope", "bpm": 92, "key": "Am", "duration": 195, "mood": ["acústico", "natural", "esperanzador"], "instruments": ["guitarra acústica", "flauta", "percusión sutil"], "energy": "low", "bestFor": ["hope", "peace"], "tags": ["acústico", "bosque", "natural", "sendero", "tranquilo"], "status": "pending" },
+        { "file": "folk/folk_serene_hope_01.mp3", "title": "Serene Hope", "bpm": 85, "key": "C", "duration": 200, "mood": ["sereno", "contemplativo", "esperanzador"], "instruments": ["guitarra fingerpicking", "flauta de madera", "arpa ligera"], "energy": "very-low", "bestFor": ["hope", "peace"], "tags": ["sereno", "contemplativo", "bosque", "sendero", "luz"], "status": "pending" },
+        { "file": "folk/folk_contemplative_peace_01.mp3", "title": "Contemplative Peace", "bpm": 72, "key": "Em", "duration": 200, "mood": ["contemplativo", "meditativo", "íntimo"], "instruments": ["guitarra clásica", "flauta traversa", "campanas suaves"], "energy": "very-low", "bestFor": ["peace", "faith"], "tags": ["meditación", "jardín", "oración", "silencio", "comunión"], "status": "pending" },
+        { "file": "folk/folk_cheerful_gratitude_01.mp3", "title": "Cheerful Gratitude", "bpm": 110, "key": "G", "duration": 185, "mood": ["alegre", "vivaz", "agradecido"], "instruments": ["guitarra acústica", "ukelele", "flauta", "percusión"], "energy": "medium", "bestFor": ["gratitude", "love"], "tags": ["alegre", "vivaz", "flores", "colores", "celebración"], "status": "pending" },
+        { "file": "folk/folk_inspiring_hope_01.mp3", "title": "Inspiring Hope", "bpm": 98, "key": "D", "duration": 190, "mood": ["inspirador", "creciente", "transformador"], "instruments": ["guitarra acústica", "violín folk", "flauta", "bodhrán"], "energy": "medium", "bestFor": ["hope", "faith"], "tags": ["inspiración", "transformación", "mariposa", "cambio", "nuevo"], "status": "pending" }
+      ]
+    },
+    "worship": {
+      "label": { "es": "Worship", "en": "Worship", "pt": "Worship" },
+      "description": { "es": "Alabanza contemporánea con atardeceres y naturaleza", "en": "Contemporary praise with sunsets and nature", "pt": "Louvor contemporâneo com pôr do sol e natureza" },
+      "tracks": [
+        { "file": "worship/worship_peaceful_01.mp3", "title": "Peaceful Worship", "bpm": 70, "key": "D", "duration": 240, "mood": ["pacífico", "solemne", "reverente"], "instruments": ["piano", "pad sintetizador", "cuerdas", "guitarra eléctrica limpia"], "energy": "low", "bestFor": ["peace", "faith"], "tags": ["paz", "reverencia", "río", "agua", "tranquilidad"], "status": "pending" },
+        { "file": "worship/worship_vibrant_gratitude_01.mp3", "title": "Vibrant Gratitude", "bpm": 118, "key": "A", "duration": 230, "mood": ["vibrante", "alegre", "celebratorio"], "instruments": ["guitarra eléctrica", "piano", "bajo", "batería", "sintetizador"], "energy": "high", "bestFor": ["gratitude", "hope"], "tags": ["vibrante", "alabanza", "atardecer", "celebración", "gozo"], "status": "pending" },
+        { "file": "worship/worship_flowing_love_01.mp3", "title": "Flowing Love", "bpm": 82, "key": "E", "duration": 235, "mood": ["fluido", "amoroso", "envolvente"], "instruments": ["piano", "guitarra acústica", "pad", "cuerdas", "coro suave"], "energy": "medium-low", "bestFor": ["love", "peace"], "tags": ["fluir", "cascada", "agua", "gracia", "envolvente"], "status": "pending" },
+        { "file": "worship/worship_majestic_love_01.mp3", "title": "Majestic Love", "bpm": 90, "key": "Bb", "duration": 245, "mood": ["majestuoso", "grandioso", "envolvente"], "instruments": ["piano", "orquesta", "coro", "guitarra eléctrica", "sintetizador"], "energy": "medium-high", "bestFor": ["love", "faith"], "tags": ["majestuoso", "océano", "grandioso", "misericordia", "profundo"], "status": "pending" },
+        { "file": "worship/worship_celestial_faith_01.mp3", "title": "Celestial Faith", "bpm": 75, "key": "F#m", "duration": 250, "mood": ["celestial", "etéreo", "trascendente"], "instruments": ["piano", "pad atmosférico", "arpa", "cuerdas etéreas", "coro angelical"], "energy": "medium", "bestFor": ["faith", "peace"], "tags": ["celestial", "aurora", "cielo", "estrellas", "etéreo", "divino"], "status": "pending" }
+      ]
+    },
+    "ballad": {
+      "label": { "es": "Balada", "en": "Ballad", "pt": "Balada" },
+      "description": { "es": "Piano y cuerdas con valles verdes y animales en paz", "en": "Piano and strings with green valleys and peaceful animals", "pt": "Piano e cordas com vales verdes e animais em paz" },
+      "tracks": [
+        { "file": "ballad/ballad_piano_love_01.mp3", "title": "Piano Love", "bpm": 68, "key": "F", "duration": 220, "mood": ["emotivo", "romántico", "delicado"], "instruments": ["piano", "cuerdas", "violonchelo solo"], "energy": "low", "bestFor": ["love", "peace"], "tags": ["piano", "emotivo", "amanecer", "delicado", "amor"], "status": "pending" },
+        { "file": "ballad/ballad_emotional_gratitude_01.mp3", "title": "Emotional Gratitude", "bpm": 72, "key": "Ab", "duration": 225, "mood": ["emotivo", "agradecido", "conmovedor"], "instruments": ["piano", "cuerdas orquestales", "flauta", "arpa"], "energy": "medium-low", "bestFor": ["gratitude", "love"], "tags": ["emoción", "gratitud", "cosecha", "campo", "bendición"], "status": "pending" },
+        { "file": "ballad/ballad_night_faith_01.mp3", "title": "Night Faith", "bpm": 60, "key": "Cm", "duration": 240, "mood": ["nocturno", "contemplativo", "profundo"], "instruments": ["piano", "cuerdas suaves", "celesta", "pad atmosférico"], "energy": "very-low", "bestFor": ["faith", "peace"], "tags": ["noche", "estrellas", "contemplación", "universo", "profundo"], "status": "pending" },
+        { "file": "ballad/ballad_tender_peace_01.mp3", "title": "Tender Peace", "bpm": 65, "key": "Eb", "duration": 215, "mood": ["tierno", "protector", "cálido"], "instruments": ["piano", "cuerdas", "oboe", "clarinete"], "energy": "very-low", "bestFor": ["peace", "love"], "tags": ["tierno", "nido", "protección", "cuidado", "cálido"], "status": "pending" },
+        { "file": "ballad/ballad_emotional_faith_01.mp3", "title": "Emotional Faith", "bpm": 75, "key": "D", "duration": 230, "mood": ["emotivo", "nostálgico", "esperanzador"], "instruments": ["piano", "guitarra acústica", "cuerdas", "flauta"], "energy": "medium-low", "bestFor": ["faith", "hope"], "tags": ["emoción", "hogar", "camino", "nostalgia", "regreso"], "status": "pending" }
+      ]
+    }
+  }
+}

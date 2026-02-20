@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#0f172a">
+  <title>FaithTunes - Videos Musicales Cristianos con IA</title>
+  <meta name="description" content="Genera y disfruta videos musicales cristianos con paisajes, animales y versículos bíblicos. Country, rock, gospel y más géneros en múltiples idiomas.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="logo-icon"><i class="fas fa-music"></i></div>
+      <span>Faith<span class="highlight">Tunes</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#how-it-works" data-i18n="nav.how">Cómo Funciona</a>
+      <a href="#genres" data-i18n="nav.genres">Géneros</a>
+      <a href="#catalog" data-i18n="nav.catalog">Catálogo</a>
+      <a href="#pricing" data-i18n="nav.pricing">Precios</a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-selector">
+        <button class="lang-btn" onclick="setLang('es')" title="Español">ES</button>
+        <button class="lang-btn" onclick="setLang('en')" title="English">EN</button>
+        <button class="lang-btn" onclick="setLang('pt')" title="Português">PT</button>
+      </div>
+      <button class="theme-toggle-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="fas fa-sun"></i>
+      </button>
+      <a href="#catalog" class="nav-cta" data-i18n="nav.explore">Explorar</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fas fa-cross"></i>
+        <span data-i18n="hero.badge">Videos musicales cristianos con IA</span>
+      </div>
+      <h1>
+        <span data-i18n="hero.title">Melodías de <span class="gradient-text">fe</span> con paisajes inspiradores</span>
+      </h1>
+      <p class="hero-description" data-i18n="hero.desc">
+        Disfruta de videos musicales cristianos con paisajes y animales de fondo.
+        Country, rock, gospel y más géneros. Disponible en múltiples idiomas.
+      </p>
+      <div class="hero-buttons">
+        <a href="#catalog" class="btn btn-primary">
+          <i class="fas fa-play"></i> <span data-i18n="hero.cta">Ver Catálogo</span>
+        </a>
+        <a href="#how-it-works" class="btn btn-outline">
+          <span data-i18n="hero.how">Cómo Funciona</span>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">200+</span>
+          <span class="stat-label" data-i18n="hero.videos">Videos disponibles</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">6</span>
+          <span class="stat-label" data-i18n="hero.genreCount">Géneros musicales</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">3</span>
+          <span class="stat-label" data-i18n="hero.langCount">Idiomas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section-alt" id="how-it-works">
+    <div class="section-header">
+      <span class="section-badge" data-i18n="how.badge">Así de fácil</span>
+      <h2 data-i18n="how.title">Cómo funciona</h2>
+      <p data-i18n="how.subtitle">En 3 simples pasos tenés tu video musical cristiano</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-icon"><i class="fas fa-palette"></i></div>
+        <h3 data-i18n="how.s1t">Elegí un tema</h3>
+        <p data-i18n="how.s1d">Fe, esperanza, amor, paz, gratitud... elegí el mensaje que querés transmitir.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-icon"><i class="fas fa-guitar"></i></div>
+        <h3 data-i18n="how.s2t">Seleccioná el género</h3>
+        <p data-i18n="how.s2d">Country, rock, gospel, folk, worship o balada. Cada uno con su estilo único.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-icon"><i class="fas fa-download"></i></div>
+        <h3 data-i18n="how.s3t">Disfrutá tu video</h3>
+        <p data-i18n="how.s3d">Mirá o descargá un video con música, paisajes inspiradores y versículos bíblicos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Genres -->
+  <section class="section-default" id="genres">
+    <div class="section-header">
+      <span class="section-badge" data-i18n="genre.badge">Géneros</span>
+      <h2 data-i18n="genre.title">Múltiples estilos para cada momento</h2>
+      <p data-i18n="genre.subtitle">Desde country suave hasta rock inspirador</p>
+    </div>
+    <div class="genres-grid">
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#d97706,#92400e);"><i class="fas fa-guitar"></i></div>
+        <h3>Country</h3>
+        <p data-i18n="genre.country">Melodías suaves con guitarra acústica y paisajes rurales</p>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#dc2626,#991b1b);"><i class="fas fa-bolt"></i></div>
+        <h3>Rock</h3>
+        <p data-i18n="genre.rock">Energía y fuerza con guitarras eléctricas y montañas</p>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);"><i class="fas fa-church"></i></div>
+        <h3>Gospel</h3>
+        <p data-i18n="genre.gospel">Coros poderosos con cielos abiertos y luz divina</p>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#16a34a,#15803d);"><i class="fas fa-leaf"></i></div>
+        <h3>Folk</h3>
+        <p data-i18n="genre.folk">Sonidos acústicos con bosques y ríos cristalinos</p>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#0ea5e9,#0369a1);"><i class="fas fa-hand-holding-heart"></i></div>
+        <h3>Worship</h3>
+        <p data-i18n="genre.worship">Alabanza contemporánea con atardeceres y naturaleza</p>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#ec4899,#be185d);"><i class="fas fa-heart"></i></div>
+        <h3 data-i18n="genre.balladName">Balada</h3>
+        <p data-i18n="genre.ballad">Piano y cuerdas con valles verdes y animales en paz</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catalog -->
+  <section class="section-alt" id="catalog">
+    <div class="section-header">
+      <span class="section-badge" data-i18n="cat.badge">Catálogo</span>
+      <h2 data-i18n="cat.title">Videos listos para disfrutar</h2>
+      <p data-i18n="cat.subtitle">Explorá nuestra colección de videos musicales cristianos</p>
+    </div>
+    <div class="catalog-filters" id="catalogFilters">
+      <button class="filter-btn active" data-filter="all" data-i18n="cat.all">Todos</button>
+      <button class="filter-btn" data-filter="faith" data-i18n="cat.faith">Fe</button>
+      <button class="filter-btn" data-filter="hope" data-i18n="cat.hope">Esperanza</button>
+      <button class="filter-btn" data-filter="love" data-i18n="cat.love">Amor</button>
+      <button class="filter-btn" data-filter="peace" data-i18n="cat.peace">Paz</button>
+      <button class="filter-btn" data-filter="gratitude" data-i18n="cat.gratitude">Gratitud</button>
+      <button class="filter-btn" data-filter="strength" data-i18n="cat.strength">Fortaleza</button>
+    </div>
+    <div class="catalog-grid" id="catalogGrid"></div>
+  </section>
+
+  <!-- Features -->
+  <section class="section-default" id="features">
+    <div class="section-header">
+      <span class="section-badge" data-i18n="feat.badge">Características</span>
+      <h2 data-i18n="feat.title">¿Por qué elegir FaithTunes?</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#d97706,#b45309);"><i class="fas fa-language"></i></div>
+        <h3 data-i18n="feat.f1t">Multilingüe</h3>
+        <p data-i18n="feat.f1d">Videos en español, inglés y portugués. La interfaz se adapta automáticamente.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#16a34a,#15803d);"><i class="fas fa-mountain-sun"></i></div>
+        <h3 data-i18n="feat.f2t">Paisajes Inspiradores</h3>
+        <p data-i18n="feat.f2d">Montañas, ríos, atardeceres y bosques que elevan el espíritu.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);"><i class="fas fa-dove"></i></div>
+        <h3 data-i18n="feat.f3t">Animales de la Creación</h3>
+        <p data-i18n="feat.f3d">Águilas, palomas, corderos. La belleza de la creación en cada video.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);"><i class="fas fa-book"></i></div>
+        <h3 data-i18n="feat.f4t">Versículos Bíblicos</h3>
+        <p data-i18n="feat.f4d">Cada video incluye versículos relevantes con tipografía elegante.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#ec4899,#be185d);"><i class="fas fa-film"></i></div>
+        <h3 data-i18n="feat.f5t">Alta Calidad HD</h3>
+        <p data-i18n="feat.f5d">Listos para compartir en redes sociales, iglesias o devocionales.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);"><i class="fas fa-robot"></i></div>
+        <h3 data-i18n="feat.f6t">Potenciado por IA</h3>
+        <p data-i18n="feat.f6d">Inteligencia artificial para contenido único y personalizado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section-alt" id="pricing">
+    <div class="section-header">
+      <span class="section-badge" data-i18n="price.badge">Precios</span>
+      <h2 data-i18n="price.title">Planes simples y accesibles</h2>
+      <p data-i18n="price.subtitle">Empezá gratis y accedé a todo el catálogo</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3 data-i18n="price.free">Gratis</h3>
+        <div class="price">$0</div>
+        <p class="price-desc" data-i18n="price.freeDesc">Para conocer la plataforma</p>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> <span data-i18n="price.f1">5 videos por mes</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="price.f2">Todos los géneros</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="price.f3">Calidad estándar</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="price.f4">3 idiomas</span></li>
+        </ul>
+        <a href="#" class="btn btn-outline" data-i18n="price.startFree">Empezar Gratis</a>
+      </div>
+      <div class="pricing-card featured">
+        <h3>Premium</h3>
+        <div class="price">$9.99<span>/mes</span></div>
+        <p class="price-desc" data-i18n="price.proDesc">Acceso completo al catálogo</p>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> <span data-i18n="price.p1">Videos ilimitados</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="price.p2">Todos los géneros</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="price.p3">Calidad HD</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="price.p4">Descarga directa MP4</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="price.p5">Videos personalizados con IA</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="price.p6">Nuevos videos cada semana</span></li>
+        </ul>
+        <a href="#" class="btn btn-primary" data-i18n="price.getPremium">Elegir Premium</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2 data-i18n="cta.title">¿Listo para inspirarte con música y fe?</h2>
+    <p data-i18n="cta.desc">Explorá nuestro catálogo de videos musicales cristianos y compartí la palabra de Dios.</p>
+    <a href="#catalog" class="btn btn-primary">
+      <i class="fas fa-play"></i> <span data-i18n="cta.btn">Explorar Videos</span>
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p data-i18n="footer.copy">&copy; 2025 FaithTunes. Todos los derechos reservados.</p>
+    <div style="display:flex;justify-content:center;gap:1.5rem;margin-top:1rem;">
+      <a href="https://wa.me/5493794802108" target="_blank" rel="noopener" style="color:#25D366;font-size:1.4rem;" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="mailto:tecnocentergestion@gmail.com" style="color:#ea4335;font-size:1.4rem;" title="Email"><i class="fas fa-envelope"></i></a>
+    </div>
+    <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--gray);">
+      <a href="https://wa.me/5493794802108" style="color:var(--primary);text-decoration:none;">+54 3794 802108</a>
+      &nbsp;&middot;&nbsp; Corrientes, Argentina
+    </p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

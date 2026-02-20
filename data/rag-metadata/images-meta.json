@@ -1,0 +1,137 @@
+{
+  "version": "1.0.0",
+  "description": "Metadatos de imágenes para vectorización RAG. Cada imagen tiene tags descriptivos que se vectorizan para búsqueda semántica inteligente.",
+  "categories": {
+    "mountains": {
+      "label": { "es": "Montañas", "en": "Mountains", "pt": "Montanhas" },
+      "images": [
+        { "file": "mountains/snowy_peak_01.jpg", "tags": ["montaña", "nieve", "cumbre", "majestuoso", "pico", "invierno", "blanco"], "mood": "majestuoso", "colors": ["blanco", "azul", "gris"], "season": "winter", "verses": ["Salmo 121:1-2", "Isaías 40:31"], "status": "pending" },
+        { "file": "mountains/mountain_sunrise_02.jpg", "tags": ["montaña", "amanecer", "dorado", "horizonte", "luz", "nuevo día"], "mood": "esperanzador", "colors": ["dorado", "naranja", "púrpura"], "season": "any", "verses": ["Lamentaciones 3:22-23"], "status": "pending" },
+        { "file": "mountains/ridge_clouds_03.jpg", "tags": ["montaña", "nubes", "cresta", "altura", "cielo", "niebla"], "mood": "misterioso", "colors": ["gris", "blanco", "verde"], "season": "any", "verses": ["Salmo 46:10"], "status": "pending" },
+        { "file": "mountains/mountain_lake_04.jpg", "tags": ["montaña", "lago", "reflejo", "tranquilo", "agua", "cristalino"], "mood": "sereno", "colors": ["azul", "verde", "blanco"], "season": "summer", "verses": ["Salmo 23:2"], "status": "pending" },
+        { "file": "mountains/summit_golden_05.jpg", "tags": ["montaña", "cumbre", "dorado", "atardecer", "victoria", "cima"], "mood": "triunfal", "colors": ["dorado", "naranja", "marrón"], "season": "any", "verses": ["Filipenses 4:13"], "status": "pending" },
+        { "file": "mountains/rock_formation_01.jpg", "tags": ["roca", "formación", "geología", "imponente", "sólido", "eterno"], "mood": "poderoso", "colors": ["marrón", "gris", "naranja"], "season": "any", "verses": ["Salmo 18:2"], "status": "pending" },
+        { "file": "mountains/cliff_edge_02.jpg", "tags": ["acantilado", "borde", "profundo", "vista", "vertiginoso", "valentía"], "mood": "audaz", "colors": ["gris", "verde", "azul"], "season": "any", "verses": ["Josué 1:9"], "status": "pending" },
+        { "file": "mountains/canyon_deep_03.jpg", "tags": ["cañón", "profundo", "río", "erosión", "grandioso", "naturaleza"], "mood": "grandioso", "colors": ["rojo", "naranja", "marrón"], "season": "any", "verses": ["Salmo 46:1"], "status": "pending" },
+        { "file": "mountains/rock_wall_04.jpg", "tags": ["roca", "pared", "escalada", "vertical", "desafío", "fortaleza"], "mood": "desafiante", "colors": ["gris", "marrón"], "season": "any", "verses": ["2 Corintios 12:9"], "status": "pending" },
+        { "file": "mountains/stone_arch_05.jpg", "tags": ["arco", "piedra", "natural", "erosión", "marco", "cielo"], "mood": "maravilloso", "colors": ["rojo", "naranja", "azul"], "season": "any", "verses": ["Salmo 19:1"], "status": "pending" },
+        { "file": "mountains/snowy_summit_01.jpg", "tags": ["cumbre", "nieve", "victoria", "cima", "panorámica", "logro"], "mood": "triunfal", "colors": ["blanco", "azul"], "season": "winter", "verses": ["1 Corintios 16:13"], "status": "pending" },
+        { "file": "mountains/panoramic_view_02.jpg", "tags": ["panorámica", "vista", "amplio", "horizonte", "extenso", "libertad"], "mood": "libre", "colors": ["azul", "verde", "blanco"], "season": "any", "verses": ["Salmo 31:24"], "status": "pending" },
+        { "file": "mountains/peak_clouds_03.jpg", "tags": ["pico", "nubes", "alto", "tocando cielo", "elevado", "divino"], "mood": "celestial", "colors": ["blanco", "gris", "azul"], "season": "any", "verses": ["Isaías 40:31"], "status": "pending" },
+        { "file": "mountains/mountain_range_04.jpg", "tags": ["cordillera", "cadena", "extenso", "horizonte", "múltiples", "grandeza"], "mood": "grandioso", "colors": ["azul", "púrpura", "gris"], "season": "any", "verses": ["Salmo 125:2"], "status": "pending" },
+        { "file": "mountains/summit_sunrise_05.jpg", "tags": ["cumbre", "amanecer", "primer rayo", "nuevo", "esperanza", "dorado"], "mood": "esperanzador", "colors": ["dorado", "naranja", "rosa"], "season": "any", "verses": ["Lamentaciones 3:24"], "status": "pending" },
+        { "file": "mountains/ice_landscape_01.jpg", "tags": ["hielo", "glaciar", "frío", "cristalino", "puro", "nórdico"], "mood": "puro", "colors": ["blanco", "azul", "turquesa"], "season": "winter", "verses": ["Job 37:14"], "status": "pending" }
+      ]
+    },
+    "rivers": {
+      "label": { "es": "Ríos y Aguas", "en": "Rivers & Waters", "pt": "Rios e Águas" },
+      "images": [
+        { "file": "rivers/crystal_river_01.jpg", "tags": ["río", "cristalino", "agua", "corriente", "puro", "fluir"], "mood": "sereno", "colors": ["azul", "verde", "transparente"], "season": "any", "verses": ["Salmo 23:2"], "status": "pending" },
+        { "file": "rivers/waterfall_serene_02.jpg", "tags": ["cascada", "sereno", "agua", "caída", "vegetación", "frescura"], "mood": "refrescante", "colors": ["blanco", "verde", "azul"], "season": "any", "verses": ["Juan 7:38"], "status": "pending" },
+        { "file": "rivers/lake_calm_03.jpg", "tags": ["lago", "calma", "reflejo", "espejo", "tranquilo", "silencio"], "mood": "contemplativo", "colors": ["azul", "verde", "gris"], "season": "any", "verses": ["Salmo 46:10"], "status": "pending" },
+        { "file": "rivers/stream_forest_04.jpg", "tags": ["arroyo", "bosque", "murmuro", "piedras", "musgo", "naturaleza"], "mood": "íntimo", "colors": ["verde", "marrón", "azul"], "season": "any", "verses": ["Salmo 1:3"], "status": "pending" },
+        { "file": "rivers/river_valley_05.jpg", "tags": ["río", "valle", "serpenteo", "verde", "paisaje", "amplitud"], "mood": "expansivo", "colors": ["verde", "azul", "marrón"], "season": "summer", "verses": ["Ezequiel 47:9"], "status": "pending" },
+        { "file": "rivers/waterfall_majestic_01.jpg", "tags": ["cascada", "majestuoso", "potente", "gran", "espuma", "caída"], "mood": "poderoso", "colors": ["blanco", "azul", "verde"], "season": "any", "verses": ["Salmo 42:7"], "status": "pending" },
+        { "file": "rivers/waterfall_tropical_02.jpg", "tags": ["cascada", "tropical", "selva", "exuberante", "exótico", "verde"], "mood": "exuberante", "colors": ["verde", "blanco", "azul"], "season": "any", "verses": ["Apocalipsis 22:1"], "status": "pending" },
+        { "file": "rivers/water_rocks_03.jpg", "tags": ["agua", "rocas", "corriente", "erosión", "fluir", "natural"], "mood": "persistente", "colors": ["gris", "azul", "verde"], "season": "any", "verses": ["Isaías 43:2"], "status": "pending" },
+        { "file": "rivers/cascade_green_04.jpg", "tags": ["cascada", "verde", "musgo", "pequeña", "idílico", "escondido"], "mood": "idílico", "colors": ["verde", "blanco"], "season": "spring", "verses": ["Salmo 23:2"], "status": "pending" },
+        { "file": "rivers/waterfall_mist_05.jpg", "tags": ["cascada", "niebla", "bruma", "misterioso", "alto", "espuma"], "mood": "misterioso", "colors": ["blanco", "gris", "azul"], "season": "any", "verses": ["Job 38:25"], "status": "pending" },
+        { "file": "rivers/ocean_waves_01.jpg", "tags": ["océano", "olas", "mar", "espuma", "movimiento", "infinito"], "mood": "grandioso", "colors": ["azul", "blanco", "verde"], "season": "any", "verses": ["Salmo 93:4"], "status": "pending" },
+        { "file": "rivers/coast_rocky_02.jpg", "tags": ["costa", "rocas", "mar", "acantilado", "fuerza", "erosión"], "mood": "resiliente", "colors": ["gris", "azul", "blanco"], "season": "any", "verses": ["Mateo 7:25"], "status": "pending" },
+        { "file": "rivers/horizon_sea_03.jpg", "tags": ["horizonte", "mar", "infinito", "línea", "cielo", "agua"], "mood": "eterno", "colors": ["azul", "celeste", "blanco"], "season": "any", "verses": ["Salmo 36:7"], "status": "pending" },
+        { "file": "rivers/beach_sunrise_04.jpg", "tags": ["playa", "amanecer", "arena", "olas", "dorado", "costa"], "mood": "renovador", "colors": ["dorado", "azul", "arena"], "season": "any", "verses": ["Lamentaciones 3:22-23"], "status": "pending" },
+        { "file": "rivers/ocean_sunset_05.jpg", "tags": ["océano", "atardecer", "dorado", "reflejo", "horizonte", "paz"], "mood": "contemplativo", "colors": ["naranja", "dorado", "azul"], "season": "any", "verses": ["Salmo 104:24-25"], "status": "pending" },
+        { "file": "rivers/bridge_stream_01.jpg", "tags": ["puente", "arroyo", "cruzar", "conexión", "madera", "camino"], "mood": "transitorio", "colors": ["marrón", "verde", "azul"], "season": "any", "verses": ["Proverbios 3:5-6"], "status": "pending" },
+        { "file": "rivers/fountain_garden_01.jpg", "tags": ["fuente", "jardín", "agua", "burbuja", "decorativo", "paz"], "mood": "pacífico", "colors": ["azul", "verde", "gris"], "season": "any", "verses": ["Juan 4:14"], "status": "pending" },
+        { "file": "rivers/torrent_powerful_01.jpg", "tags": ["torrente", "poderoso", "rápido", "blanco", "fuerza", "naturaleza"], "mood": "poderoso", "colors": ["blanco", "azul", "gris"], "season": "spring", "verses": ["Salmo 93:4"], "status": "pending" },
+        { "file": "rivers/river_rapid_02.jpg", "tags": ["río", "rápido", "corriente", "piedras", "espuma", "energía"], "mood": "enérgico", "colors": ["blanco", "azul", "gris"], "season": "any", "verses": ["Isaías 43:2"], "status": "pending" },
+        { "file": "rivers/waterfall_power_03.jpg", "tags": ["cascada", "poder", "agua", "caída", "impresionante", "fuerza"], "mood": "imponente", "colors": ["blanco", "azul", "verde"], "season": "any", "verses": ["Salmo 42:7"], "status": "pending" }
+      ]
+    },
+    "sunsets": {
+      "label": { "es": "Cielos y Atardeceres", "en": "Skies & Sunsets", "pt": "Céus e Pôr do Sol" },
+      "images": [
+        { "file": "sunsets/sunrise_spectacular_01.jpg", "tags": ["amanecer", "espectacular", "colores", "horizonte", "nuevo día", "esperanza"], "mood": "esperanzador", "colors": ["rosa", "naranja", "dorado"], "season": "any", "verses": ["Lamentaciones 3:22-23"], "status": "pending" },
+        { "file": "sunsets/dawn_colors_02.jpg", "tags": ["alba", "colores", "cielo", "gradiente", "suave", "pastel"], "mood": "suave", "colors": ["rosa", "lavanda", "dorado"], "season": "any", "verses": ["Salmo 30:5"], "status": "pending" },
+        { "file": "sunsets/morning_sky_03.jpg", "tags": ["mañana", "cielo", "nubes", "claro", "fresco", "inicio"], "mood": "fresco", "colors": ["azul", "blanco", "rosa"], "season": "any", "verses": ["Salmo 5:3"], "status": "pending" },
+        { "file": "sunsets/horizon_golden_04.jpg", "tags": ["horizonte", "dorado", "sol", "atardecer", "cálido", "despedida"], "mood": "cálido", "colors": ["dorado", "naranja", "rojo"], "season": "any", "verses": ["Salmo 113:3"], "status": "pending" },
+        { "file": "sunsets/sunrise_clouds_05.jpg", "tags": ["amanecer", "nubes", "rayos", "penetrante", "divino", "gloria"], "mood": "divino", "colors": ["dorado", "blanco", "azul"], "season": "any", "verses": ["Malaquías 4:2"], "status": "pending" },
+        { "file": "sunsets/sunset_golden_01.jpg", "tags": ["atardecer", "dorado", "cálido", "horizonte", "paz", "fin del día"], "mood": "pacífico", "colors": ["dorado", "naranja"], "season": "any", "verses": ["Salmo 104:19"], "status": "pending" },
+        { "file": "sunsets/sunset_purple_02.jpg", "tags": ["atardecer", "púrpura", "violeta", "majestuoso", "real", "cielo"], "mood": "regio", "colors": ["púrpura", "violeta", "rosa"], "season": "any", "verses": ["Salmo 19:1"], "status": "pending" },
+        { "file": "sunsets/sunset_ocean_03.jpg", "tags": ["atardecer", "océano", "reflejo", "horizonte", "agua", "infinito"], "mood": "infinito", "colors": ["naranja", "dorado", "azul"], "season": "any", "verses": ["Salmo 36:7"], "status": "pending" },
+        { "file": "sunsets/sunset_dramatic_05.jpg", "tags": ["atardecer", "dramático", "nubes", "contraste", "fuego", "intenso"], "mood": "dramático", "colors": ["rojo", "naranja", "negro"], "season": "any", "verses": ["Mateo 16:2-3"], "status": "pending" },
+        { "file": "sunsets/sky_infinite_01.jpg", "tags": ["cielo", "infinito", "azul", "profundo", "claro", "limpio"], "mood": "liberador", "colors": ["azul", "blanco"], "season": "any", "verses": ["Salmo 19:1"], "status": "pending" },
+        { "file": "sunsets/clouds_dramatic_02.jpg", "tags": ["nubes", "dramático", "tormenta", "oscuro", "contraste", "poder"], "mood": "poderoso", "colors": ["gris", "negro", "blanco"], "season": "any", "verses": ["Salmo 97:2"], "status": "pending" },
+        { "file": "sunsets/sunbeams_03.jpg", "tags": ["rayos", "sol", "penetrante", "divino", "entre nubes", "luz"], "mood": "divino", "colors": ["dorado", "blanco", "azul"], "season": "any", "verses": ["Juan 8:12"], "status": "pending" },
+        { "file": "sunsets/starry_sky_01.jpg", "tags": ["estrellas", "noche", "cielo", "oscuro", "cosmos", "universo"], "mood": "contemplativo", "colors": ["negro", "azul oscuro", "blanco"], "season": "any", "verses": ["Salmo 147:4"], "status": "pending" },
+        { "file": "sunsets/milky_way_02.jpg", "tags": ["vía láctea", "galaxia", "noche", "estrellas", "cosmos", "infinito"], "mood": "asombroso", "colors": ["púrpura", "azul", "blanco"], "season": "any", "verses": ["Salmo 8:3-4"], "status": "pending" },
+        { "file": "sunsets/moon_landscape_03.jpg", "tags": ["luna", "noche", "paisaje", "plateado", "silencio", "reflexión"], "mood": "reflexivo", "colors": ["plateado", "azul oscuro", "negro"], "season": "any", "verses": ["Salmo 136:9"], "status": "pending" },
+        { "file": "sunsets/rainbow_valley_01.jpg", "tags": ["arcoíris", "valle", "lluvia", "sol", "promesa", "colores"], "mood": "jubiloso", "colors": ["todos los colores"], "season": "any", "verses": ["Génesis 9:13"], "status": "pending" },
+        { "file": "sunsets/rainbow_double_02.jpg", "tags": ["arcoíris", "doble", "raro", "cielo", "después lluvia", "promesa"], "mood": "maravilloso", "colors": ["todos los colores"], "season": "any", "verses": ["Génesis 9:16"], "status": "pending" },
+        { "file": "sunsets/aurora_borealis_01.jpg", "tags": ["aurora", "boreal", "verde", "cielo", "nórdico", "fenómeno"], "mood": "celestial", "colors": ["verde", "púrpura", "negro"], "season": "winter", "verses": ["Job 37:14"], "status": "pending" },
+        { "file": "sunsets/northern_lights_02.jpg", "tags": ["aurora", "luces del norte", "colores", "noche", "espectacular", "divino"], "mood": "divino", "colors": ["verde", "azul", "púrpura"], "season": "winter", "verses": ["Salmo 19:1"], "status": "pending" },
+        { "file": "sunsets/morning_golden_01.jpg", "tags": ["mañana", "dorado", "luz", "suave", "inicio", "nuevo"], "mood": "renovador", "colors": ["dorado", "amarillo", "verde"], "season": "any", "verses": ["Salmo 30:5"], "status": "pending" }
+      ]
+    },
+    "forests": {
+      "label": { "es": "Bosques", "en": "Forests", "pt": "Florestas" },
+      "images": [
+        { "file": "forests/lush_forest_01.jpg", "tags": ["bosque", "frondoso", "verde", "exuberante", "naturaleza", "vida"], "mood": "vivo", "colors": ["verde", "marrón"], "season": "summer", "verses": ["Salmo 1:3"], "status": "pending" },
+        { "file": "forests/light_rays_02.jpg", "tags": ["bosque", "rayos", "luz", "entre árboles", "divino", "místico"], "mood": "místico", "colors": ["verde", "dorado", "marrón"], "season": "any", "verses": ["Juan 8:12"], "status": "pending" },
+        { "file": "forests/forest_path_03.jpg", "tags": ["bosque", "sendero", "camino", "naturaleza", "paseo", "tranquilo"], "mood": "tranquilo", "colors": ["verde", "marrón", "amarillo"], "season": "autumn", "verses": ["Proverbios 3:5-6"], "status": "pending" },
+        { "file": "forests/tall_trees_04.jpg", "tags": ["árboles", "altos", "secuoyas", "imponente", "antiguo", "majestuoso"], "mood": "majestuoso", "colors": ["verde", "marrón"], "season": "any", "verses": ["Salmo 92:12"], "status": "pending" },
+        { "file": "forests/misty_forest_05.jpg", "tags": ["bosque", "niebla", "misterioso", "bruma", "silencio", "mañana"], "mood": "misterioso", "colors": ["verde", "gris", "blanco"], "season": "any", "verses": ["Salmo 46:10"], "status": "pending" },
+        { "file": "forests/forest_trail_01.jpg", "tags": ["bosque", "sendero", "caminar", "naturaleza", "explorar", "aventura"], "mood": "aventurero", "colors": ["verde", "marrón"], "season": "any", "verses": ["Miqueas 6:8"], "status": "pending" },
+        { "file": "forests/path_illuminated_02.jpg", "tags": ["camino", "iluminado", "sol", "bosque", "dirección", "guía"], "mood": "guiado", "colors": ["dorado", "verde", "marrón"], "season": "any", "verses": ["Salmo 119:105"], "status": "pending" },
+        { "file": "forests/autumn_path_03.jpg", "tags": ["otoño", "camino", "hojas", "colores", "cambio", "temporada"], "mood": "nostálgico", "colors": ["naranja", "rojo", "amarillo", "marrón"], "season": "autumn", "verses": ["Eclesiastés 3:1"], "status": "pending" },
+        { "file": "forests/trail_sunlight_04.jpg", "tags": ["sendero", "sol", "luz", "árboles", "caminata", "esperanza"], "mood": "esperanzador", "colors": ["verde", "dorado"], "season": "any", "verses": ["Isaías 42:16"], "status": "pending" },
+        { "file": "forests/olive_tree_01.jpg", "tags": ["olivo", "mediterráneo", "antiguo", "bíblico", "tronco", "sagrado"], "mood": "sagrado", "colors": ["verde", "marrón", "gris"], "season": "any", "verses": ["Salmo 128:3"], "status": "pending" },
+        { "file": "forests/protective_tree_01.jpg", "tags": ["árbol", "grande", "sombra", "protección", "refugio", "cobijo"], "mood": "protector", "colors": ["verde", "marrón"], "season": "summer", "verses": ["Salmo 91:1"], "status": "pending" },
+        { "file": "forests/oak_ancient_02.jpg", "tags": ["roble", "antiguo", "fuerte", "raíces", "permanente", "sólido"], "mood": "eterno", "colors": ["marrón", "verde"], "season": "any", "verses": ["Isaías 61:3"], "status": "pending" }
+      ]
+    },
+    "animals": {
+      "label": { "es": "Animales", "en": "Animals", "pt": "Animais" },
+      "images": [
+        { "file": "animals/eagle_soaring_01.jpg", "tags": ["águila", "vuelo", "soaring", "cielo", "libertad", "poder"], "mood": "poderoso", "colors": ["marrón", "azul", "blanco"], "season": "any", "verses": ["Isaías 40:31"], "status": "pending" },
+        { "file": "animals/eagle_mountain_02.jpg", "tags": ["águila", "montaña", "posada", "vigilante", "majestuoso", "alto"], "mood": "vigilante", "colors": ["marrón", "gris", "azul"], "season": "any", "verses": ["Deuteronomio 32:11"], "status": "pending" },
+        { "file": "animals/eagle_wings_03.jpg", "tags": ["águila", "alas", "extendidas", "vuelo", "envergadura", "fuerza"], "mood": "libre", "colors": ["marrón", "blanco", "azul"], "season": "any", "verses": ["Éxodo 19:4"], "status": "pending" },
+        { "file": "animals/dove_flight_01.jpg", "tags": ["paloma", "vuelo", "blanca", "paz", "espíritu", "pureza"], "mood": "pacífico", "colors": ["blanco", "azul"], "season": "any", "verses": ["Mateo 3:16"], "status": "pending" },
+        { "file": "animals/dove_white_02.jpg", "tags": ["paloma", "blanca", "posada", "pureza", "inocencia", "paz"], "mood": "puro", "colors": ["blanco", "gris"], "season": "any", "verses": ["Cantares 2:14"], "status": "pending" },
+        { "file": "animals/dove_pair_03.jpg", "tags": ["palomas", "pareja", "amor", "unión", "fidelidad", "compañía"], "mood": "amoroso", "colors": ["blanco", "gris"], "season": "any", "verses": ["Cantares 6:9"], "status": "pending" },
+        { "file": "animals/lamb_meadow_01.jpg", "tags": ["cordero", "pradera", "inocente", "blanco", "puro", "tierno"], "mood": "tierno", "colors": ["blanco", "verde"], "season": "spring", "verses": ["Juan 1:29"], "status": "pending" },
+        { "file": "animals/lamb_golden_02.jpg", "tags": ["cordero", "luz dorada", "atardecer", "cálido", "suave", "paz"], "mood": "cálido", "colors": ["dorado", "blanco", "verde"], "season": "any", "verses": ["Isaías 53:7"], "status": "pending" },
+        { "file": "animals/lion_majestic_01.jpg", "tags": ["león", "majestuoso", "rey", "melena", "poder", "nobleza"], "mood": "regio", "colors": ["dorado", "marrón"], "season": "any", "verses": ["Apocalipsis 5:5"], "status": "pending" },
+        { "file": "animals/lion_savanna_02.jpg", "tags": ["león", "sabana", "África", "natural", "salvaje", "libre"], "mood": "salvaje", "colors": ["dorado", "verde", "azul"], "season": "any", "verses": ["Proverbios 28:1"], "status": "pending" },
+        { "file": "animals/lion_golden_03.jpg", "tags": ["león", "dorado", "atardecer", "silueta", "majestuoso", "rey"], "mood": "majestuoso", "colors": ["dorado", "naranja", "negro"], "season": "any", "verses": ["Apocalipsis 5:5"], "status": "pending" },
+        { "file": "animals/lion_pride_04.jpg", "tags": ["león", "manada", "familia", "juntos", "protección", "comunidad"], "mood": "protector", "colors": ["dorado", "verde", "marrón"], "season": "any", "verses": ["Salmo 34:10"], "status": "pending" },
+        { "file": "animals/deer_meadow_01.jpg", "tags": ["ciervo", "pradera", "gracia", "elegante", "natural", "tranquilo"], "mood": "grácil", "colors": ["marrón", "verde"], "season": "any", "verses": ["Habacuc 3:19"], "status": "pending" },
+        { "file": "animals/deer_dawn_02.jpg", "tags": ["ciervo", "amanecer", "niebla", "misterioso", "silueta", "mañana"], "mood": "misterioso", "colors": ["dorado", "gris", "verde"], "season": "any", "verses": ["Salmo 42:1"], "status": "pending" },
+        { "file": "animals/deer_forest_03.jpg", "tags": ["ciervo", "bosque", "naturaleza", "salvaje", "mirada", "alerta"], "mood": "alerta", "colors": ["marrón", "verde"], "season": "any", "verses": ["2 Samuel 22:34"], "status": "pending" },
+        { "file": "animals/hummingbird_flower_01.jpg", "tags": ["colibrí", "flor", "néctar", "colores", "pequeño", "delicado"], "mood": "delicado", "colors": ["verde", "rojo", "azul"], "season": "spring", "verses": ["Mateo 6:26"], "status": "pending" },
+        { "file": "animals/hummingbird_tropical_02.jpg", "tags": ["colibrí", "tropical", "vibrante", "exótico", "vuelo", "iridiscente"], "mood": "vibrante", "colors": ["verde", "azul", "rojo"], "season": "any", "verses": ["Salmo 104:24"], "status": "pending" },
+        { "file": "animals/butterfly_monarch_01.jpg", "tags": ["mariposa", "monarca", "naranja", "migración", "transformación", "belleza"], "mood": "transformador", "colors": ["naranja", "negro", "blanco"], "season": "any", "verses": ["2 Corintios 5:17"], "status": "pending" },
+        { "file": "animals/butterfly_blue_02.jpg", "tags": ["mariposa", "azul", "delicado", "raro", "hermoso", "efímero"], "mood": "efímero", "colors": ["azul", "negro"], "season": "any", "verses": ["Salmo 139:14"], "status": "pending" },
+        { "file": "animals/sheep_hillside_01.jpg", "tags": ["ovejas", "colina", "rebaño", "pastor", "verde", "pastoral"], "mood": "pastoral", "colors": ["blanco", "verde"], "season": "any", "verses": ["Salmo 23:1"], "status": "pending" },
+        { "file": "animals/bird_nest_01.jpg", "tags": ["nido", "ave", "hogar", "protección", "ramas", "cuidado"], "mood": "protector", "colors": ["marrón", "verde"], "season": "spring", "verses": ["Mateo 8:20"], "status": "pending" }
+      ]
+    },
+    "fields": {
+      "label": { "es": "Campos y Praderas", "en": "Fields & Meadows", "pt": "Campos e Pradarias" },
+      "images": [
+        { "file": "fields/green_meadow_01.jpg", "tags": ["pradera", "verde", "amplio", "hierba", "naturaleza", "abierto"], "mood": "libre", "colors": ["verde", "azul"], "season": "spring", "verses": ["Salmo 23:2"], "status": "pending" },
+        { "file": "fields/green_valley_01.jpg", "tags": ["valle", "verde", "profundo", "rodeado", "montañas", "protegido"], "mood": "protegido", "colors": ["verde", "azul"], "season": "summer", "verses": ["Salmo 23:4"], "status": "pending" },
+        { "file": "fields/wildflowers_02.jpg", "tags": ["flores", "silvestres", "colores", "campo", "primavera", "belleza"], "mood": "alegre", "colors": ["múltiples colores"], "season": "spring", "verses": ["Mateo 6:28-29"], "status": "pending" },
+        { "file": "fields/wheat_golden_01.jpg", "tags": ["trigo", "dorado", "cosecha", "campo", "maduro", "abundancia"], "mood": "abundante", "colors": ["dorado", "amarillo"], "season": "summer", "verses": ["Juan 4:35"], "status": "pending" },
+        { "file": "fields/wheat_sunset_04.jpg", "tags": ["trigo", "atardecer", "dorado", "silueta", "cálido", "cosecha"], "mood": "cálido", "colors": ["dorado", "naranja"], "season": "summer", "verses": ["Salmo 65:13"], "status": "pending" },
+        { "file": "fields/rolling_hills_04.jpg", "tags": ["colinas", "ondulantes", "verde", "suave", "paisaje", "pastoral"], "mood": "suave", "colors": ["verde", "azul"], "season": "spring", "verses": ["Salmo 65:12"], "status": "pending" },
+        { "file": "fields/garden_flowers_01.jpg", "tags": ["jardín", "flores", "cuidado", "belleza", "cultivado", "variedad"], "mood": "cultivado", "colors": ["múltiples"], "season": "spring", "verses": ["Cantares 4:12"], "status": "pending" },
+        { "file": "fields/desert_bloom_01.jpg", "tags": ["desierto", "floreciendo", "milagro", "vida", "resiliencia", "esperanza"], "mood": "milagroso", "colors": ["naranja", "rosa", "arena"], "season": "spring", "verses": ["Isaías 35:1"], "status": "pending" },
+        { "file": "fields/vineyard_ripe_02.jpg", "tags": ["viñedo", "uvas", "maduro", "cosecha", "vino", "abundancia"], "mood": "fructífero", "colors": ["púrpura", "verde"], "season": "autumn", "verses": ["Juan 15:5"], "status": "pending" },
+        { "file": "fields/harvest_scene_01.jpg", "tags": ["cosecha", "campo", "trabajo", "frutos", "recoger", "bendición"], "mood": "agradecido", "colors": ["dorado", "verde", "marrón"], "season": "autumn", "verses": ["Gálatas 6:9"], "status": "pending" },
+        { "file": "fields/rural_road_01.jpg", "tags": ["camino", "rural", "campo", "horizonte", "dirección", "viaje"], "mood": "aventurero", "colors": ["marrón", "verde", "azul"], "season": "any", "verses": ["Proverbios 3:5-6"], "status": "pending" },
+        { "file": "fields/country_house_03.jpg", "tags": ["casa", "campo", "hogar", "acogedor", "luz", "familia"], "mood": "acogedor", "colors": ["marrón", "verde", "cálido"], "season": "any", "verses": ["Juan 14:2"], "status": "pending" }
+      ]
+    }
+  }
+}

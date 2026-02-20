@@ -1,0 +1,16 @@
+# Visual Studio
+.vs/
+*.slnx
+*.suo
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Keys
+.openai-key
+*.env
+
+# Node
+node_modules/

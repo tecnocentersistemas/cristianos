@@ -1,0 +1,85 @@
+# Copilot Instructions - FaithTunes (cristianos)
+
+## Proyecto
+Plataforma web para videos musicales cristianos con IA. Nombre de trabajo: "cristianos". Marca: "FaithTunes".
+URL de producción: **https://cristianos.centralchat.pro/**
+
+## Stack técnico
+- **Frontend**: HTML5 + CSS3 + JavaScript vanilla (NO frameworks, NO TypeScript, NO bundlers)
+- **Backend** (futuro): Node.js en VPS
+- **Generación de video** (futuro): FFmpeg en servidor
+- **IA** (futuro): OpenAI GPT para letras/composición + RAG para selección inteligente de recursos
+- **NO hay .sln ni compilación**. NUNCA usar `run_build`.
+
+## Repositorio Git
+- **Repo**: `https://github.com/tecnocentersistemas/cristianos.git`
+- **Branch principal**: `main`
+- **Carpeta local**: `C:\cristianos`
+
+## Flujo de trabajo y deploy
+1. Siempre revisar y modificar archivos en LOCAL primero (`C:\cristianos`).
+2. Después de tener los cambios listos, hacer commit y push:
+   ```powershell
+   cd C:\cristianos; git add -A; git commit -m "descripción del cambio"; git push origin main
+   ```
+3. Después del push, actualizar el VPS:
+   ```powershell
+   ssh -i "$env:USERPROFILE\.ssh\nueva_llave" root@172.96.8.245 "cd /var/www/cristianos && git pull"
+   ```
+4. Verificar en: https://cristianos.centralchat.pro/
+- NUNCA subir archivos con `scp`. Todo va por git.
+- NUNCA compilar ni usar `run_build`.
+- Usar `;` como separador en PowerShell, NO `&&`.
+
+## VPS
+- IP: `172.96.8.245`
+- SSH: `ssh -i "$env:USERPROFILE\.ssh\nueva_llave" root@172.96.8.245`
+- Ruta del proyecto en VPS: `/var/www/cristianos`
+- Servidor web: Nginx
+- Subdominio: `cristianos.centralchat.pro`
+
+## Estructura del proyecto
+```
+cristianos/
+├── index.html           Landing page principal
+├── css/app.css           Estilos globales (dark/light, responsive)
+├── js/app.js             JS principal + i18n (ES/EN/PT) + catálogo dinámico
+├── media/
+│   ├── images/           Paisajes y animales
+│   ├── audio/            Instrumentales por género
+│   └── videos/           Videos finales MP4
+├── data/                 JSON de versículos, catálogo, metadatos RAG
+├── api/                  Backend Node.js (futuro)
+├── deploy/               Config del VPS (nginx)
+└── .github/copilot-instructions.md
+```
+
+## Paleta de colores
+- Primary: `#d97706` (amber/gold)
+- Secondary: `#7c3aed` (violet)
+- Gradiente: `linear-gradient(135deg, #d97706, #7c3aed)`
+- Dark base: `#0f172a` / Light base: `#f1f5f9`
+
+## Reglas de código
+- Archivos modulares de 500-700 líneas máximo.
+- Mobile-first: todo responsive.
+- No agregar dependencias externas (solo Font Awesome y Google Fonts Inter que ya están).
+
+## Traducciones (i18n) - OBLIGATORIO
+- SIEMPRE que se agregue o modifique texto visible en el frontend, agregar traducciones en ES, EN y PT automáticamente.
+- Sistema: atributos `data-i18n` en HTML + objeto `L` en `js/app.js`.
+
+## Git workflow
+- Cuando el usuario diga "haz commit y push", ejecutar sin preguntar:
+  ```powershell
+  cd C:\cristianos; git add -A; git commit -m "mensaje descriptivo"; git push origin main
+  ```
+- Después del push, ejecutar:
+  ```powershell
+  ssh -i "$env:USERPROFILE\.ssh\nueva_llave" root@172.96.8.245 "cd /var/www/cristianos && git pull"
+  ```
+
+## Relación con CentralChat
+- Proyecto INDEPENDIENTE de CentralChat. Reutiliza patrones (i18n, theme toggle, CSS variables, responsive) pero NO comparte archivos.
+- Repo CentralChat: `tecnocentersistemas/chatbot-centralchat` (separado).
+- Futuro: reutilizar lógica de RAG y OpenAI de CentralChat adaptada para selección de recursos multimedia.
