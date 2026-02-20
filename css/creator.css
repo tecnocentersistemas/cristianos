@@ -311,6 +311,23 @@
   50% { box-shadow: 0 4px 30px rgba(217,119,6,0.8); }
 }
 
+/* Now Playing indicator */
+.slideshow-now-playing {
+  position: absolute;
+  bottom: 15px; left: 15px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: flex; align-items: center; gap: 6px;
+  z-index: 2;
+  animation: fadeInNow 0.5s ease;
+}
+.slideshow-now-playing i { color: var(--primary); animation: pulse-note 1.5s ease infinite; }
+@keyframes fadeInNow { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse-note { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
 /* Player Info */
 .player-info {
   padding: 1.25rem;

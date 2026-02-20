@@ -198,18 +198,59 @@ if (isset($aiResult['error'])) {
 // Fetch images
 $images = fetchPexelsImages($aiResult['imageSearchTerms'] ?? ['mountains', 'sunset', 'river', 'eagle', 'forest']);
 
-// Select a background audio - ONLY verified working URLs
-$verifiedAudio = [
-    'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3',
-    'https://cdn.pixabay.com/audio/2022/02/22/audio_d1718ab41b.mp3',
-    'https://cdn.pixabay.com/audio/2022/08/03/audio_54ca0ffa52.mp3',
-    'https://cdn.pixabay.com/audio/2021/11/25/audio_91b32e02f9.mp3',
-    'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3',
-    'https://cdn.pixabay.com/audio/2022/11/22/audio_febc508520.mp3',
-    'https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a73467.mp3'
+// Select background music - Real compositions from Incompetech (Kevin MacLeod, CC BY 3.0) + verified Pixabay
+$audioByMood = [
+    'peaceful' => [
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/At%20Rest.mp3', 'name' => 'At Rest - Piano'],
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Eternal%20Hope.mp3', 'name' => 'Eternal Hope - Orchestral'],
+        ['url' => 'https://cdn.pixabay.com/audio/2022/02/22/audio_d1718ab41b.mp3', 'name' => 'Calm Meditation']
+    ],
+    'joyful' => [
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Wholesome.mp3', 'name' => 'Wholesome - Upbeat'],
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Amazing%20Plan.mp3', 'name' => 'Amazing Plan - Bright'],
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Groove%20Grove.mp3', 'name' => 'Groove Grove - Fun']
+    ],
+    'powerful' => [
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Inspired.mp3', 'name' => 'Inspired - Epic'],
+        ['url' => 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3', 'name' => 'Epic Cinematic'],
+        ['url' => 'https://cdn.pixabay.com/audio/2022/11/22/audio_febc508520.mp3', 'name' => 'Orchestral Power']
+    ],
+    'reflective' => [
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/At%20Rest.mp3', 'name' => 'At Rest - Reflective'],
+        ['url' => 'https://cdn.pixabay.com/audio/2021/11/25/audio_91b32e02f9.mp3', 'name' => 'Soft Ambient'],
+        ['url' => 'https://cdn.pixabay.com/audio/2022/08/03/audio_54ca0ffa52.mp3', 'name' => 'Gentle Piano']
+    ],
+    'uplifting' => [
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Wholesome.mp3', 'name' => 'Wholesome - Uplifting'],
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Eternal%20Hope.mp3', 'name' => 'Eternal Hope'],
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Amazing%20Plan.mp3', 'name' => 'Amazing Plan']
+    ]
 ];
 
-$selectedAudio = $verifiedAudio[array_rand($verifiedAudio)];
+// Also map genre to specific styles
+$audioByGenre = [
+    'country' => [
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Americana.mp3', 'name' => 'Americana - Country'],
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Daily%20Beetle.mp3', 'name' => 'Daily Beetle - Acoustic']
+    ],
+    'rock' => [
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Inspired.mp3', 'name' => 'Inspired - Rock'],
+        ['url' => 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3', 'name' => 'Epic Rock']
+    ],
+    'folk' => [
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Americana.mp3', 'name' => 'Americana - Folk'],
+        ['url' => 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Daily%20Beetle.mp3', 'name' => 'Daily Beetle - Folk']
+    ]
+];
+
+$mood = $aiResult['mood'] ?? 'peaceful';
+$genre = $aiResult['genre'] ?? 'worship';
+
+// Prefer genre-specific track if available, otherwise use mood
+$trackPool = $audioByGenre[$genre] ?? $audioByMood[$mood] ?? $audioByMood['peaceful'];
+$selected = $trackPool[array_rand($trackPool)];
+$selectedAudio = $selected['url'];
+$audioName = $selected['name'];
 
 // Build final response
 $response = [
@@ -223,7 +264,8 @@ $response = [
         'poem' => $aiResult['poem'] ?? [],
         'verses' => $aiResult['verses'] ?? [],
         'images' => $images,
-        'audio' => $selectedAudio
+        'audio' => $selectedAudio,
+        'audioName' => $audioName ?? 'Instrumental'
     ]
 ];
 

@@ -93,9 +93,15 @@
             <button class="slideshow-ctrl-btn" id="playPauseBtn" onclick="togglePlayback()">
               <i class="fas fa-pause"></i>
             </button>
+            <button class="slideshow-ctrl-btn" id="muteBtn" onclick="toggleMute()">
+              <i class="fas fa-volume-up"></i>
+            </button>
             <button class="slideshow-ctrl-btn" onclick="restartPlayback()">
               <i class="fas fa-redo"></i>
             </button>
+          </div>
+          <div class="slideshow-now-playing" id="nowPlaying" style="display:none;">
+            <i class="fas fa-music"></i> <span id="nowPlayingText"></span>
           </div>
           <div class="slideshow-badge">
             <i class="fas fa-music"></i> FaithTunes

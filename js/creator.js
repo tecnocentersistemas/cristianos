@@ -272,6 +272,14 @@ function startVideoExperience(video) {
     audioEl.load();
   }
 
+  // Show now playing
+  var npEl = document.getElementById('nowPlaying');
+  var npText = document.getElementById('nowPlayingText');
+  if (video.audioName) {
+    npText.textContent = video.audioName;
+    npEl.style.display = 'flex';
+  }
+
   // Start playback
   slideshow.currentSlide = 0;
   startPlayback();
@@ -400,6 +408,20 @@ function showUnmuteBtn() {
 function hideUnmuteBtn() {
   var btn = document.getElementById('unmuteBtn');
   if (btn) btn.remove();
+}
+
+function toggleMute() {
+  var a = document.getElementById('bgAudio');
+  var btn = document.getElementById('muteBtn');
+  if (!btn) return;
+  if (a.muted || a.volume === 0) {
+    a.muted = false;
+    a.volume = 0.7;
+    btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+  } else {
+    a.muted = true;
+    btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  }
 }
 
 // ===== Init =====
