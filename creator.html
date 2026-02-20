@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>FaithTunes - Crear Video</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/creator.css">
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <a href="index.html" style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;color:inherit;">
+        <div class="logo-icon"><i class="fas fa-music"></i></div>
+        <span>Faith<span class="highlight">Tunes</span></span>
+      </a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-selector">
+        <button class="lang-btn" onclick="setLang('es')" title="Español">ES</button>
+        <button class="lang-btn" onclick="setLang('en')" title="English">EN</button>
+        <button class="lang-btn" onclick="setLang('pt')" title="Português">PT</button>
+      </div>
+      <button class="theme-toggle-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="fas fa-sun"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="creator-layout">
+    <!-- Left: Chat -->
+    <section class="creator-chat">
+      <div class="chat-header">
+        <div class="chat-header-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <div>
+          <h2 data-i18n="cr.title">Crear Video Musical</h2>
+          <p data-i18n="cr.subtitle">Describí qué video querés y la IA lo crea para vos</p>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg ai">
+          <div class="chat-msg-avatar"><i class="fas fa-cross"></i></div>
+          <div class="chat-msg-bubble">
+            <p data-i18n="cr.welcome">¡Hola! Soy FaithTunes AI. Decime qué tipo de video musical cristiano querés crear. Por ejemplo:</p>
+            <div class="chat-suggestions">
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug1">Creame una canción de amor a Dios con montañas</button>
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug2">A song about faith with eagles and sunsets</button>
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug3">Um vídeo de esperança com florestas e rios</button>
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug4">Video de paz con corderos y campos verdes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-input-wrap">
+          <input type="text" id="chatInput" data-i18n-placeholder="cr.placeholder" placeholder="Describí tu video musical cristiano..." autocomplete="off">
+          <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: Video Player -->
+    <section class="creator-player" id="creatorPlayer">
+      <div class="player-empty" id="playerEmpty">
+        <div class="player-empty-icon"><i class="fas fa-film"></i></div>
+        <h3 data-i18n="cr.emptyTitle">Tu video aparecerá aquí</h3>
+        <p data-i18n="cr.emptyDesc">Escribí en el chat qué tipo de video querés crear y la IA lo generará para vos.</p>
+      </div>
+
+      <div class="player-active" id="playerActive" style="display:none;">
+        <!-- Slideshow -->
+        <div class="slideshow-container" id="slideshowContainer">
+          <div class="slideshow-slide active" id="slide0"></div>
+          <div class="slideshow-slide" id="slide1"></div>
+          <div class="slideshow-slide" id="slide2"></div>
+          <div class="slideshow-slide" id="slide3"></div>
+          <div class="slideshow-slide" id="slide4"></div>
+          <div class="slideshow-overlay"></div>
+          <div class="slideshow-text" id="slideshowText"></div>
+          <div class="slideshow-ref" id="slideshowRef"></div>
+          <div class="slideshow-progress">
+            <div class="slideshow-progress-bar" id="progressBar"></div>
+          </div>
+          <div class="slideshow-controls">
+            <button class="slideshow-ctrl-btn" id="playPauseBtn" onclick="togglePlayback()">
+              <i class="fas fa-pause"></i>
+            </button>
+            <button class="slideshow-ctrl-btn" onclick="restartPlayback()">
+              <i class="fas fa-redo"></i>
+            </button>
+          </div>
+          <div class="slideshow-badge">
+            <i class="fas fa-music"></i> FaithTunes
+          </div>
+        </div>
+
+        <!-- Video Info -->
+        <div class="player-info" id="playerInfo">
+          <h3 id="playerTitle"></h3>
+          <p id="playerDesc"></p>
+          <div class="player-poem" id="playerPoem"></div>
+          <div class="player-verses" id="playerVerses"></div>
+          <div class="player-meta">
+            <span class="player-tag" id="playerTheme"></span>
+            <span class="player-tag" id="playerGenre"></span>
+            <span class="player-tag" id="playerMood"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Hidden audio player -->
+  <audio id="bgAudio" preload="none" loop></audio>
+
+  <script src="js/creator.js"></script>
+</body>
+</html>
