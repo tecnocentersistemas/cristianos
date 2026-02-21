@@ -62,8 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    // Extract songs
-    $songsRaw = $taskData['data'] ?? [];
+    // Extract songs - data is in response.sunoData
+    $songsRaw = $taskData['response']['sunoData'] ?? $taskData['data'] ?? [];
     $result = [];
     foreach ($songsRaw as $song) {
         if (is_array($song) && !empty($song['audioUrl'])) {

@@ -66,9 +66,9 @@ if ($action === 'poll') {
     $status = $data['data']['status'] ?? 'UNKNOWN';
 
     if ($sunoCode === 200 && $status === 'SUCCESS') {
-        // Extract songs
+        // Extract songs - data is in response.sunoData
         $songs = [];
-        $songsRaw = $data['data']['data'] ?? [];
+        $songsRaw = $data['data']['response']['sunoData'] ?? $data['data']['data'] ?? [];
         foreach ($songsRaw as $s) {
             $songs[] = [
                 'title' => $s['title'] ?? '',
