@@ -423,6 +423,31 @@
 [data-theme="light"] .player-empty h3 { color: #475569; }
 [data-theme="light"] .player-empty p { color: #94a3b8; }
 
+/* --- Mobile responsive --- */
+@media (max-width: 768px) {
+  .creator-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: calc(100vh - 60px);
+  }
+  .creator-chat {
+    height: 50vh;
+    min-height: 300px;
+  }
+  .creator-player {
+    min-height: 50vh;
+  }
+  .chat-header h2 { font-size: 0.95rem; }
+  .chat-header p { font-size: 0.72rem; }
+  .slideshow-text { font-size: 1rem; bottom: 60px; }
+  .slideshow-ref { font-size: 0.8rem; bottom: 40px; }
+  .player-info { padding: 1rem; }
+  .player-info h3 { font-size: 1rem; }
+  .player-poem { font-size: 0.82rem; }
+  .suno-toggle-label { font-size: 0.75rem; }
+  .suno-badge { font-size: 0.55rem; }
+}
+
 /* --- Responsive --- */
 @media (max-width: 768px) {
   .creator-layout {

@@ -113,20 +113,19 @@ function unlockAudio() {
   if (_audioUnlocked) return;
   _audioUnlocked = true;
   var audioEl = document.getElementById('bgAudio');
-  // Create and resume AudioContext to unlock audio policy
-  try {
-    var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    var src = ctx.createMediaElementSource(audioEl);
-    src.connect(ctx.destination);
-    if (ctx.state === 'suspended') ctx.resume();
-    window._audioCtx = ctx;
-  } catch(e) {}
-  // Silent play to mark element as user-activated
+  // Simple silent play to mark element as user-activated (no AudioContext needed)
   audioEl.muted = true;
-  audioEl.play().then(function() { audioEl.pause(); audioEl.muted = false; audioEl.currentTime = 0; }).catch(function() { audioEl.muted = false; });
+  audioEl.play().then(function() {
+    audioEl.pause();
+    audioEl.muted = false;
+    audioEl.currentTime = 0;
+  }).catch(function() {
+    audioEl.muted = false;
+  });
 }
 document.addEventListener('click', unlockAudio, { once: true });
 document.addEventListener('touchstart', unlockAudio, { once: true });
+document.addEventListener('touchend', unlockAudio, { once: true });
 
 function sendMessage() {
   var input = document.getElementById('chatInput');
@@ -247,10 +246,6 @@ function startVideoExperience(video) {
     audioEl.src = video.audio;
     audioEl.volume = 0.7;
     audioEl.load();
-    // Resume AudioContext if it was suspended
-    if (window._audioCtx && window._audioCtx.state === 'suspended') {
-      window._audioCtx.resume();
-    }
     // Fallback audio if the main one fails to load
     var _audioFallbacks = [
       'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Eternal%20Hope.mp3',
