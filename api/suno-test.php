@@ -81,13 +81,7 @@ if ($action === 'poll') {
         }
         echo json_encode([
             'status'=>'complete',
-            'songs'=>$songs,
-            'debug'=>[
-                'songsCount'=>count($songsRaw),
-                'dataKeys'=>array_keys($data['data'] ?? []),
-                'firstSongKeys'=>!empty($songsRaw) ? array_keys($songsRaw[0]) : [],
-                'rawSnippet'=>substr($resp, 0, 800)
-            ]
+            'songs'=>$songs
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     } else {
         echo json_encode(['status'=>'processing','sunoCode'=>$sunoCode,'sunoStatus'=>$status,'sunoMsg'=>$data['msg'] ?? ''], JSON_PRETTY_PRINT);
