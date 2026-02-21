@@ -182,6 +182,8 @@ body {
 }
 .genre-card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; }
 .genre-card p { color: var(--gray); font-size: 0.9rem; }
+.genre-count { display: block; margin-top: 0.5rem; font-size: 0.75rem; color: var(--secondary); font-weight: 600; }
+.genre-card.genre-active { border-color: var(--secondary); box-shadow: 0 0 0 2px var(--secondary); transform: translateY(-4px); }
 
 /* ===== Catalog ===== */
 .catalog-filters { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
