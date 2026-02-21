@@ -521,18 +521,66 @@ function pollSunoStatus(taskId, elapsed) {
       if (song.title) { var te = document.getElementById('playerTitle'); if (te) te.textContent = song.title; }
       var ae = document.getElementById('playerActions'); if (ae) ae.style.display = 'flex';
 
+      // Fetch REAL timestamped lyrics from Suno (for perfect sync)
+      if (taskId && song.id) {
+        fetch('api/suno-lyrics.php', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ taskId: taskId, audioId: song.id })
+        }).then(function(r) { return r.json(); }).then(function(lr) {
+          if (lr.success && lr.lyrics && lr.lyrics.length > lyricsText.length) {
+            // Update lyrics display with real Suno lyrics
+            lyricsText = lr.lyrics;
+            var lC = document.getElementById('lyricsContent');
+            if (lC) {
+              var h = '';
+              lyricsText.split('\n').forEach(function(l) {
+                if (/^\[.+\]$/.test(l.trim())) h += '<span class="lyrics-section">' + l.replace(/[\[\]]/g, '') + '</span>';
+                else if (l.trim()) h += '<span class="lyrics-line">' + l + '</span>';
+              });
+              lC.innerHTML = h;
+            }
+            var pe = document.getElementById('playerPoem');
+            if (pe) { pe.innerHTML = lyricsText.replace(/\[([^\]]+)\]/g, '<strong style="color:var(--primary)">$1</strong>').replace(/\n/g, '<br>'); }
+          }
+          // Apply timestamped sync if we have line data
+          if (lr.success && lr.lines && lr.lines.length > 0) {
+            window._sunoTimedLines = lr.lines;
+            var les2 = document.querySelectorAll('#lyricsContent .lyrics-line');
+            if (les2.length > 0) {
+              // Remove old timeupdate listener and add precise one
+              var audioEl2 = document.getElementById('bgAudio');
+              audioEl2.addEventListener('timeupdate', function timedSync() {
+                var ct = audioEl2.currentTime;
+                var lines = window._sunoTimedLines;
+                les2.forEach(function(e, idx) {
+                  if (idx < lines.length) {
+                    var active = ct >= lines[idx].startS && ct < lines[idx].endS + 0.5;
+                    e.classList.toggle('active', active);
+                    if (active) e.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }
+                });
+              });
+            }
+          }
+        }).catch(function(e) { console.warn('Lyrics fetch error:', e); });
+      }
+
       // Save to VPS in BACKGROUND (don't block playback!)
       var slideImgs = [];
       if (slideshow.images) slideshow.images.forEach(function(img) { if (img.url) slideImgs.push(img.url); });
-      fetch('api/save-song.php', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          audioUrl: saveUrl, title: song.title || '', lyrics: lyricsText,
-          tags: song.tags || '', duration: song.duration || 0,
-          imageUrl: song.imageUrl || '', taskId: taskId,
-          slideImages: slideImgs, creator: ''
-        })
-      }).then(function(r) { return r.json(); }).then(function(d) {
+
+      // Small delay to let timestamped lyrics load first
+      setTimeout(function() {
+        var finalLyrics = lyricsText;
+        fetch('api/save-song.php', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            audioUrl: saveUrl, title: song.title || '', lyrics: finalLyrics,
+            tags: song.tags || '', duration: song.duration || 0,
+            imageUrl: song.imageUrl || '', taskId: taskId,
+            slideImages: slideImgs, creator: '', songId: song.id || ''
+          })
+        }).then(function(r) { return r.json(); }).then(function(d) {
         if (d.success && d.song) {
           window._savedSong = d.song;
           if (d.song.audioUrl) window._sunoAudioUrl = d.song.audioUrl;
@@ -552,6 +600,7 @@ function pollSunoStatus(taskId, elapsed) {
           }, 10000);
         }
       }).catch(function(e) { console.warn('Save error:', e); });
+      }, 3000); // delay to allow timestamped lyrics to load
 
     } else if (data.status === 'error') {
       clearInterval(_sunoPolling); _sunoPolling = null;
