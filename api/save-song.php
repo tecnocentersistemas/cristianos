@@ -1,5 +1,6 @@
 <?php
 // Save Suno song + generate video + list all songs
+set_time_limit(180); // Allow up to 3 min for FFmpeg
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
@@ -73,10 +74,13 @@ if (!file_exists($audioFile)) {
 
 // 2) Download cover image
 $coverPath = '';
-if ($imageUrl) {
+// Use provided imageUrl OR first slide image as cover
+$coverSource = $imageUrl;
+if (!$coverSource && !empty($slideImages[0])) $coverSource = $slideImages[0];
+if ($coverSource) {
     $coverFile = $songsDir . '/' . $id . '_cover.jpg';
     if (!file_exists($coverFile)) {
-        $img = dlFile($imageUrl);
+        $img = dlFile($coverSource);
         if ($img) file_put_contents($coverFile, $img);
     }
     if (file_exists($coverFile)) $coverPath = '/media/audio/songs/' . $id . '_cover.jpg';
@@ -130,45 +134,38 @@ function dlFile($url) {
 }
 
 function generateVideo($slides, $audioFile, $outputFile, $duration, $title) {
-    // Check if FFmpeg is available
     $ffmpeg = trim(shell_exec('which ffmpeg 2>/dev/null') ?: '');
     if (!$ffmpeg) return '';
 
     $numSlides = count($slides);
     $durPerSlide = $duration > 0 ? $duration / $numSlides : 16;
-    $durPerSlide = max(5, min(30, $durPerSlide)); // Clamp 5-30s
+    $durPerSlide = max(5, min(25, $durPerSlide));
 
-    // Build FFmpeg filter: each image scaled to 1280x720 with zoom effect
-    $inputs = '';
-    $filters = '';
-    $concatInputs = '';
-    foreach ($slides as $i => $slide) {
-        $inputs .= ' -loop 1 -t ' . round($durPerSlide, 1) . ' -i ' . escapeshellarg($slide);
-        // Ken Burns: slow zoom from 1.0 to 1.15
-        $filters .= "[{$i}:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='min(zoom+0.0005,1.15)':d=" . round($durPerSlide * 25) . ":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=25[v{$i}];";
-        $concatInputs .= "[v{$i}]";
+    // Simple approach: create a concat file with images
+    $listFile = dirname($outputFile) . '/' . basename($outputFile, '.mp4') . '_list.txt';
+    $listContent = '';
+    foreach ($slides as $slide) {
+        $listContent .= "file " . escapeshellarg($slide) . "\nduration " . round($durPerSlide, 1) . "\n";
     }
-    $audioIdx = $numSlides;
-    $filter = $filters . $concatInputs . "concat=n={$numSlides}:v=1:a=0[outv]";
+    // Add last image again (ffmpeg concat requires it)
+    $listContent .= "file " . escapeshellarg($slides[count($slides)-1]) . "\n";
+    file_put_contents($listFile, $listContent);
 
-    $cmd = $ffmpeg . $inputs . ' -i ' . escapeshellarg($audioFile)
-        . ' -filter_complex ' . escapeshellarg($filter)
-        . ' -map "[outv]" -map ' . $audioIdx . ':a'
-        . ' -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 192k'
-        . ' -shortest -movflags +faststart -y ' . escapeshellarg($outputFile)
-        . ' 2>&1';
+    $cmd = $ffmpeg . ' -f concat -safe 0 -i ' . escapeshellarg($listFile)
+        . ' -i ' . escapeshellarg($audioFile)
+        . ' -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1"'
+        . ' -c:v libx264 -preset fast -crf 23 -r 24 -pix_fmt yuv420p'
+        . ' -c:a aac -b:a 192k -shortest -movflags +faststart'
+        . ' -y ' . escapeshellarg($outputFile) . ' 2>&1';
 
-    // Run in background to not block the response
-    shell_exec($cmd . ' &');
+    // Run synchronously (simpler, more reliable)
+    $output = shell_exec($cmd);
 
-    // Wait up to 90 seconds for video to be generated
-    $waited = 0;
-    while ($waited < 90 && !file_exists($outputFile)) {
-        sleep(3);
-        $waited += 3;
-    }
-    // Give it a moment to finish writing
-    if (file_exists($outputFile)) sleep(2);
+    // Log for debugging
+    file_put_contents(dirname($outputFile) . '/' . basename($outputFile, '.mp4') . '_log.txt', $cmd . "\n\n" . $output);
+
+    // Clean up list file
+    @unlink($listFile);
 
     return file_exists($outputFile) ? $outputFile : '';
 }
