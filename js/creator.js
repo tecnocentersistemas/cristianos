@@ -101,7 +101,10 @@ function sendMessage() {
   addMessage('<i class="fas fa-spinner fa-spin"></i> ' + t('cr.generating'), 'ai');
 
   fetch('api/ai.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: text, lang: currentLang }) })
-  .then(function(res) { return res.json(); })
+  .then(function(res) {
+    if (!res.ok) return res.text().then(function(t) { try { return JSON.parse(t); } catch(e) { return { error: 'Server error ' + res.status }; } });
+    return res.json();
+  })
   .then(function(data) {
     removeTyping();
     input.disabled = false; document.getElementById('chatSendBtn').disabled = false; input.focus();

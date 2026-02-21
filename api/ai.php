@@ -126,9 +126,13 @@ RULES:
 - ONLY JSON output.';
 
     $ch = curl_init('https://api.openai.com/v1/chat/completions');
-    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER=>true, CURLOPT_POST=>true,
-        'temperature'=>0.7,'max_tokens'=>2000]),
-        CURLOPT_HTTPHEADER=>['Content-Type: application/json','Authorization: Bearer '.$apiKey], CURLOPT_TIMEOUT=>30]);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode(['model'=>'gpt-4o-mini','messages'=>[['role'=>'system','content'=>$system],['role'=>'user','content'=>$prompt]],'temperature'=>0.7,'max_tokens'=>2000]),
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json','Authorization: Bearer '.$apiKey],
+        CURLOPT_TIMEOUT => 45
+    ]);
     $resp = curl_exec($ch); $err = curl_error($ch); $code = curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
     if ($err) return ['error'=>'Curl error: '.$err];
     if ($code !== 200) return ['error'=>'OpenAI error '.$code];
