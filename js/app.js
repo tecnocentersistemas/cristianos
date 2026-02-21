@@ -358,9 +358,13 @@ function loadAISongs() {
       var hasVideo = !!s.videoUrl;
       var card = document.createElement('div');
       card.className = 'ai-song-card';
-      var thumbContent = '';
-      if (s.imageUrl) thumbContent = '<img src="' + s.imageUrl + '" alt="' + (s.title||'') + '">';
-      else thumbContent = '<div style="width:100%;height:100%;background:linear-gradient(135deg,#d97706,#7c3aed);display:flex;align-items:center;justify-content:center"><i class="fas fa-music" style="font-size:2rem;color:white;opacity:0.5"></i></div>';
+
+      // Always use gradient fallback, load image on top if available
+      var thumbContent = '<div class="ai-song-gradient"><i class="fas fa-music"></i></div>';
+      if (s.imageUrl) {
+        thumbContent = '<img src="' + s.imageUrl + '" alt="' + (s.title||'') + '" onerror="this.style.display=\'none\'">'
+          + '<div class="ai-song-gradient ai-song-fallback"><i class="fas fa-music"></i></div>';
+      }
 
       var actBtns = '';
       if (hasVideo) actBtns += '<a class="ai-song-btn dl-vid" href="' + s.videoUrl + '" download><i class="fas fa-video"></i> Video</a>';
