@@ -48,8 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // FIRST: Check if callback already received data (fastest path)
     $callbackFile = $cacheDir . '/' . $taskId . '.json';
-    if (file_exists($callbackFile)) {
-        $cbData = json_decode(file_get_contents($callbackFile), true);
+    $firstFile = $cacheDir . '/' . $taskId . '_first.json';
+    // Check _first callback too (arrives ~30-40s before _complete)
+    $checkFiles = [];
+    if (file_exists($callbackFile)) $checkFiles[] = $callbackFile;
+    if (file_exists($firstFile)) $checkFiles[] = $firstFile;
+    foreach ($checkFiles as $cf) {
+        $cbData = json_decode(file_get_contents($cf), true);
         // Extract songs from callback data - try multiple structures
         $songsRaw = $cbData['data']['response']['sunoData']
             ?? $cbData['data']['data']
@@ -82,13 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     $data = json_decode($resp, true);
-    if (!$data || ($data['code'] ?? 0) !== 200) {
-        $status = $data['data']['status'] ?? 'UNKNOWN';
-        if ($status === 'CREATE_FAIL' || !empty($data['data']['errorMessage'])) {
-            echo json_encode(['status'=>'error','taskId'=>$taskId,'error'=>$data['data']['errorMessage'] ?? 'Generation failed']);
-        } else {
-            echo json_encode(['status'=>'processing','taskId'=>$taskId]);
-        }
+    if (!$data) {
+        echo json_encode(['status'=>'processing','taskId'=>$taskId]);
         exit;
     }
 
@@ -96,19 +96,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $taskData = $data['data'] ?? [];
     $status = $taskData['status'] ?? '';
 
-    if ($status !== 'SUCCESS') {
-        echo json_encode(['status'=>'processing','taskId'=>$taskId,'sunoStatus'=>$status]);
+    if ($status === 'CREATE_FAIL' || !empty($taskData['errorMessage'])) {
+        echo json_encode(['status'=>'error','taskId'=>$taskId,'error'=>$taskData['errorMessage'] ?? 'Generation failed']);
         exit;
     }
 
-    // Extract songs
+    // Extract songs - try even if status isn't SUCCESS yet (stream URLs available early)
     $songsRaw = $taskData['response']['sunoData'] ?? $taskData['data'] ?? [];
     $result = extractSongs($songsRaw);
 
     if (!empty($result)) {
         echo json_encode(['status'=>'complete','taskId'=>$taskId,'songs'=>$result], JSON_UNESCAPED_UNICODE);
+    } elseif ($status === 'SUCCESS') {
+        echo json_encode(['status'=>'processing','taskId'=>$taskId,'sunoStatus'=>'SUCCESS_NO_SONGS']);
     } else {
-        echo json_encode(['status'=>'processing','taskId'=>$taskId]);
+        echo json_encode(['status'=>'processing','taskId'=>$taskId,'sunoStatus'=>$status]);
     }
     exit;
 }

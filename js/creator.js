@@ -117,13 +117,12 @@ function addTyping() {
 function removeTyping() { var el = document.getElementById('typingIndicator'); if (el) el.remove(); }
 function useSuggestion(btn) { document.getElementById('chatInput').value = btn.textContent; sendMessage(); }
 
-// Unlock audio on first user interaction (required by browsers)
+// Unlock audio on user interaction (required by browsers)
 var _audioUnlocked = false;
 function unlockAudio() {
   if (_audioUnlocked) return;
   _audioUnlocked = true;
   var audioEl = document.getElementById('bgAudio');
-  // Simple silent play to mark element as user-activated (no AudioContext needed)
   audioEl.muted = true;
   audioEl.play().then(function() {
     audioEl.pause();
@@ -131,11 +130,24 @@ function unlockAudio() {
     audioEl.currentTime = 0;
   }).catch(function() {
     audioEl.muted = false;
+    _audioUnlocked = false; // Retry on next interaction
   });
 }
-document.addEventListener('click', unlockAudio, { once: true });
-document.addEventListener('touchstart', unlockAudio, { once: true });
-document.addEventListener('touchend', unlockAudio, { once: true });
+// Re-unlock on EVERY interaction (not once)
+document.addEventListener('click', unlockAudio);
+document.addEventListener('touchstart', unlockAudio);
+
+// Re-try audio when user returns to tab
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible' && slideshow.playing) {
+    var a = document.getElementById('bgAudio');
+    if (a.src && a.paused) {
+      _audioUnlocked = false;
+      unlockAudio();
+      setTimeout(function() { a.play().catch(function(){}); }, 200);
+    }
+  }
+});
 
 function sendMessage() {
   var input = document.getElementById('chatInput');
@@ -472,7 +484,25 @@ function pollSunoStatus(taskId, elapsed) {
       // Play audio IMMEDIATELY from stream URL
       var audioEl = document.getElementById('bgAudio');
       audioEl.pause(); audioEl.src = playUrl; audioEl.volume = 0.7; audioEl.load();
-      audioEl.oncanplay = function() { audioEl.play().catch(function(){}); audioEl.oncanplay = null; };
+      // Robust play: try immediately, retry on fail, retry on user click
+      function tryPlay() {
+        audioEl.play().then(function() {
+          var mb = document.getElementById('muteBtn');
+          if (mb) mb.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }).catch(function() {
+          // Autoplay blocked — retry on next click
+          var mb = document.getElementById('muteBtn');
+          if (mb) mb.innerHTML = '<i class="fas fa-volume-mute"></i>';
+          document.addEventListener('click', function retryOnClick() {
+            audioEl.play().catch(function(){});
+            if (mb) mb.innerHTML = '<i class="fas fa-volume-up"></i>';
+            document.removeEventListener('click', retryOnClick);
+          });
+        });
+      }
+      audioEl.oncanplay = function() { tryPlay(); audioEl.oncanplay = null; };
+      // Fallback if oncanplay already fired
+      if (audioEl.readyState >= 3) tryPlay();
 
       var npEl = document.getElementById('nowPlaying'), npText = document.getElementById('nowPlayingText');
       if (npEl && npText) { npText.textContent = song.title || 'FaithTunes'; npEl.style.display = 'flex'; }
