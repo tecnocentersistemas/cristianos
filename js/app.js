@@ -296,24 +296,5 @@ function loadGenreCounts() {
 loadGenreCounts();
 
 function playAISong(id) {
-  fetch('api/save-song.php?id=' + id)
-  .then(function(r) { return r.json(); })
-  .then(function(s) {
-    if (s.videoUrl) {
-      // Open video in modal
-      var modal = document.getElementById('videoModal');
-      if (modal) {
-        var player = modal.querySelector('video');
-        if (player) { player.src = s.videoUrl; player.play(); }
-        var title = modal.querySelector('h3');
-        if (title) title.textContent = s.title || '';
-        var desc = modal.querySelector('p');
-        if (desc) desc.textContent = s.creator ? 'Creado por: ' + s.creator : '';
-        modal.classList.add('active');
-      }
-    } else if (s.audioUrl) {
-      // Play audio
-      window.open(s.shareUrl, '_blank');
-    }
-  });
+  window.open('share.php?id=' + id, '_blank');
 }

@@ -96,6 +96,22 @@
     </div>
   </section>
 
+  <!-- Catalog - AI Songs -->
+  <section class="section-alt" id="catalog">
+    <div class="section-header">
+      <span class="section-badge" data-i18n="cat.badge">Catálogo</span>
+      <h2 id="catalogTitle"><i class="fas fa-microphone-alt" style="color:var(--secondary)"></i> <span data-i18n="cat.aititle">Canciones Creadas con IA</span></h2>
+      <p id="catalogSubtitle" data-i18n="cat.aisubtitle">Canciones cristianas reales generadas por nuestra comunidad usando inteligencia artificial</p>
+      <button class="btn btn-outline" id="btnShowAll" style="display:none;margin-top:1rem;" onclick="filterGenre('')"><i class="fas fa-th"></i> <span data-i18n="cat.showall">Ver todas</span></button>
+    </div>
+    <div class="ai-songs-grid" id="aiSongsGrid">
+      <div style="text-align:center;color:var(--gray);padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Cargando canciones...</div>
+    </div>
+    <div style="text-align:center;margin-top:2rem;">
+      <a href="creator.html" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-i18n="cat.createbtn">Crear mi propia canción</span></a>
+    </div>
+  </section>
+
   <!-- Genres -->
   <section class="section-default" id="genres">
     <div class="section-header">
@@ -140,22 +156,6 @@
         <p data-i18n="genre.ballad">Piano y cuerdas con valles verdes y animales en paz</p>
         <span class="genre-count" id="count-ballad"></span>
       </div>
-    </div>
-  </section>
-
-  <!-- Catalog - AI Songs -->
-  <section class="section-alt" id="catalog">
-    <div class="section-header">
-      <span class="section-badge" data-i18n="cat.badge">Catálogo</span>
-      <h2 id="catalogTitle"><i class="fas fa-microphone-alt" style="color:var(--secondary)"></i> <span data-i18n="cat.aititle">Canciones Creadas con IA</span></h2>
-      <p id="catalogSubtitle" data-i18n="cat.aisubtitle">Canciones cristianas reales generadas por nuestra comunidad usando inteligencia artificial</p>
-      <button class="btn btn-outline" id="btnShowAll" style="display:none;margin-top:1rem;" onclick="filterGenre('')"><i class="fas fa-th"></i> <span data-i18n="cat.showall">Ver todas</span></button>
-    </div>
-    <div class="ai-songs-grid" id="aiSongsGrid">
-      <div style="text-align:center;color:var(--gray);padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Cargando canciones...</div>
-    </div>
-    <div style="text-align:center;margin-top:2rem;">
-      <a href="creator.html" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-i18n="cat.createbtn">Crear mi propia canción</span></a>
     </div>
   </section>
 
@@ -259,6 +259,6 @@
   </footer>
 
   <!-- Video Player Modal -->
-  <script src="js/app.js?v=20250623e"></script>
+  <script src="js/app.js?v=20250623g"></script>
 </body>
 </html>
