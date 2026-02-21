@@ -21,9 +21,9 @@
     </div>
     <div class="nav-actions">
       <div class="lang-selector">
-        <button class="lang-btn" onclick="setLang('es')" title="EspaÃ±ol">ES</button>
+        <button class="lang-btn" onclick="setLang('es')" title="Español">ES</button>
         <button class="lang-btn" onclick="setLang('en')" title="English">EN</button>
-        <button class="lang-btn" onclick="setLang('pt')" title="PortuguÃªs">PT</button>
+        <button class="lang-btn" onclick="setLang('pt')" title="Português">PT</button>
       </div>
       <button class="theme-toggle-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme">
         <i class="fas fa-sun"></i>
@@ -38,7 +38,7 @@
         <div class="chat-header-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
         <div>
           <h2 data-i18n="cr.title">Crear Video Musical</h2>
-          <p data-i18n="cr.subtitle">DescribÃ­ quÃ© video querÃ©s y la IA lo crea para vos</p>
+          <p data-i18n="cr.subtitle">Describí qué video querés y la IA lo crea para vos</p>
         </div>
       </div>
 
@@ -46,11 +46,11 @@
         <div class="chat-msg ai">
           <div class="chat-msg-avatar"><i class="fas fa-cross"></i></div>
           <div class="chat-msg-bubble">
-            <p data-i18n="cr.welcome">Â¡Hola! Soy FaithTunes AI. Decime quÃ© tipo de video musical cristiano querÃ©s crear. Por ejemplo:</p>
+            <p data-i18n="cr.welcome">¡Hola! Soy FaithTunes AI. Decime qué tipo de video musical cristiano querés crear. Por ejemplo:</p>
             <div class="chat-suggestions">
-              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug1">Creame una canciÃ³n de amor a Dios con montaÃ±as</button>
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug1">Creame una canción de amor a Dios con montañas</button>
               <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug2">A song about faith with eagles and sunsets</button>
-              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug3">Um vÃ­deo de esperanÃ§a com florestas e rios</button>
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug3">Um vídeo de esperança com florestas e rios</button>
               <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug4">Video de paz con corderos y campos verdes</button>
             </div>
           </div>
@@ -59,7 +59,7 @@
 
       <div class="chat-input-area">
         <div class="chat-input-wrap">
-          <input type="text" id="chatInput" data-i18n-placeholder="cr.placeholder" placeholder="DescribÃ­ tu video musical cristiano..." autocomplete="off">
+          <input type="text" id="chatInput" data-i18n-placeholder="cr.placeholder" placeholder="Describí tu video musical cristiano..." autocomplete="off">
           <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()">
             <i class="fas fa-paper-plane"></i>
           </button>
@@ -71,8 +71,8 @@
     <section class="creator-player" id="creatorPlayer">
       <div class="player-empty" id="playerEmpty">
         <div class="player-empty-icon"><i class="fas fa-film"></i></div>
-        <h3 data-i18n="cr.emptyTitle">Tu video aparecerÃ¡ aquÃ­</h3>
-        <p data-i18n="cr.emptyDesc">EscribÃ­ en el chat quÃ© tipo de video querÃ©s crear y la IA lo generarÃ¡ para vos.</p>
+        <h3 data-i18n="cr.emptyTitle">Tu video aparecerá aquí</h3>
+        <p data-i18n="cr.emptyDesc">Escribí en el chat qué tipo de video querés crear y la IA lo generará para vos.</p>
       </div>
 
       <div class="player-active" id="playerActive" style="display:none;">

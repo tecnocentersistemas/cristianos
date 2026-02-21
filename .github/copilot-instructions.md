@@ -17,15 +17,12 @@ URL de producción: **https://cristianos.centralchat.pro/**
 - **Carpeta local**: `C:\cristianos`
 
 ## Flujo de trabajo y deploy
-1. Siempre revisar y modificar archivos en LOCAL primero (`C:\cristianos`).
-2. Después de tener los cambios listos, hacer commit y push:
+1. Modificar archivos en LOCAL primero (`C:\cristianos`).
+2. Hacer commit y push a GitHub:
    ```powershell
    cd C:\cristianos; git add -A; git commit -m "descripción del cambio"; git push origin main
    ```
-3. Después del push, actualizar el VPS:
-   ```powershell
-   ssh -i "$env:USERPROFILE\.ssh\nueva_llave" root@172.96.8.245 "cd /var/www/cristianos && git pull"
-   ```
+3. El despliegue al VPS es AUTOMÁTICO vía webhook - NUNCA hacer ssh para git pull ni actualizar manualmente el VPS.
 4. Verificar en: https://cristianos.centralchat.pro/
 - NUNCA subir archivos con `scp`. Todo va por git.
 - NUNCA compilar ni usar `run_build`.
@@ -75,11 +72,6 @@ cristianos/
   ```powershell
   cd C:\cristianos; git add -A; git commit -m "mensaje descriptivo"; git push origin main
   ```
-- Después del push, ejecutar:
-  ```powershell
-  ssh -i "$env:USERPROFILE\.ssh\nueva_llave" root@172.96.8.245 "cd /var/www/cristianos && git pull"
-  ```
-
 ## Relación con CentralChat
 - Proyecto INDEPENDIENTE de CentralChat. Reutiliza patrones (i18n, theme toggle, CSS variables, responsive) pero NO comparte archivos.
 - Repo CentralChat: `tecnocentersistemas/chatbot-centralchat` (separado).

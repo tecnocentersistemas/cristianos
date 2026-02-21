@@ -89,10 +89,32 @@ function addTyping() {
 function removeTyping() { var el = document.getElementById('typingIndicator'); if (el) el.remove(); }
 function useSuggestion(btn) { document.getElementById('chatInput').value = btn.textContent; sendMessage(); }
 
+// Unlock audio on first user interaction (required by browsers)
+var _audioUnlocked = false;
+function unlockAudio() {
+  if (_audioUnlocked) return;
+  _audioUnlocked = true;
+  var audioEl = document.getElementById('bgAudio');
+  // Create and resume AudioContext to unlock audio policy
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var src = ctx.createMediaElementSource(audioEl);
+    src.connect(ctx.destination);
+    if (ctx.state === 'suspended') ctx.resume();
+    window._audioCtx = ctx;
+  } catch(e) {}
+  // Silent play to mark element as user-activated
+  audioEl.muted = true;
+  audioEl.play().then(function() { audioEl.pause(); audioEl.muted = false; audioEl.currentTime = 0; }).catch(function() { audioEl.muted = false; });
+}
+document.addEventListener('click', unlockAudio, { once: true });
+document.addEventListener('touchstart', unlockAudio, { once: true });
+
 function sendMessage() {
   var input = document.getElementById('chatInput');
   var text = input.value.trim();
   if (!text) return;
+  unlockAudio();
   input.value = '';
   addMessage(text, 'user');
   input.disabled = true;
@@ -196,13 +218,24 @@ function startVideoExperience(video) {
   // Audio - preload and play when ready
   var audioEl = document.getElementById('bgAudio');
   audioEl.pause(); audioEl.currentTime = 0;
+  audioEl.muted = false;
   if (video.audio) {
     audioEl.src = video.audio;
     audioEl.volume = 0.7;
     audioEl.load();
+    // Resume AudioContext if it was suspended
+    if (window._audioCtx && window._audioCtx.state === 'suspended') {
+      window._audioCtx.resume();
+    }
     // Play as soon as enough data is buffered
     audioEl.oncanplay = function() {
-      audioEl.play().catch(function(){});
+      audioEl.play().then(function() {
+        // Audio playing successfully
+      }).catch(function(err) {
+        console.warn('Audio autoplay blocked, retrying...', err);
+        // Retry after a short delay
+        setTimeout(function() { audioEl.play().catch(function(){}); }, 500);
+      });
       audioEl.oncanplay = null;
     };
   }
