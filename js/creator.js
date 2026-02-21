@@ -419,8 +419,9 @@ function startSunoGeneration(userPrompt, videoData) {
     if (data.success && data.taskId) {
       _sunoTaskId = data.taskId;
       _sunoStatusMsg = addMessage('<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> ' + t('cr.sunoGenerating'), 'ai');
-      // Start polling every 10 seconds
+      // First poll at 5s, then every 8s
       var elapsed = 0;
+      setTimeout(function() { elapsed += 5; pollSunoStatus(_sunoTaskId, elapsed); }, 5000);
       _sunoPolling = setInterval(function() {
         elapsed += 8;
         pollSunoStatus(_sunoTaskId, elapsed);
@@ -439,167 +440,100 @@ function pollSunoStatus(taskId, elapsed) {
   .then(function(res) { return res.json(); })
   .then(function(data) {
     if (data.status === 'complete' && data.songs && data.songs.length > 0) {
-      // Song is ready!
-      clearInterval(_sunoPolling);
-      _sunoPolling = null;
+      clearInterval(_sunoPolling); _sunoPolling = null;
       if (_sunoStatusMsg) _sunoStatusMsg.remove();
-
       var song = data.songs[0];
       var audioUrl = song.streamAudioUrl || song.audioUrl;
-      if (audioUrl) {
-        var isMobile = window.innerWidth <= 768;
-        addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.sunoReadyMobile' : 'cr.sunoReady') + (song.title ? ' — <strong>' + song.title + '</strong>' : ''), 'ai');
-
-        // Save for download/share
-        window._sunoSong = song;
-        window._sunoAudioUrl = audioUrl;
-
-        // Switch the audio to the Suno-generated song
-        var audioEl = document.getElementById('bgAudio');
-        audioEl.pause();
-        audioEl.src = audioUrl;
-        audioEl.volume = 0.7;
-        audioEl.load();
-        audioEl.oncanplay = function() {
-          audioEl.play().catch(function(){});
-          audioEl.oncanplay = null;
-        };
-        // Update now playing
-        var npEl = document.getElementById('nowPlaying');
-        var npText = document.getElementById('nowPlayingText');
-        if (npEl && npText) {
-          npText.textContent = '🎤 ' + (song.title || 'Suno AI Song');
-          npEl.style.display = 'flex';
+      if (!audioUrl) return;
+      window._sunoSong = song; window._sunoAudioUrl = audioUrl;
+      var isMobile = window.innerWidth <= 768;
+      addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.sunoReadyMobile' : 'cr.sunoReady') + (song.title ? ' &mdash; <strong>' + song.title + '</strong>' : ''), 'ai');
+      saveSongToVPS(song, audioUrl, taskId);
+      var audioEl = document.getElementById('bgAudio');
+      audioEl.pause(); audioEl.src = audioUrl; audioEl.volume = 0.7; audioEl.load();
+      audioEl.oncanplay = function() { audioEl.play().catch(function(){}); audioEl.oncanplay = null; };
+      var npEl = document.getElementById('nowPlaying'), npText = document.getElementById('nowPlayingText');
+      if (npEl && npText) { npText.textContent = song.title || 'Suno AI Song'; npEl.style.display = 'flex'; }
+      if (song.prompt) {
+        var lP = document.getElementById('playerLyrics'), lC = document.getElementById('lyricsContent');
+        if (lP && lC) {
+          var h = ''; song.prompt.split('\n').forEach(function(l) {
+            if (/^\[.+\]$/.test(l.trim())) h += '<span class="lyrics-section">' + l.replace(/[\[\]]/g, '') + '</span>';
+            else if (l.trim()) h += '<span class="lyrics-line">' + l + '</span>';
+          }); lC.innerHTML = h; lP.style.display = 'block';
         }
-
-        // Show lyrics in dedicated panel
-        if (song.prompt) {
-          var lyricsPanel = document.getElementById('playerLyrics');
-          var lyricsContent = document.getElementById('lyricsContent');
-          if (lyricsPanel && lyricsContent) {
-            var lyricsHtml = '';
-            var rawLines = song.prompt.split('\n');
-            rawLines.forEach(function(line) {
-              if (/^\[.+\]$/.test(line.trim())) {
-                lyricsHtml += '<span class="lyrics-section">' + line.replace(/[\[\]]/g, '') + '</span>';
-              } else if (line.trim()) {
-                lyricsHtml += '<span class="lyrics-line">' + line + '</span>';
-              }
-            });
-            lyricsContent.innerHTML = lyricsHtml;
-            lyricsPanel.style.display = 'block';
-          }
-
-          // Update slideshow text with Suno lyrics line by line
-          var cleanLines = song.prompt.replace(/\[[^\]]+\]\n?/g, '').split('\n').filter(function(l) { return l.trim(); });
-          slideshow.texts = [];
-          for (var li = 0; li < cleanLines.length; li += 2) {
-            var txt = cleanLines[li];
-            if (cleanLines[li+1]) txt += '\n' + cleanLines[li+1];
-            slideshow.texts.push({ text: txt, ref: '' });
-          }
+        var pe = document.getElementById('playerPoem');
+        if (pe) { pe.innerHTML = song.prompt.replace(/\[([^\]]+)\]/g,'<strong style="color:var(--primary)">$1</strong>').replace(/\n/g,'<br>'); pe.style.display = 'block'; }
+        var cl = song.prompt.replace(/\[[^\]]+\]\n?/g, '').split('\n').filter(function(x){return x.trim();});
+        var ns = Math.max(slideshow.images.length, 1), lps = Math.max(2, Math.ceil(cl.length / ns));
+        slideshow.texts = [];
+        for (var i = 0; i < cl.length; i += lps) slideshow.texts.push({ text: cl.slice(i, i+lps).join('\n'), ref: '' });
+        var les = document.querySelectorAll('#lyricsContent .lyrics-line');
+        if (les.length > 0 && song.duration > 0) {
+          var spl = song.duration / les.length;
+          audioEl.addEventListener('timeupdate', function() {
+            var ci = Math.floor(audioEl.currentTime / spl);
+            les.forEach(function(e,i){ e.classList.toggle('active', i===ci); });
+            if (les[ci]) les[ci].scrollIntoView({ behavior:'smooth', block:'center' });
+          });
         }
-
-        // Update title
-        if (song.title) {
-          var titleEl = document.getElementById('playerTitle');
-          if (titleEl) titleEl.textContent = song.title;
-        }
-
-        // Show action buttons
-        var actionsEl = document.getElementById('playerActions');
-        if (actionsEl) actionsEl.style.display = 'flex';
       }
+      if (song.title) { var te = document.getElementById('playerTitle'); if (te) te.textContent = song.title; }
+      var ae = document.getElementById('playerActions'); if (ae) ae.style.display = 'flex';
     } else if (data.status === 'error') {
-      clearInterval(_sunoPolling);
-      _sunoPolling = null;
+      clearInterval(_sunoPolling); _sunoPolling = null;
       if (_sunoStatusMsg) _sunoStatusMsg.remove();
-      addMessage('<i class="fas fa-exclamation-circle"></i> Suno: ' + (data.error || 'Error generating song'), 'ai');
+      addMessage('<i class="fas fa-exclamation-circle"></i> Suno: ' + (data.error || 'Error'), 'ai');
     } else {
-      // Still processing - update status message
-      if (_sunoStatusMsg) {
-        var waitText = t('cr.sunoWaiting').replace('{seconds}', elapsed);
-        _sunoStatusMsg.querySelector('p').innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> ' + waitText;
-      }
-      // Timeout after 5 minutes
-      if (elapsed >= 300) {
-        clearInterval(_sunoPolling);
-        _sunoPolling = null;
-        if (_sunoStatusMsg) _sunoStatusMsg.remove();
-        addMessage('<i class="fas fa-exclamation-circle"></i> Suno: Timeout - song generation took too long.', 'ai');
-      }
+      if (_sunoStatusMsg) { _sunoStatusMsg.querySelector('p').innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> ' + t('cr.sunoWaiting').replace('{seconds}', elapsed); }
+      if (elapsed >= 360) { clearInterval(_sunoPolling); _sunoPolling = null; if (_sunoStatusMsg) _sunoStatusMsg.remove(); addMessage('<i class="fas fa-exclamation-circle"></i> Suno: Timeout.', 'ai'); }
     }
   })
-  .catch(function(err) {
-    console.warn('Suno poll error:', err);
-  });
+  .catch(function(err) { console.warn('Suno poll error:', err); });
+}
+
+function saveSongToVPS(song, audioUrl, taskId) {
+  fetch('api/save-song.php', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ audioUrl: audioUrl, title: song.title || '', lyrics: song.prompt || '', tags: song.tags || '', duration: song.duration || 0, imageUrl: song.imageUrl || '', taskId: taskId || '' })
+  }).then(function(r){return r.json();}).then(function(d){
+    if (d.success && d.song) { window._savedSong = d.song; if (d.song.audioUrl) window._sunoAudioUrl = d.song.audioUrl; }
+  }).catch(function(e){ console.warn('Save error:', e); });
 }
 
 // ===== Download & Share =====
 function downloadVideo() {
-  var song = window._sunoSong;
-  var audioUrl = window._sunoAudioUrl;
+  var saved = window._savedSong, song = window._sunoSong;
+  var audioUrl = (saved && saved.audioUrl) || window._sunoAudioUrl;
   if (!audioUrl) return;
-
   var btn = document.getElementById('downloadBtn');
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t('cr.downloadStarted');
-  btn.disabled = true;
-
-  // Download the audio file
-  fetch(audioUrl)
-  .then(function(res) { return res.blob(); })
-  .then(function(blob) {
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t('cr.downloadStarted'); btn.disabled = true;
+  fetch(audioUrl).then(function(r){return r.blob();}).then(function(b){
     var a = document.createElement('a');
-    var title = (song && song.title) ? song.title.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ\s]/g, '').trim() : 'FaithTunes';
-    a.href = URL.createObjectURL(blob);
-    a.download = title + ' - FaithTunes.mp3';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(a.href);
-    btn.innerHTML = '<i class="fas fa-download"></i> ' + t('cr.download');
-    btn.disabled = false;
-  })
-  .catch(function() {
-    // Fallback: open in new tab
-    window.open(audioUrl, '_blank');
-    btn.innerHTML = '<i class="fas fa-download"></i> ' + t('cr.download');
-    btn.disabled = false;
-  });
+    var ti = (song && song.title) ? song.title.replace(/[^\w\s\u00C0-\u024F]/g, '').trim() : 'FaithTunes';
+    a.href = URL.createObjectURL(b); a.download = ti + ' - FaithTunes.mp3';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+    btn.innerHTML = '<i class="fas fa-download"></i> ' + t('cr.download'); btn.disabled = false;
+  }).catch(function(){ window.open(audioUrl,'_blank'); btn.innerHTML = '<i class="fas fa-download"></i> ' + t('cr.download'); btn.disabled = false; });
 }
 
 function toggleShareMenu() {
-  var menu = document.getElementById('shareMenu');
-  menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
+  var m = document.getElementById('shareMenu'); m.style.display = m.style.display === 'none' ? 'flex' : 'none';
 }
 
 function shareOn(platform) {
-  var song = window._sunoSong;
+  var song = window._sunoSong, saved = window._savedSong;
   var title = (song && song.title) ? song.title : 'FaithTunes';
-  var url = window.location.href;
-  var text = '🎵 ' + title + ' - Canción cristiana creada con IA en FaithTunes';
-  var audioUrl = window._sunoAudioUrl || '';
-
+  var shareUrl = (saved && saved.shareUrl) ? saved.shareUrl : window.location.href;
+  var text = title + ' - Cancion cristiana creada con IA en FaithTunes';
   switch(platform) {
-    case 'whatsapp':
-      window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n\n🎧 ' + audioUrl + '\n\n' + url), '_blank');
-      break;
-    case 'facebook':
-      window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&quote=' + encodeURIComponent(text), '_blank');
-      break;
-    case 'twitter':
-      window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank');
-      break;
+    case 'whatsapp': window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n\n' + shareUrl), '_blank'); break;
+    case 'facebook': window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl), '_blank'); break;
+    case 'twitter': window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(shareUrl), '_blank'); break;
     case 'copy':
-      var copyText = text + '\n🎧 ' + audioUrl + '\n' + url;
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(copyText).then(function() {
-          var btn = document.querySelector('.share-option:last-child');
-          if (btn) { var orig = btn.innerHTML; btn.innerHTML = '<i class="fas fa-check"></i> ' + t('cr.copied'); setTimeout(function() { btn.innerHTML = orig; }, 2000); }
-        });
-      } else {
-        var ta = document.createElement('textarea'); ta.value = copyText; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-      }
+      var ct = text + '\n' + shareUrl;
+      if (navigator.clipboard) { navigator.clipboard.writeText(ct).then(function(){ var bs = document.querySelectorAll('.share-option'); var b = bs[bs.length-1]; if(b){var o=b.innerHTML; b.innerHTML='<i class="fas fa-check"></i> '+t('cr.copied'); setTimeout(function(){b.innerHTML=o;},2000);} }); }
+      else { var ta = document.createElement('textarea'); ta.value = ct; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
       break;
   }
   document.getElementById('shareMenu').style.display = 'none';

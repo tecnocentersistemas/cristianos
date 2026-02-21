@@ -107,7 +107,7 @@ $callbackUrl = $protocol . '://' . $host . '/api/suno-callback.php';
 // Build Suno API request
 $sunoPayload = [
     'callBackUrl' => $callbackUrl,
-    'model' => 'V3_5', // Cheapest model for testing
+    'model' => 'V4', // V4 is faster than V3_5
 ];
 
 if ($customMode && $style) {
