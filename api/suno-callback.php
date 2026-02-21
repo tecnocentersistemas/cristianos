@@ -8,7 +8,21 @@ $data = json_decode($body, true);
 $logDir = __DIR__ . '/../data/suno-cache';
 if (!is_dir($logDir)) mkdir($logDir, 0755, true);
 
-$taskId = $data['data']['taskId'] ?? $data['taskId'] ?? 'unknown_' . time();
+$taskId = $data['data']['taskId'] 
+    ?? $data['data']['task_id'] 
+    ?? $data['taskId'] 
+    ?? $data['task_id'] 
+    ?? null;
+
+// Also check inside data.data array for task_id
+if (!$taskId && isset($data['data']['data']) && is_array($data['data']['data'])) {
+    foreach ($data['data']['data'] as $item) {
+        if (!empty($item['task_id'])) { $taskId = $item['task_id']; break; }
+    }
+}
+
+if (!$taskId) $taskId = 'unknown_' . time();
+
 $callbackType = $data['data']['callbackType'] ?? $data['callbackType'] ?? 'unknown';
 
 // Save each callback stage to its own file AND overwrite the main file

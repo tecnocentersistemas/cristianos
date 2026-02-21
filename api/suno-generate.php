@@ -22,19 +22,21 @@ function extractSongs($songsRaw) {
     $result = [];
     if (!is_array($songsRaw)) return $result;
     foreach ($songsRaw as $song) {
-        // Accept songs with EITHER streamAudioUrl (ready in 30-40s) OR audioUrl (ready in 2-3min)
-        if (is_array($song) && (!empty($song['audioUrl']) || !empty($song['streamAudioUrl']))) {
-            $result[] = [
-                'id' => $song['id'] ?? '',
-                'audioUrl' => $song['audioUrl'] ?? '',
-                'streamAudioUrl' => $song['streamAudioUrl'] ?? '',
-                'imageUrl' => $song['imageUrl'] ?? '',
-                'title' => $song['title'] ?? '',
-                'tags' => $song['tags'] ?? '',
-                'prompt' => $song['prompt'] ?? '',
-                'duration' => $song['duration'] ?? 0,
-            ];
-        }
+        if (!is_array($song)) continue;
+        // Support both camelCase (API poll) and snake_case (callback) field names
+        $audioUrl = $song['audioUrl'] ?? $song['audio_url'] ?? '';
+        $streamAudioUrl = $song['streamAudioUrl'] ?? $song['stream_audio_url'] ?? '';
+        if (!$audioUrl && !$streamAudioUrl) continue;
+        $result[] = [
+            'id' => $song['id'] ?? '',
+            'audioUrl' => $audioUrl,
+            'streamAudioUrl' => $streamAudioUrl,
+            'imageUrl' => $song['imageUrl'] ?? $song['image_url'] ?? '',
+            'title' => $song['title'] ?? '',
+            'tags' => $song['tags'] ?? '',
+            'prompt' => $song['prompt'] ?? '',
+            'duration' => $song['duration'] ?? 0,
+        ];
     }
     return $result;
 }
@@ -122,10 +124,9 @@ $customMode = !empty($style);
 
 if (!$prompt && !$title) { http_response_code(400); echo json_encode(['error'=>'Prompt or title required']); exit; }
 
-// Determine callback URL
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+// Determine callback URL (always HTTPS)
 $host = $_SERVER['HTTP_HOST'] ?? 'cristianos.centralchat.pro';
-$callbackUrl = $protocol . '://' . $host . '/api/suno-callback.php';
+$callbackUrl = 'https://' . $host . '/api/suno-callback.php';
 
 // Build Suno API request
 $sunoPayload = [
