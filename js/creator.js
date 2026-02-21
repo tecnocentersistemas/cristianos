@@ -174,10 +174,18 @@ function sendMessage() {
       try {
         var isMobile = window.innerWidth <= 768;
         if (sunoEnabled) {
-          addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
-          // In Suno mode: show slideshow WITHOUT instrumental audio, wait for Suno
-          data.video._skipAudio = true;
-          startVideoExperience(data.video);
+          // Store video data for later — DON'T show slideshow yet
+          window._pendingVideoData = data.video;
+          // Show a nice waiting state with title and verse
+          var waitInfo = '<div style="text-align:center;padding:1rem 0">';
+          waitInfo += '<div style="font-size:1.1rem;font-weight:700;color:var(--primary);margin-bottom:0.5rem">' + (data.video.title || '') + '</div>';
+          if (data.video.verses && data.video.verses[0]) {
+            waitInfo += '<div style="font-style:italic;color:var(--gray);font-size:0.85rem;margin-bottom:0.5rem">"' + data.video.verses[0].text + '"</div>';
+            waitInfo += '<div style="color:var(--primary);font-size:0.75rem">' + data.video.verses[0].ref + '</div>';
+          }
+          waitInfo += '</div>';
+          addMessage(waitInfo, 'ai');
+          // Start Suno generation
           startSunoGeneration(null, data.video);
         } else {
           addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
@@ -444,90 +452,118 @@ function pollSunoStatus(taskId, elapsed) {
       clearInterval(_sunoPolling); _sunoPolling = null;
       if (_sunoStatusMsg) _sunoStatusMsg.remove();
       var song = data.songs[0];
-      var sunoAudioUrl = song.audioUrl || song.streamAudioUrl;
-      if (!sunoAudioUrl) return;
+      // Use streamAudioUrl FIRST (available in 30-40s) — audioUrl takes 2-3 min
+      var playUrl = song.streamAudioUrl || song.audioUrl;
+      var saveUrl = song.audioUrl || song.streamAudioUrl;
+      if (!playUrl) return;
       window._sunoSong = song;
+      window._sunoAudioUrl = playUrl;
 
-      // FIRST: save to VPS, then use local URLs (never external URLs)
-      var statusMsg = addMessage('<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> Guardando cancion...', 'ai');
+      var isMobile = window.innerWidth <= 768;
+      addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.sunoReadyMobile' : 'cr.sunoReady') + (song.title ? ' &mdash; <strong>' + song.title + '</strong>' : ''), 'ai');
+
+      // NOW start the full slideshow experience with the real audio
+      var videoData = window._pendingVideoData;
+      if (videoData) {
+        videoData._skipAudio = true; // We'll set audio manually below
+        startVideoExperience(videoData);
+      }
+
+      // Play audio IMMEDIATELY from stream URL
+      var audioEl = document.getElementById('bgAudio');
+      audioEl.pause(); audioEl.src = playUrl; audioEl.volume = 0.7; audioEl.load();
+      audioEl.oncanplay = function() { audioEl.play().catch(function(){}); audioEl.oncanplay = null; };
+
+      var npEl = document.getElementById('nowPlaying'), npText = document.getElementById('nowPlayingText');
+      if (npEl && npText) { npText.textContent = song.title || 'FaithTunes'; npEl.style.display = 'flex'; }
+
+      // Show FULL lyrics
+      var lyricsText = song.prompt || '';
+      if (lyricsText) {
+        var lP = document.getElementById('playerLyrics'), lC = document.getElementById('lyricsContent');
+        if (lP && lC) {
+          var h = '';
+          lyricsText.split('\n').forEach(function(l) {
+            if (/^\[.+\]$/.test(l.trim())) h += '<span class="lyrics-section">' + l.replace(/[\[\]]/g, '') + '</span>';
+            else if (l.trim()) h += '<span class="lyrics-line">' + l + '</span>';
+          });
+          lC.innerHTML = h;
+          lP.style.display = 'block';
+        }
+        // Update poem panel with full lyrics too
+        var pe = document.getElementById('playerPoem');
+        if (pe) {
+          pe.innerHTML = lyricsText.replace(/\[([^\]]+)\]/g, '<strong style="color:var(--primary)">$1</strong>').replace(/\n/g, '<br>');
+          pe.style.display = 'block';
+        }
+        // Distribute lyrics across slideshow
+        var cl = lyricsText.replace(/\[[^\]]+\]\n?/g, '').split('\n').filter(function(x) { return x.trim(); });
+        var ns = Math.max(slideshow.images.length, 1);
+        var lps = Math.max(2, Math.ceil(cl.length / ns));
+        slideshow.texts = [];
+        for (var i = 0; i < cl.length; i += lps) {
+          slideshow.texts.push({ text: cl.slice(i, i + lps).join('\n'), ref: '' });
+        }
+        // Sync lyrics highlight with audio
+        var les = document.querySelectorAll('#lyricsContent .lyrics-line');
+        if (les.length > 0 && song.duration > 0) {
+          var spl = song.duration / les.length;
+          audioEl.addEventListener('timeupdate', function syncLyrics() {
+            var ci = Math.floor(audioEl.currentTime / spl);
+            les.forEach(function(e, idx) { e.classList.toggle('active', idx === ci); });
+            if (les[ci]) les[ci].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        }
+      }
+
+      if (song.title) { var te = document.getElementById('playerTitle'); if (te) te.textContent = song.title; }
+      var ae = document.getElementById('playerActions'); if (ae) ae.style.display = 'flex';
+
+      // Save to VPS in BACKGROUND (don't block playback!)
       var slideImgs = [];
       if (slideshow.images) slideshow.images.forEach(function(img) { if (img.url) slideImgs.push(img.url); });
-
       fetch('api/save-song.php', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ audioUrl: sunoAudioUrl, title: song.title || '', lyrics: song.prompt || '', tags: song.tags || '', duration: song.duration || 0, imageUrl: song.imageUrl || '', taskId: taskId || '', slideImages: slideImgs, creator: '' })
-      }).then(function(r){return r.json();}).then(function(d){
-        if (statusMsg) statusMsg.remove();
-        if (!d.success || !d.song) { addMessage('<i class="fas fa-exclamation-circle"></i> Error guardando cancion', 'ai'); return; }
-
-        window._savedSong = d.song;
-        // USE LOCAL VPS URL, never the external Suno URL
-        var localAudio = d.song.audioUrl;
-        window._sunoAudioUrl = localAudio;
-
-        var isMobile = window.innerWidth <= 768;
-        addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.sunoReadyMobile' : 'cr.sunoReady') + (song.title ? ' &mdash; <strong>' + song.title + '</strong>' : ''), 'ai');
-
-        // Play from LOCAL VPS audio
-        var audioEl = document.getElementById('bgAudio');
-        audioEl.pause(); audioEl.src = localAudio; audioEl.volume = 0.7; audioEl.load();
-        audioEl.oncanplay = function() { audioEl.play().catch(function(){}); audioEl.oncanplay = null; };
-
-        var npEl = document.getElementById('nowPlaying'), npText = document.getElementById('nowPlayingText');
-        if (npEl && npText) { npText.textContent = song.title || 'FaithTunes'; npEl.style.display = 'flex'; }
-
-        // Full lyrics
-        if (song.prompt) {
-          var lP = document.getElementById('playerLyrics'), lC = document.getElementById('lyricsContent');
-          if (lP && lC) {
-            var h = ''; song.prompt.split('\n').forEach(function(l) {
-              if (/^\[.+\]$/.test(l.trim())) h += '<span class="lyrics-section">' + l.replace(/[\[\]]/g, '') + '</span>';
-              else if (l.trim()) h += '<span class="lyrics-line">' + l + '</span>';
-            }); lC.innerHTML = h; lP.style.display = 'block';
-          }
-          var pe = document.getElementById('playerPoem');
-          if (pe) { pe.innerHTML = song.prompt.replace(/\[([^\]]+)\]/g,'<strong style="color:var(--primary)">$1</strong>').replace(/\n/g,'<br>'); pe.style.display = 'block'; }
-          // Distribute lyrics across slides
-          var cl = song.prompt.replace(/\[[^\]]+\]\n?/g, '').split('\n').filter(function(x){return x.trim();});
-          var ns = Math.max(slideshow.images.length, 1), lps = Math.max(2, Math.ceil(cl.length / ns));
-          slideshow.texts = [];
-          for (var i = 0; i < cl.length; i += lps) slideshow.texts.push({ text: cl.slice(i, i+lps).join('\n'), ref: '' });
-          // Sync lyrics highlight
-          var les = document.querySelectorAll('#lyricsContent .lyrics-line');
-          if (les.length > 0 && song.duration > 0) {
-            var spl = song.duration / les.length;
-            audioEl.addEventListener('timeupdate', function() {
-              var ci = Math.floor(audioEl.currentTime / spl);
-              les.forEach(function(e,i){ e.classList.toggle('active', i===ci); });
-              if (les[ci]) les[ci].scrollIntoView({ behavior:'smooth', block:'center' });
-            });
-          }
-        }
-        if (song.title) { var te = document.getElementById('playerTitle'); if (te) te.textContent = song.title; }
-
-        // Show action buttons
-        var ae = document.getElementById('playerActions'); if (ae) ae.style.display = 'flex';
-        if (d.song.videoUrl) { var vb = document.getElementById('downloadVideoBtn'); if (vb) vb.style.display = 'flex'; }
-        else {
-          // Video generates in background — check every 10s
-          var videoCheckCount = 0;
-          var videoCheck = setInterval(function() {
-            videoCheckCount++;
-            if (videoCheckCount > 18) { clearInterval(videoCheck); return; } // stop after 3 min
-            fetch('api/save-song.php?id=' + d.song.id).then(function(r){return r.json();}).then(function(s) {
-              if (s.videoUrl) { clearInterval(videoCheck); window._savedSong.videoUrl = s.videoUrl; var vb = document.getElementById('downloadVideoBtn'); if (vb) vb.style.display = 'flex'; }
-            }).catch(function(){});
+        body: JSON.stringify({
+          audioUrl: saveUrl, title: song.title || '', lyrics: lyricsText,
+          tags: song.tags || '', duration: song.duration || 0,
+          imageUrl: song.imageUrl || '', taskId: taskId,
+          slideImages: slideImgs, creator: ''
+        })
+      }).then(function(r) { return r.json(); }).then(function(d) {
+        if (d.success && d.song) {
+          window._savedSong = d.song;
+          if (d.song.audioUrl) window._sunoAudioUrl = d.song.audioUrl;
+          // Check for video periodically
+          var vc = 0;
+          var vi = setInterval(function() {
+            vc++;
+            if (vc > 18) { clearInterval(vi); return; }
+            fetch('api/save-song.php?id=' + d.song.id).then(function(r) { return r.json(); }).then(function(s) {
+              if (s.videoUrl) {
+                clearInterval(vi);
+                window._savedSong.videoUrl = s.videoUrl;
+                var vb = document.getElementById('downloadVideoBtn');
+                if (vb) vb.style.display = 'flex';
+              }
+            }).catch(function() {});
           }, 10000);
         }
-      }).catch(function(e){ if (statusMsg) statusMsg.remove(); console.warn('Save error:', e); });
+      }).catch(function(e) { console.warn('Save error:', e); });
 
     } else if (data.status === 'error') {
       clearInterval(_sunoPolling); _sunoPolling = null;
       if (_sunoStatusMsg) _sunoStatusMsg.remove();
       addMessage('<i class="fas fa-exclamation-circle"></i> Suno: ' + (data.error || 'Error'), 'ai');
     } else {
-      if (_sunoStatusMsg) { _sunoStatusMsg.querySelector('p').innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> ' + t('cr.sunoWaiting').replace('{seconds}', elapsed); }
-      if (elapsed >= 360) { clearInterval(_sunoPolling); _sunoPolling = null; if (_sunoStatusMsg) _sunoStatusMsg.remove(); addMessage('<i class="fas fa-exclamation-circle"></i> Suno: Timeout.', 'ai'); }
+      if (_sunoStatusMsg) {
+        _sunoStatusMsg.querySelector('p').innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> ' + t('cr.sunoWaiting').replace('{seconds}', elapsed);
+      }
+      if (elapsed >= 360) {
+        clearInterval(_sunoPolling); _sunoPolling = null;
+        if (_sunoStatusMsg) _sunoStatusMsg.remove();
+        addMessage('<i class="fas fa-exclamation-circle"></i> Suno: Timeout.', 'ai');
+      }
     }
   })
   .catch(function(err) { console.warn('Suno poll error:', err); });

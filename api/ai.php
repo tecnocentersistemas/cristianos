@@ -118,11 +118,11 @@ function pickAudio($genre, $mood = 'peaceful') {
 // ===== OpenAI =====
 function callOpenAI($apiKey, $prompt) {
     $system = 'You are FaithTunes, a Christian music video creator. Return ONLY valid JSON (no markdown, no ```):
-{"title":"Creative title","theme":"faith|hope|love|peace|gratitude|strength","mood":"peaceful|joyful|powerful|reflective|uplifting","genre":"country|rock|gospel|folk|worship|ballad","poem":["l1","l2","l3","l4","l5","l6"],"verses":[{"ref":"Book Ch:Vs","text":"Full text"},{"ref":"...","text":"..."},{"ref":"...","text":"..."}],"imageSearchTerms":["term1","term2","term3","term4","term5"],"description":"Brief desc"}
+{"title":"Creative title","theme":"faith|hope|love|peace|gratitude|strength","mood":"peaceful|joyful|powerful|reflective|uplifting","genre":"country|rock|gospel|folk|worship|ballad","poem":["[Verse 1]","line1","line2","line3","line4","","[Chorus]","line1","line2","line3","line4","","[Verse 2]","line1","line2","line3","line4","","[Chorus]","line1","line2","line3","line4","","[Bridge]","line1","line2","line3","line4","","[Chorus]","line1","line2","line3","line4"],"verses":[{"ref":"Book Ch:Vs","text":"Full text"},{"ref":"...","text":"..."},{"ref":"...","text":"..."}],"imageSearchTerms":["term1","term2","term3","term4","term5"],"description":"Brief desc"}
 RULES:
-- imageSearchTerms: EXACTLY 5 photo search queries ALWAYS IN ENGLISH regardless of user language. Be VERY specific to what user asked for. If user says "abejas" search "honey bee pollinating flower close up". If "montañas" search "majestic mountain landscape sunrise". If "caballos" search "wild horses running meadow". MUST be in English. MUST match the subject the user requested.
+- poem: Write a FULL song with [Verse 1], [Chorus], [Verse 2], [Chorus], [Bridge], [Chorus]. Each section 4 lines. Total 24+ lines. In USER LANGUAGE. These will be sung by AI so write singable lyrics.
+- imageSearchTerms: EXACTLY 5 photo search queries ALWAYS IN ENGLISH regardless of user language. Be VERY specific to what user asked for. If user says "abejas" search "honey bee pollinating flower close up". If "montañas" search "majestic mountain landscape sunrise". MUST be in English. MUST match the subject the user requested.
 - genre: MUST match user request. country=country, rock=rock. Default worship only if unspecified.
-- poem: 6 lines original Christian lyrics in USER LANGUAGE.
 - verses: 3 REAL Bible verses in USER LANGUAGE.
 - ONLY JSON output.';
 

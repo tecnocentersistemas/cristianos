@@ -22,7 +22,8 @@ function extractSongs($songsRaw) {
     $result = [];
     if (!is_array($songsRaw)) return $result;
     foreach ($songsRaw as $song) {
-        if (is_array($song) && !empty($song['audioUrl'])) {
+        // Accept songs with EITHER streamAudioUrl (ready in 30-40s) OR audioUrl (ready in 2-3min)
+        if (is_array($song) && (!empty($song['audioUrl']) || !empty($song['streamAudioUrl']))) {
             $result[] = [
                 'id' => $song['id'] ?? '',
                 'audioUrl' => $song['audioUrl'] ?? '',
@@ -47,15 +48,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $callbackFile = $cacheDir . '/' . $taskId . '.json';
     if (file_exists($callbackFile)) {
         $cbData = json_decode(file_get_contents($callbackFile), true);
-        // Callback data structure: { code: 200, data: { status: "SUCCESS", response: { sunoData: [...] } } }
-        $cbStatus = $cbData['data']['status'] ?? $cbData['status'] ?? '';
-        if ($cbStatus === 'SUCCESS' || $cbStatus === 'FIRST_SUCCESS') {
-            $songsRaw = $cbData['data']['response']['sunoData'] ?? $cbData['data']['data'] ?? [];
-            $result = extractSongs($songsRaw);
-            if (!empty($result)) {
-                echo json_encode(['status'=>'complete','taskId'=>$taskId,'songs'=>$result], JSON_UNESCAPED_UNICODE);
-                exit;
-            }
+        // Extract songs from callback data - try multiple structures
+        $songsRaw = $cbData['data']['response']['sunoData']
+            ?? $cbData['data']['data']
+            ?? $cbData['response']['sunoData']
+            ?? [];
+        $result = extractSongs($songsRaw);
+        if (!empty($result)) {
+            echo json_encode(['status'=>'complete','taskId'=>$taskId,'songs'=>$result], JSON_UNESCAPED_UNICODE);
+            exit;
         }
     }
 
@@ -129,7 +130,7 @@ $callbackUrl = $protocol . '://' . $host . '/api/suno-callback.php';
 // Build Suno API request
 $sunoPayload = [
     'callBackUrl' => $callbackUrl,
-    'model' => 'V4_5', // V4.5 - faster generation, same 12 credits
+    'model' => 'V4_5ALL', // V4.5ALL - best structure, max 8 min
 ];
 
 if ($customMode && $style) {
