@@ -70,16 +70,17 @@ function pickAudio($genre, $mood = 'peaceful') {
     $km = 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/';
     $lib = [
         'country'=>[
-            ['url'=>$px.'2022/05/16/audio_eca419c4a3.mp3','name'=>'Happy Acoustic Guitar','mood'=>'joyful'],
-            ['url'=>$px.'2022/10/09/audio_4d1cf20d84.mp3','name'=>'Joyful Country Guitar','mood'=>'uplifting'],
             ['url'=>$km.'Americana.mp3','name'=>'Country Americana','mood'=>'peaceful'],
             ['url'=>$km.'Daily%20Beetle.mp3','name'=>'Country Folk','mood'=>'joyful'],
-            ['url'=>$px.'2023/06/07/audio_b588cae2e1.mp3','name'=>'Acoustic Country Worship','mood'=>'uplifting'],
+            ['url'=>$km.'On%20My%20Way.mp3','name'=>'On My Way','mood'=>'uplifting'],
+            ['url'=>$km.'Easy%20Lemon.mp3','name'=>'Easy Country','mood'=>'joyful'],
+            ['url'=>$km.'Local%20Forecast.mp3','name'=>'Country Breeze','mood'=>'peaceful'],
         ],
         'rock'=>[
             ['url'=>$km.'Inspired.mp3','name'=>'Inspired Rock','mood'=>'powerful'],
             ['url'=>$px.'2022/01/18/audio_d0a13f69d2.mp3','name'=>'Epic Rock Inspiration','mood'=>'powerful'],
             ['url'=>$px.'2022/11/22/audio_febc508520.mp3','name'=>'Rock Anthem','mood'=>'uplifting'],
+            ['url'=>$km.'Life%20of%20Riley.mp3','name'=>'Rock of Life','mood'=>'joyful'],
         ],
         'gospel'=>[
             ['url'=>$km.'Wholesome.mp3','name'=>'Wholesome Gospel','mood'=>'joyful'],
@@ -88,14 +89,14 @@ function pickAudio($genre, $mood = 'peaceful') {
             ['url'=>$px.'2022/11/22/audio_febc508520.mp3','name'=>'Gospel Power','mood'=>'powerful'],
         ],
         'folk'=>[
-            ['url'=>$px.'2022/10/09/audio_4d1cf20d84.mp3','name'=>'Folk Guitar','mood'=>'peaceful'],
-            ['url'=>$px.'2022/05/16/audio_eca419c4a3.mp3','name'=>'Folk Acoustic','mood'=>'joyful'],
             ['url'=>$km.'Americana.mp3','name'=>'Folk Americana','mood'=>'peaceful'],
-            ['url'=>$px.'2023/06/07/audio_b588cae2e1.mp3','name'=>'Folk Worship','mood'=>'reflective'],
+            ['url'=>$km.'Garden%20Music.mp3','name'=>'Folk Garden','mood'=>'peaceful'],
+            ['url'=>$km.'Perspectives.mp3','name'=>'Folk Perspectives','mood'=>'reflective'],
+            ['url'=>$km.'Dirt%20Rhodes.mp3','name'=>'Folk Rhodes','mood'=>'joyful'],
         ],
         'worship'=>[
-            ['url'=>$px.'2023/10/18/audio_2a55e9726a.mp3','name'=>'Spiritual Worship','mood'=>'peaceful'],
-            ['url'=>$px.'2022/10/25/audio_fae4b85c46.mp3','name'=>'Worship Piano','mood'=>'reflective'],
+            ['url'=>$km.'Gymnopedie%20No%201.mp3','name'=>'Worship Piano','mood'=>'peaceful'],
+            ['url'=>$km.'Peaceful%20Desolation.mp3','name'=>'Peaceful Worship','mood'=>'reflective'],
             ['url'=>$px.'2022/02/22/audio_d1718ab41b.mp3','name'=>'Peaceful Meditation','mood'=>'peaceful'],
             ['url'=>$px.'2021/11/25/audio_91b32e02f9.mp3','name'=>'Ambient Worship','mood'=>'peaceful'],
             ['url'=>$km.'Eternal%20Hope.mp3','name'=>'Eternal Hope','mood'=>'uplifting'],

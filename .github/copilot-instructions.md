@@ -17,13 +17,13 @@ URL de producción: **https://cristianos.centralchat.pro/**
 - **Carpeta local**: `C:\cristianos`
 
 ## Flujo de trabajo y deploy
-1. Modificar archivos en LOCAL primero (`C:\cristianos`).
-2. Hacer commit y push a GitHub:
+- SIEMPRE modificar archivos en LOCAL (`C:\cristianos`).
+- Hacer commit y push a GitHub:
    ```powershell
    cd C:\cristianos; git add -A; git commit -m "descripción del cambio"; git push origin main
    ```
-3. El despliegue al VPS es AUTOMÁTICO vía webhook - NUNCA hacer ssh para git pull ni actualizar manualmente el VPS.
-4. Verificar en: https://cristianos.centralchat.pro/
+- El despliegue al VPS es AUTOMÁTICO vía webhook - NUNCA hacer ssh para git pull ni actualizar manualmente el VPS.
+- Verificar en: https://cristianos.centralchat.pro/
 - NUNCA subir archivos con `scp`. Todo va por git.
 - NUNCA compilar ni usar `run_build`.
 - Usar `;` como separador en PowerShell, NO `&&`.

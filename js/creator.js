@@ -227,13 +227,31 @@ function startVideoExperience(video) {
     if (window._audioCtx && window._audioCtx.state === 'suspended') {
       window._audioCtx.resume();
     }
+    // Fallback audio if the main one fails to load
+    var _audioFallbacks = [
+      'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Eternal%20Hope.mp3',
+      'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Americana.mp3',
+      'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Gymnopedie%20No%201.mp3'
+    ];
+    var _fallbackTried = false;
+    audioEl.onerror = function() {
+      if (_fallbackTried) return;
+      _fallbackTried = true;
+      console.warn('Audio failed to load, trying fallback...');
+      var fb = _audioFallbacks[Math.floor(Math.random() * _audioFallbacks.length)];
+      audioEl.src = fb;
+      audioEl.load();
+      audioEl.oncanplay = function() {
+        audioEl.play().catch(function(){});
+        audioEl.oncanplay = null;
+      };
+    };
     // Play as soon as enough data is buffered
     audioEl.oncanplay = function() {
       audioEl.play().then(function() {
         // Audio playing successfully
       }).catch(function(err) {
         console.warn('Audio autoplay blocked, retrying...', err);
-        // Retry after a short delay
         setTimeout(function() { audioEl.play().catch(function(){}); }, 500);
       });
       audioEl.oncanplay = null;
