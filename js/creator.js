@@ -31,7 +31,13 @@ var CL = {
     'cr.generating':'Creando tu video musical... Esto puede tardar unos segundos.',
     'cr.ready':'¡Tu video está listo! Miralo en el panel de la derecha. 🎬',
     'cr.error':'Hubo un error al crear el video. Intentá de nuevo.',
-    'cr.readyMobile':'¡Tu video está listo! Deslizá hacia abajo para verlo. 🎬'
+    'cr.readyMobile':'¡Tu video está listo! Deslizá hacia abajo para verlo. 🎬',
+    'cr.sunoLabel':'🎤 Canción cantada con IA',
+    'cr.sunoBeta':'BETA',
+    'cr.sunoGenerating':'🎤 Generando canción cantada con Suno AI... Esto tarda 1-3 minutos.',
+    'cr.sunoReady':'🎤 ¡Tu canción cantada está lista! Escuchala en el panel de la derecha.',
+    'cr.sunoReadyMobile':'🎤 ¡Tu canción cantada está lista! Deslizá hacia abajo para escucharla.',
+    'cr.sunoWaiting':'⏳ La canción se está generando... ({seconds}s)'
   },
   en: {
     'cr.title':'Create Music Video','cr.subtitle':'Describe what video you want and AI creates it for you',
@@ -43,7 +49,13 @@ var CL = {
     'cr.generating':'Creating your music video... This may take a few seconds.',
     'cr.ready':'Your video is ready! Watch it in the right panel. 🎬',
     'cr.error':'There was an error creating the video. Try again.',
-    'cr.readyMobile':'Your video is ready! Scroll down to watch it. 🎬'
+    'cr.readyMobile':'Your video is ready! Scroll down to watch it. 🎬',
+    'cr.sunoLabel':'🎤 AI Sung Song',
+    'cr.sunoBeta':'BETA',
+    'cr.sunoGenerating':'🎤 Generating sung song with Suno AI... This takes 1-3 minutes.',
+    'cr.sunoReady':'🎤 Your sung song is ready! Listen in the right panel.',
+    'cr.sunoReadyMobile':'🎤 Your sung song is ready! Scroll down to listen.',
+    'cr.sunoWaiting':'⏳ Song is being generated... ({seconds}s)'
   },
   pt: {
     'cr.title':'Criar Vídeo Musical','cr.subtitle':'Descreva que vídeo você quer e a IA cria para você',
@@ -55,7 +67,13 @@ var CL = {
     'cr.generating':'Criando seu vídeo musical... Isso pode levar alguns segundos.',
     'cr.ready':'Seu vídeo está pronto! Assista no painel da direita. 🎬',
     'cr.error':'Houve um erro ao criar o vídeo. Tente novamente.',
-    'cr.readyMobile':'Seu vídeo está pronto! Role para baixo para assistir. 🎬'
+    'cr.readyMobile':'Seu vídeo está pronto! Role para baixo para assistir. 🎬',
+    'cr.sunoLabel':'🎤 Música cantada com IA',
+    'cr.sunoBeta':'BETA',
+    'cr.sunoGenerating':'🎤 Gerando música cantada com Suno AI... Isso leva 1-3 minutos.',
+    'cr.sunoReady':'🎤 Sua música cantada está pronta! Ouça no painel da direita.',
+    'cr.sunoReadyMobile':'🎤 Sua música cantada está pronta! Role para baixo para ouvir.',
+    'cr.sunoWaiting':'⏳ A música está sendo gerada... ({seconds}s)'
   }
 };
 var currentLang = localStorage.getItem('ft_lang') || 'es';
@@ -120,7 +138,13 @@ function sendMessage() {
   input.disabled = true;
   document.getElementById('chatSendBtn').disabled = true;
   addTyping();
-  var genMsg = addMessage('<i class="fas fa-spinner fa-spin"></i> ' + t('cr.generating'), 'ai');
+  var sunoEnabled = document.getElementById('sunoToggle') && document.getElementById('sunoToggle').checked;
+  var genMsg = addMessage('<i class="fas fa-spinner fa-spin"></i> ' + t(sunoEnabled ? 'cr.sunoGenerating' : 'cr.generating'), 'ai');
+
+  // If Suno is enabled, start song generation in parallel
+  if (sunoEnabled) {
+    startSunoGeneration(text);
+  }
 
   fetch('api/ai.php', {
     method: 'POST',
@@ -340,6 +364,99 @@ function toggleMute() {
   if (!btn) return;
   if (a.muted || a.volume === 0) { a.muted = false; a.volume = 0.7; btn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
   else { a.muted = true; btn.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
+}
+
+// ===== Suno AI - Real sung song generation =====
+var _sunoTaskId = null;
+var _sunoPolling = null;
+var _sunoStatusMsg = null;
+
+function startSunoGeneration(userPrompt) {
+  // Build a prompt that Suno understands well
+  var sunoPrompt = 'Christian worship song: ' + userPrompt;
+
+  fetch('api/suno-generate.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: sunoPrompt })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.success && data.taskId) {
+      _sunoTaskId = data.taskId;
+      _sunoStatusMsg = addMessage('<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> ' + t('cr.sunoGenerating'), 'ai');
+      // Start polling every 10 seconds
+      var elapsed = 0;
+      _sunoPolling = setInterval(function() {
+        elapsed += 10;
+        pollSunoStatus(_sunoTaskId, elapsed);
+      }, 10000);
+    } else {
+      console.warn('Suno generation failed:', data.error || data);
+    }
+  })
+  .catch(function(err) {
+    console.warn('Suno API error:', err);
+  });
+}
+
+function pollSunoStatus(taskId, elapsed) {
+  fetch('api/suno-generate.php?taskId=' + taskId)
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.status === 'complete' && data.songs && data.songs.length > 0) {
+      // Song is ready!
+      clearInterval(_sunoPolling);
+      _sunoPolling = null;
+      if (_sunoStatusMsg) _sunoStatusMsg.remove();
+
+      var song = data.songs[0];
+      var audioUrl = song.streamAudioUrl || song.audioUrl;
+      if (audioUrl) {
+        var isMobile = window.innerWidth <= 768;
+        addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.sunoReadyMobile' : 'cr.sunoReady') + (song.title ? ' — <strong>' + song.title + '</strong>' : ''), 'ai');
+
+        // Switch the audio to the Suno-generated song
+        var audioEl = document.getElementById('bgAudio');
+        audioEl.pause();
+        audioEl.src = audioUrl;
+        audioEl.volume = 0.7;
+        audioEl.load();
+        audioEl.oncanplay = function() {
+          audioEl.play().catch(function(){});
+          audioEl.oncanplay = null;
+        };
+        // Update now playing
+        var npEl = document.getElementById('nowPlaying');
+        var npText = document.getElementById('nowPlayingText');
+        if (npEl && npText) {
+          npText.textContent = '🎤 ' + (song.title || 'Suno AI Song');
+          npEl.style.display = 'flex';
+        }
+      }
+    } else if (data.status === 'error') {
+      clearInterval(_sunoPolling);
+      _sunoPolling = null;
+      if (_sunoStatusMsg) _sunoStatusMsg.remove();
+      addMessage('<i class="fas fa-exclamation-circle"></i> Suno: ' + (data.error || 'Error generating song'), 'ai');
+    } else {
+      // Still processing - update status message
+      if (_sunoStatusMsg) {
+        var waitText = t('cr.sunoWaiting').replace('{seconds}', elapsed);
+        _sunoStatusMsg.querySelector('p').innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> ' + waitText;
+      }
+      // Timeout after 5 minutes
+      if (elapsed >= 300) {
+        clearInterval(_sunoPolling);
+        _sunoPolling = null;
+        if (_sunoStatusMsg) _sunoStatusMsg.remove();
+        addMessage('<i class="fas fa-exclamation-circle"></i> Suno: Timeout - song generation took too long.', 'ai');
+      }
+    }
+  })
+  .catch(function(err) {
+    console.warn('Suno poll error:', err);
+  });
 }
 
 // ===== Init =====

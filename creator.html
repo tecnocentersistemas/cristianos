@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -58,6 +58,14 @@
       </div>
 
       <div class="chat-input-area">
+        <div class="suno-toggle-area">
+          <label class="suno-toggle" title="Generar canción cantada real con Suno AI">
+            <input type="checkbox" id="sunoToggle">
+            <span class="suno-toggle-slider"></span>
+            <span class="suno-toggle-label" data-i18n="cr.sunoLabel">🎤 Canción cantada con IA</span>
+          </label>
+          <span class="suno-badge" data-i18n="cr.sunoBeta">BETA</span>
+        </div>
         <div class="chat-input-wrap">
           <input type="text" id="chatInput" data-i18n-placeholder="cr.placeholder" placeholder="Describí tu video musical cristiano..." autocomplete="off">
           <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()">

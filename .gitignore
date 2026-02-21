@@ -23,3 +23,5 @@ media/videos/**/*.mp4
 media/videos/**/*.jpg
 .pexels-key
 .webhook-secret
+.suno-key
+data/suno-cache/
