@@ -68,7 +68,8 @@ if ($action === 'poll') {
     if ($sunoCode === 200 && $status === 'SUCCESS') {
         // Extract songs
         $songs = [];
-        foreach (($data['data']['data'] ?? []) as $s) {
+        $songsRaw = $data['data']['data'] ?? [];
+        foreach ($songsRaw as $s) {
             $songs[] = [
                 'title' => $s['title'] ?? '',
                 'audioUrl' => $s['audioUrl'] ?? '',
@@ -78,7 +79,16 @@ if ($action === 'poll') {
                 'tags' => $s['tags'] ?? '',
             ];
         }
-        echo json_encode(['status'=>'complete','songs'=>$songs], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        echo json_encode([
+            'status'=>'complete',
+            'songs'=>$songs,
+            'debug'=>[
+                'songsCount'=>count($songsRaw),
+                'dataKeys'=>array_keys($data['data'] ?? []),
+                'firstSongKeys'=>!empty($songsRaw) ? array_keys($songsRaw[0]) : [],
+                'rawSnippet'=>substr($resp, 0, 800)
+            ]
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     } else {
         echo json_encode(['status'=>'processing','sunoCode'=>$sunoCode,'sunoStatus'=>$status,'sunoMsg'=>$data['msg'] ?? ''], JSON_PRETTY_PRINT);
     }
