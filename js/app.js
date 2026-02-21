@@ -167,7 +167,11 @@ document.addEventListener('click', function(e) {
   document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   var filter = btn.getAttribute('data-filter');
-  loadSongsFromAPI(filter === 'all' ? '' : '', filter === 'all' ? '' : filter);
+  if (filter === 'all') {
+    loadSongsFromAPI('', '');
+  } else {
+    loadSongsFromAPI('', filter); // filter buttons are themes (faith, hope, etc)
+  }
 });
 
 // ===== Dynamic Songs from API =====
@@ -420,10 +424,8 @@ function applyLang(lang) {
     b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang);
   });
   renderCatalog(document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all');
-  // Also load songs from API
-  var activeFilter = document.querySelector('.filter-btn.active');
-  var f = activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
-  loadSongsFromAPI(f === 'all' ? '' : '', f === 'all' ? '' : f);
+  // Load songs from API
+  loadSongsFromAPI('', '');
 }
 
 window.setLang = function(l) {
