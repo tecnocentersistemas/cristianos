@@ -13,7 +13,7 @@ $desc = $lc ?: 'Canción cristiana creada con IA en FaithTunes';
 $im = '';
 $coverFile = __DIR__ . '/media/audio/songs/' . $id . '_cover.jpg';
 if (file_exists($coverFile) && filesize($coverFile) > 5000) {
-    $im = 'https://cristianos.centralchat.pro/media/audio/songs/' . $id . '_cover.jpg';
+    $im = 'https://cristianos.centralchat.pro/media/audio/songs/' . $id . '_cover.jpg?v=' . filemtime($coverFile);
 }
 if (!$im && !empty($song['slideImages'][0])) {
     $im = $song['slideImages'][0];
