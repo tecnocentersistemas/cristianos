@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if ($status === 'CREATE_FAIL' || !empty($data['data']['errorMessage'])) {
             echo json_encode(['status'=>'error','taskId'=>$taskId,'error'=>$data['data']['errorMessage'] ?? 'Generation failed']);
         } else {
-            echo json_encode(['status'=>'processing','taskId'=>$taskId]);
+            echo json_encode(['status'=>'processing','taskId'=>$taskId,'debug'=>['sunoCode'=>$data['code'] ?? null,'sunoMsg'=>$data['msg'] ?? '','respSnippet'=>substr($resp,0,300)]]);
         }
         exit;
     }
