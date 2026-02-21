@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css?v=20250622b">
-  <link rel="stylesheet" href="css/creator.css?v=20250622e">
+  <link rel="stylesheet" href="css/creator.css?v=20250622f">
 </head>
 <body>
   <!-- Nav -->
@@ -113,6 +113,28 @@
           </div>
         </div>
 
+        <!-- Action buttons: Download + Share -->
+        <div class="player-actions" id="playerActions" style="display:none;">
+          <button class="player-action-btn download-btn" id="downloadBtn" onclick="downloadVideo()">
+            <i class="fas fa-download"></i> <span data-i18n="cr.download">Descargar</span>
+          </button>
+          <button class="player-action-btn share-btn" onclick="toggleShareMenu()">
+            <i class="fas fa-share-alt"></i> <span data-i18n="cr.share">Compartir</span>
+          </button>
+        </div>
+        <div class="share-menu" id="shareMenu" style="display:none;">
+          <button class="share-option" onclick="shareOn('whatsapp')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+          <button class="share-option" onclick="shareOn('facebook')"><i class="fab fa-facebook"></i> Facebook</button>
+          <button class="share-option" onclick="shareOn('twitter')"><i class="fab fa-twitter"></i> X / Twitter</button>
+          <button class="share-option" onclick="shareOn('copy')"><i class="fas fa-link"></i> <span data-i18n="cr.copyLink">Copiar link</span></button>
+        </div>
+
+        <!-- Lyrics panel -->
+        <div class="player-lyrics" id="playerLyrics" style="display:none;">
+          <h4><i class="fas fa-microphone-alt"></i> <span data-i18n="cr.lyricsTitle">Letra de la canción</span></h4>
+          <div class="lyrics-content" id="lyricsContent"></div>
+        </div>
+
         <!-- Video Info -->
         <div class="player-info" id="playerInfo">
           <h3 id="playerTitle"></h3>
@@ -132,7 +154,7 @@
   <!-- Hidden audio player -->
   <audio id="bgAudio" preload="auto"></audio>
 
-  <script src="js/creator.js?v=20250622e"></script>
+  <script src="js/creator.js?v=20250622f"></script>
 </body>
 </html>
 

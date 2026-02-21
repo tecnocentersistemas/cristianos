@@ -360,6 +360,107 @@
 @keyframes pulse-note { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
 
 /* Player Info */
+.player-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--dark-light);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.player-action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.player-action-btn:hover { transform: scale(1.02); }
+.download-btn {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.share-btn {
+  background: rgba(255,255,255,0.1);
+  color: var(--light);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.share-menu {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--dark-light);
+  flex-wrap: wrap;
+}
+.share-option {
+  flex: 1;
+  min-width: 80px;
+  padding: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gray);
+  font-size: 0.75rem;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  transition: background 0.2s, color 0.2s;
+}
+.share-option:hover { background: rgba(255,255,255,0.08); color: var(--light); }
+.share-option .fa-whatsapp { color: #25d366; }
+.share-option .fa-facebook { color: #1877f2; }
+.share-option .fa-twitter { color: #1da1f2; }
+
+/* Lyrics panel */
+.player-lyrics {
+  padding: 1rem 1.25rem;
+  background: var(--dark-light);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  max-height: 250px;
+  overflow-y: auto;
+}
+.player-lyrics h4 {
+  color: var(--primary);
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.lyrics-content {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--light);
+}
+.lyrics-content .lyrics-section {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: block;
+  margin-top: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.lyrics-content .lyrics-line {
+  display: block;
+  padding: 1px 0;
+  transition: color 0.3s;
+}
+.lyrics-content .lyrics-line.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
 .player-info {
   padding: 1.25rem;
   background: var(--dark-light);
@@ -422,6 +523,12 @@
 [data-theme="light"] .player-poem { color: #1e293b; }
 [data-theme="light"] .player-empty h3 { color: #475569; }
 [data-theme="light"] .player-empty p { color: #94a3b8; }
+[data-theme="light"] .player-actions { background: #e2e8f0; }
+[data-theme="light"] .share-btn { background: rgba(0,0,0,0.05); color: #1e293b; border-color: #cbd5e1; }
+[data-theme="light"] .share-menu { background: #e2e8f0; }
+[data-theme="light"] .share-option { color: #475569; border-color: #cbd5e1; }
+[data-theme="light"] .player-lyrics { background: #f1f5f9; }
+[data-theme="light"] .lyrics-content { color: #1e293b; }
 
 /* --- Mobile responsive --- */
 @media (max-width: 768px) {
