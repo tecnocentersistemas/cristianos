@@ -37,7 +37,8 @@ var CL = {
     'cr.sunoGenerating':'🎤 Generando canción cantada con Suno AI... Esto tarda 1-3 minutos.',
     'cr.sunoReady':'🎤 ¡Tu canción cantada está lista! Escuchala en el panel de la derecha.',
     'cr.sunoReadyMobile':'🎤 ¡Tu canción cantada está lista! Deslizá hacia abajo para escucharla.',
-    'cr.sunoWaiting':'⏳ La canción se está generando... ({seconds}s)'
+    'cr.sunoWaiting':'⏳ La canción se está generando... ({seconds}s)',
+    'cr.sunoWaitingShort':'Esperando canción de Suno AI...'
   },
   en: {
     'cr.title':'Create Music Video','cr.subtitle':'Describe what video you want and AI creates it for you',
@@ -55,7 +56,8 @@ var CL = {
     'cr.sunoGenerating':'🎤 Generating sung song with Suno AI... This takes 1-3 minutes.',
     'cr.sunoReady':'🎤 Your sung song is ready! Listen in the right panel.',
     'cr.sunoReadyMobile':'🎤 Your sung song is ready! Scroll down to listen.',
-    'cr.sunoWaiting':'⏳ Song is being generated... ({seconds}s)'
+    'cr.sunoWaiting':'⏳ Song is being generated... ({seconds}s)',
+    'cr.sunoWaitingShort':'Waiting for Suno AI song...'
   },
   pt: {
     'cr.title':'Criar Vídeo Musical','cr.subtitle':'Descreva que vídeo você quer e a IA cria para você',
@@ -73,7 +75,8 @@ var CL = {
     'cr.sunoGenerating':'🎤 Gerando música cantada com Suno AI... Isso leva 1-3 minutos.',
     'cr.sunoReady':'🎤 Sua música cantada está pronta! Ouça no painel da direita.',
     'cr.sunoReadyMobile':'🎤 Sua música cantada está pronta! Role para baixo para ouvir.',
-    'cr.sunoWaiting':'⏳ A música está sendo gerada... ({seconds}s)'
+    'cr.sunoWaiting':'⏳ A música está sendo gerada... ({seconds}s)',
+    'cr.sunoWaitingShort':'Esperando música do Suno AI...'
   }
 };
 var currentLang = localStorage.getItem('ft_lang') || 'es';
@@ -143,7 +146,7 @@ function sendMessage() {
   fetch('api/ai.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: text, lang: currentLang })
+    body: JSON.stringify({ prompt: text, lang: currentLang, sunoMode: sunoEnabled })
   })
   .then(function(res) {
     return res.text().then(function(body) {
@@ -163,11 +166,15 @@ function sendMessage() {
     if (data.success && data.video) {
       try {
         var isMobile = window.innerWidth <= 768;
-        addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
-        startVideoExperience(data.video);
-        // Launch Suno AFTER OpenAI, using structured data (title, genre, poem)
-        if (sunoEnabled && data.video) {
+        if (sunoEnabled) {
+          addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
+          // In Suno mode: show slideshow WITHOUT instrumental audio, wait for Suno
+          data.video._skipAudio = true;
+          startVideoExperience(data.video);
           startSunoGeneration(null, data.video);
+        } else {
+          addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
+          startVideoExperience(data.video);
         }
       } catch(e) {
         console.error('Video render error:', e);
@@ -241,7 +248,13 @@ function startVideoExperience(video) {
   var audioEl = document.getElementById('bgAudio');
   audioEl.pause(); audioEl.currentTime = 0;
   audioEl.muted = false;
-  if (video.audio) {
+
+  // In Suno mode, skip instrumental audio entirely - wait for real song
+  if (video._skipAudio) {
+    var npEl = document.getElementById('nowPlaying');
+    var npText = document.getElementById('nowPlayingText');
+    if (npEl && npText) { npText.textContent = '🎤 ' + t('cr.sunoWaitingShort'); npEl.style.display = 'flex'; }
+  } else if (video.audio) {
     audioEl.src = video.audio;
     audioEl.volume = 0.7;
     audioEl.load();
@@ -275,9 +288,11 @@ function startVideoExperience(video) {
       audioEl.oncanplay = null;
     };
   }
-  var npEl = document.getElementById('nowPlaying');
-  var npText = document.getElementById('nowPlayingText');
-  if (video.audioName) { npText.textContent = video.audioName; npEl.style.display = 'flex'; }
+  if (!video._skipAudio) {
+    var npEl = document.getElementById('nowPlaying');
+    var npText = document.getElementById('nowPlayingText');
+    if (video.audioName) { npText.textContent = video.audioName; npEl.style.display = 'flex'; }
+  }
 
   slideshow.currentSlide = 0;
   startPlayback();
@@ -368,11 +383,14 @@ var _sunoStatusMsg = null;
 function startSunoGeneration(userPrompt, videoData) {
   // Build an intelligent prompt using OpenAI's structured output
   var sunoPayload = {};
+  var lang = (videoData && videoData.lang) || currentLang;
+  var langNames = { es: 'Spanish', en: 'English', pt: 'Portuguese' };
+  var langName = langNames[lang] || 'Spanish';
 
   if (videoData && videoData.poem && videoData.poem.length > 0) {
     // Custom mode: send the poem as lyrics + genre as style
     var lyrics = videoData.poem.join('\n');
-    var style = (videoData.genre || 'worship') + ', christian, ' + (videoData.mood || 'uplifting');
+    var style = (videoData.genre || 'worship') + ', christian, ' + (videoData.mood || 'uplifting') + ', sung in ' + langName;
     sunoPayload = {
       prompt: lyrics,
       style: style,
@@ -381,7 +399,7 @@ function startSunoGeneration(userPrompt, videoData) {
   } else {
     // Fallback: simple mode with description
     sunoPayload = {
-      prompt: 'Christian ' + (videoData ? videoData.genre || 'worship' : '') + ' song: ' + (videoData ? videoData.title || userPrompt : userPrompt)
+      prompt: 'Christian ' + (videoData ? videoData.genre || 'worship' : '') + ' song in ' + langName + ': ' + (videoData ? videoData.title || userPrompt : userPrompt)
     };
   }
 
@@ -398,9 +416,9 @@ function startSunoGeneration(userPrompt, videoData) {
       // Start polling every 10 seconds
       var elapsed = 0;
       _sunoPolling = setInterval(function() {
-        elapsed += 10;
+        elapsed += 8;
         pollSunoStatus(_sunoTaskId, elapsed);
-      }, 10000);
+      }, 8000);
     } else {
       console.warn('Suno generation failed:', data.error || data);
     }
@@ -442,6 +460,32 @@ function pollSunoStatus(taskId, elapsed) {
         if (npEl && npText) {
           npText.textContent = '🎤 ' + (song.title || 'Suno AI Song');
           npEl.style.display = 'flex';
+        }
+
+        // Show lyrics in the player panel
+        if (song.prompt) {
+          var lyricsHtml = song.prompt
+            .replace(/\[([^\]]+)\]/g, '<strong style="color:var(--primary);display:block;margin-top:0.5rem">$1</strong>')
+            .replace(/\n/g, '<br>');
+          var poemEl = document.getElementById('playerPoem');
+          if (poemEl) {
+            poemEl.innerHTML = '<div style="margin-top:0.5rem;border-left:3px solid var(--primary);padding-left:0.75rem">' + lyricsHtml + '</div>';
+            poemEl.style.display = 'block';
+          }
+          // Update slideshow text with Suno lyrics
+          var lines = song.prompt.replace(/\[[^\]]+\]\n?/g, '').split('\n').filter(function(l) { return l.trim(); });
+          slideshow.texts = [];
+          for (var li = 0; li < lines.length; li += 2) {
+            var txt = lines[li];
+            if (lines[li+1]) txt += '\n' + lines[li+1];
+            slideshow.texts.push({ text: txt, ref: '' });
+          }
+        }
+
+        // Update title
+        if (song.title) {
+          var titleEl = document.getElementById('playerTitle');
+          if (titleEl) titleEl.textContent = song.title;
         }
       }
     } else if (data.status === 'error') {

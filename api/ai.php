@@ -159,11 +159,18 @@ RULES:
 // ===== MAIN =====
 $input = json_decode(file_get_contents('php://input'), true);
 $prompt = $input['prompt'] ?? '';
+$lang = $input['lang'] ?? 'es';
+$sunoMode = $input['sunoMode'] ?? false;
 if (!$prompt) { http_response_code(400); echo json_encode(['error'=>'Prompt required']); exit; }
 $openaiKey = loadKey('openai-key');
 if (!$openaiKey) { http_response_code(500); echo json_encode(['error'=>'No API key']); exit; }
 
-$ai = callOpenAI($openaiKey, $prompt);
+// Append language instruction to prompt
+$langNames = ['es'=>'Spanish','en'=>'English','pt'=>'Portuguese'];
+$langHint = $langNames[$lang] ?? 'Spanish';
+$fullPrompt = $prompt . "\n\n[IMPORTANT: All text output (title, poem, verses, description) MUST be in " . $langHint . ". The song lyrics MUST be in " . $langHint . ".]";
+
+$ai = callOpenAI($openaiKey, $fullPrompt);
 // Retry once if failed
 if (isset($ai['error'])) {
     sleep(2);
@@ -176,10 +183,17 @@ $images = !empty($searchTerms) ? searchPexels($searchTerms) : null;
 if (!$images) { $images = staticImages($ai['imageCategories'] ?? ['sunsets','mountains','rivers','forests','fields']); }
 
 $genre = $ai['genre'] ?? 'worship'; $mood = $ai['mood'] ?? 'peaceful';
-$audio = pickAudio($genre, $mood);
+
+// In Suno mode, skip instrumental audio selection
+if ($sunoMode) {
+    $audioUrl = ''; $audioName = '';
+} else {
+    $audio = pickAudio($genre, $mood);
+    $audioUrl = $audio['url']; $audioName = $audio['name'];
+}
 
 echo json_encode(['success'=>true,'video'=>[
     'title'=>$ai['title'] ?? 'FaithTunes', 'theme'=>$ai['theme'] ?? 'faith', 'mood'=>$mood, 'genre'=>$genre,
     'description'=>$ai['description'] ?? '', 'poem'=>$ai['poem'] ?? [], 'verses'=>$ai['verses'] ?? [],
-    'images'=>$images, 'audio'=>$audio['url'], 'audioName'=>$audio['name']
+    'images'=>$images, 'audio'=>$audioUrl, 'audioName'=>$audioName, 'lang'=>$lang
 ]], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
