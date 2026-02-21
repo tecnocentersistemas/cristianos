@@ -140,11 +140,6 @@ function sendMessage() {
   var sunoEnabled = document.getElementById('sunoToggle') && document.getElementById('sunoToggle').checked;
   var genMsg = addMessage('<i class="fas fa-spinner fa-spin"></i> ' + t(sunoEnabled ? 'cr.sunoGenerating' : 'cr.generating'), 'ai');
 
-  // If Suno is enabled, start song generation in parallel
-  if (sunoEnabled) {
-    startSunoGeneration(text);
-  }
-
   fetch('api/ai.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -170,6 +165,10 @@ function sendMessage() {
         var isMobile = window.innerWidth <= 768;
         addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
         startVideoExperience(data.video);
+        // Launch Suno AFTER OpenAI, using structured data (title, genre, poem)
+        if (sunoEnabled && data.video) {
+          startSunoGeneration(null, data.video);
+        }
       } catch(e) {
         console.error('Video render error:', e);
         addMessage('<i class="fas fa-exclamation-circle"></i> Error al mostrar el video. Intentá de nuevo.', 'ai');
@@ -366,14 +365,30 @@ var _sunoTaskId = null;
 var _sunoPolling = null;
 var _sunoStatusMsg = null;
 
-function startSunoGeneration(userPrompt) {
-  // Build a prompt that Suno understands well
-  var sunoPrompt = 'Christian worship song: ' + userPrompt;
+function startSunoGeneration(userPrompt, videoData) {
+  // Build an intelligent prompt using OpenAI's structured output
+  var sunoPayload = {};
+
+  if (videoData && videoData.poem && videoData.poem.length > 0) {
+    // Custom mode: send the poem as lyrics + genre as style
+    var lyrics = videoData.poem.join('\n');
+    var style = (videoData.genre || 'worship') + ', christian, ' + (videoData.mood || 'uplifting');
+    sunoPayload = {
+      prompt: lyrics,
+      style: style,
+      title: videoData.title || 'FaithTunes Song'
+    };
+  } else {
+    // Fallback: simple mode with description
+    sunoPayload = {
+      prompt: 'Christian ' + (videoData ? videoData.genre || 'worship' : '') + ' song: ' + (videoData ? videoData.title || userPrompt : userPrompt)
+    };
+  }
 
   fetch('api/suno-generate.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: sunoPrompt })
+    body: JSON.stringify(sunoPayload)
   })
   .then(function(res) { return res.json(); })
   .then(function(data) {
