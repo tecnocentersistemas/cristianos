@@ -1,4 +1,4 @@
-﻿// =============================================
+// =============================================
 // FaithTunes Creator - Chat + AI Video Generator
 // =============================================
 
@@ -190,8 +190,9 @@ function startPlayback() {
   document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
   var audioEl = document.getElementById('bgAudio');
   if (audioEl.src) {
-    var p = audioEl.play();
-    if (p !== undefined) { p.then(function() { hideUnmuteBtn(); }).catch(function() { showUnmuteBtn(); }); }
+    audioEl.play().catch(function() {
+      audioEl.addEventListener('canplaythrough', function retry() { audioEl.play().catch(function(){}); audioEl.removeEventListener('canplaythrough', retry); }, { once: true });
+    });
   }
   showSlide(0);
   slideshow.interval = setInterval(function() {
@@ -253,17 +254,7 @@ function restartPlayback() {
   startPlayback();
 }
 
-function showUnmuteBtn() {
-  if (document.getElementById('unmuteBtn')) return;
-  var container = document.getElementById('slideshowContainer');
-  if (!container) return;
-  var btn = document.createElement('button');
-  btn.id = 'unmuteBtn'; btn.className = 'unmute-btn';
-  btn.innerHTML = '<i class="fas fa-volume-up"></i> Activar Música';
-  btn.onclick = function() { document.getElementById('bgAudio').play().then(function() { hideUnmuteBtn(); }).catch(function(){}); };
-  container.appendChild(btn);
-}
-function hideUnmuteBtn() { var b = document.getElementById('unmuteBtn'); if (b) b.remove(); }
+// unmute removed - audio plays automatically after user interaction
 
 function toggleMute() {
   var a = document.getElementById('bgAudio');
