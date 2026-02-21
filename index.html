@@ -8,7 +8,7 @@
   <meta name="description" content="Genera y disfruta videos musicales cristianos con paisajes, animales y versículos bíblicos. Country, rock, gospel y más géneros en múltiples idiomas.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css?v=20250623f">
+  <link rel="stylesheet" href="css/app.css?v=20250623b">
 </head>
 <body>
   <div class="particles" id="particles"></div>
@@ -96,13 +96,12 @@
     </div>
   </section>
 
-  <!-- Catalog - AI Songs -->
+  <!-- Catalog - AI Songs Only -->
   <section class="section-alt" id="catalog">
     <div class="section-header">
       <span class="section-badge" data-i18n="cat.badge">Catálogo</span>
-      <h2 id="catalogTitle"><i class="fas fa-microphone-alt" style="color:var(--secondary)"></i> <span data-i18n="cat.aititle">Canciones Creadas con IA</span></h2>
-      <p id="catalogSubtitle" data-i18n="cat.aisubtitle">Canciones cristianas reales generadas por nuestra comunidad usando inteligencia artificial</p>
-      <button class="btn btn-outline" id="btnShowAll" style="display:none;margin-top:1rem;" onclick="filterGenre('')"><i class="fas fa-th"></i> <span data-i18n="cat.showall">Ver todas</span></button>
+      <h2><i class="fas fa-microphone-alt" style="color:var(--primary)"></i> <span data-i18n="cat.aititle">Canciones Creadas con IA</span></h2>
+      <p data-i18n="cat.aisubtitle">Canciones cristianas reales generadas por nuestra comunidad usando inteligencia artificial</p>
     </div>
     <div class="ai-songs-grid" id="aiSongsGrid">
       <div style="text-align:center;color:var(--gray);padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Cargando canciones...</div>
@@ -120,41 +119,35 @@
       <p data-i18n="genre.subtitle">Desde country suave hasta rock inspirador</p>
     </div>
     <div class="genres-grid">
-      <div class="genre-card" onclick="filterGenre('country')" style="cursor:pointer">
-        <div class="genre-icon" style="background:#b45309;"><i class="fas fa-guitar"></i></div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#d97706,#92400e);"><i class="fas fa-guitar"></i></div>
         <h3>Country</h3>
         <p data-i18n="genre.country">Melodías suaves con guitarra acústica y paisajes rurales</p>
-        <span class="genre-count" id="count-country"></span>
       </div>
-      <div class="genre-card" onclick="filterGenre('rock')" style="cursor:pointer">
-        <div class="genre-icon" style="background:#b91c1c;"><i class="fas fa-bolt"></i></div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#dc2626,#991b1b);"><i class="fas fa-bolt"></i></div>
         <h3>Rock</h3>
         <p data-i18n="genre.rock">Energía y fuerza con guitarras eléctricas y montañas</p>
-        <span class="genre-count" id="count-rock"></span>
       </div>
-      <div class="genre-card" onclick="filterGenre('gospel')" style="cursor:pointer">
-        <div class="genre-icon" style="background:#6d28d9;"><i class="fas fa-church"></i></div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);"><i class="fas fa-church"></i></div>
         <h3>Gospel</h3>
         <p data-i18n="genre.gospel">Coros poderosos con cielos abiertos y luz divina</p>
-        <span class="genre-count" id="count-gospel"></span>
       </div>
-      <div class="genre-card" onclick="filterGenre('folk')" style="cursor:pointer">
-        <div class="genre-icon" style="background:#15803d;"><i class="fas fa-leaf"></i></div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#16a34a,#15803d);"><i class="fas fa-leaf"></i></div>
         <h3>Folk</h3>
         <p data-i18n="genre.folk">Sonidos acústicos con bosques y ríos cristalinos</p>
-        <span class="genre-count" id="count-folk"></span>
       </div>
-      <div class="genre-card" onclick="filterGenre('worship')" style="cursor:pointer">
-        <div class="genre-icon" style="background:#0369a1;"><i class="fas fa-hand-holding-heart"></i></div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#0ea5e9,#0369a1);"><i class="fas fa-hand-holding-heart"></i></div>
         <h3>Worship</h3>
         <p data-i18n="genre.worship">Alabanza contemporánea con atardeceres y naturaleza</p>
-        <span class="genre-count" id="count-worship"></span>
       </div>
-      <div class="genre-card" onclick="filterGenre('ballad')" style="cursor:pointer">
-        <div class="genre-icon" style="background:#be185d;"><i class="fas fa-heart"></i></div>
+      <div class="genre-card">
+        <div class="genre-icon" style="background:linear-gradient(135deg,#ec4899,#be185d);"><i class="fas fa-heart"></i></div>
         <h3 data-i18n="genre.balladName">Balada</h3>
         <p data-i18n="genre.ballad">Piano y cuerdas con valles verdes y animales en paz</p>
-        <span class="genre-count" id="count-ballad"></span>
       </div>
     </div>
   </section>
@@ -259,6 +252,6 @@
   </footer>
 
   <!-- Video Player Modal -->
-  <script src="js/app.js?v=20250623g"></script>
+  <script src="js/app.js?v=20250623e"></script>
 </body>
 </html>
