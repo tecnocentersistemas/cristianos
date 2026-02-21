@@ -106,6 +106,19 @@ if (!file_exists($videoFile) && count($localSlides) >= 2 && file_exists($audioFi
 if (file_exists($videoFile)) $videoPath = '/media/videos/' . $id . '.mp4';
 
 // 5) Build metadata
+// Use first slide image as og:image if cover is too small/corrupt
+$ogImage = $coverPath;
+if ($coverPath && file_exists(__DIR__ . '/..' . $coverPath)) {
+    $sz = filesize(__DIR__ . '/..' . $coverPath);
+    if ($sz < 5000) $ogImage = ''; // corrupt cover, skip it
+}
+if (!$ogImage && !empty($slideImages[0])) {
+    // Use first Pexels slide image directly (stable URL)
+    $ogImage = $slideImages[0];
+} elseif ($ogImage) {
+    $ogImage = $baseUrl . $ogImage;
+}
+
 $meta = [
     'id' => $id,
     'title' => $title,
@@ -114,8 +127,9 @@ $meta = [
     'duration' => $duration,
     'audioUrl' => $baseUrl . '/media/audio/songs/' . $id . '.mp3',
     'videoUrl' => $videoPath ? $baseUrl . $videoPath : '',
-    'imageUrl' => $coverPath ? $baseUrl . $coverPath : '',
+    'imageUrl' => $ogImage ?: ($coverPath ? $baseUrl . $coverPath : ''),
     'shareUrl' => $baseUrl . '/share.php?id=' . $id,
+    'slideImages' => $slideImages,
     'creator' => $creator,
     'createdAt' => date('Y-m-d H:i:s'),
     'taskId' => $taskId
