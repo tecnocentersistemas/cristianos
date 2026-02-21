@@ -477,8 +477,10 @@ function pollSunoStatus(taskId, elapsed) {
       var npEl = document.getElementById('nowPlaying'), npText = document.getElementById('nowPlayingText');
       if (npEl && npText) { npText.textContent = song.title || 'FaithTunes'; npEl.style.display = 'flex'; }
 
-      // Show FULL lyrics
-      var lyricsText = song.prompt || '';
+      // Show FULL lyrics - use the LONGEST between Suno's response and our original poem
+      var sunoLyrics = song.prompt || '';
+      var originalPoem = (window._pendingVideoData && window._pendingVideoData.poem) ? window._pendingVideoData.poem.join('\n') : '';
+      var lyricsText = (sunoLyrics.length >= originalPoem.length) ? sunoLyrics : originalPoem;
       if (lyricsText) {
         var lP = document.getElementById('playerLyrics'), lC = document.getElementById('lyricsContent');
         if (lP && lC) {
