@@ -420,13 +420,13 @@ function startSunoGeneration(userPrompt, videoData) {
     if (data.success && data.taskId) {
       _sunoTaskId = data.taskId;
       _sunoStatusMsg = addMessage('<i class="fas fa-spinner fa-spin" style="color:var(--primary)"></i> ' + t('cr.sunoGenerating'), 'ai');
-      // First poll at 5s, then every 8s
+      // Poll aggressively: first at 3s, then every 5s
       var elapsed = 0;
-      setTimeout(function() { elapsed += 5; pollSunoStatus(_sunoTaskId, elapsed); }, 5000);
+      setTimeout(function() { elapsed += 3; pollSunoStatus(_sunoTaskId, elapsed); }, 3000);
       _sunoPolling = setInterval(function() {
-        elapsed += 8;
+        elapsed += 5;
         pollSunoStatus(_sunoTaskId, elapsed);
-      }, 8000);
+      }, 5000);
     } else {
       console.warn('Suno generation failed:', data.error || data);
     }
@@ -508,6 +508,17 @@ function pollSunoStatus(taskId, elapsed) {
         // Show action buttons
         var ae = document.getElementById('playerActions'); if (ae) ae.style.display = 'flex';
         if (d.song.videoUrl) { var vb = document.getElementById('downloadVideoBtn'); if (vb) vb.style.display = 'flex'; }
+        else {
+          // Video generates in background — check every 10s
+          var videoCheckCount = 0;
+          var videoCheck = setInterval(function() {
+            videoCheckCount++;
+            if (videoCheckCount > 18) { clearInterval(videoCheck); return; } // stop after 3 min
+            fetch('api/save-song.php?id=' + d.song.id).then(function(r){return r.json();}).then(function(s) {
+              if (s.videoUrl) { clearInterval(videoCheck); window._savedSong.videoUrl = s.videoUrl; var vb = document.getElementById('downloadVideoBtn'); if (vb) vb.style.display = 'flex'; }
+            }).catch(function(){});
+          }, 10000);
+        }
       }).catch(function(e){ if (statusMsg) statusMsg.remove(); console.warn('Save error:', e); });
 
     } else if (data.status === 'error') {

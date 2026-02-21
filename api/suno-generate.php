@@ -18,12 +18,48 @@ if (!$sunoKey) { http_response_code(500); echo json_encode(['error'=>'No Suno AP
 $cacheDir = __DIR__ . '/../data/suno-cache';
 if (!is_dir($cacheDir)) mkdir($cacheDir, 0755, true);
 
+function extractSongs($songsRaw) {
+    $result = [];
+    if (!is_array($songsRaw)) return $result;
+    foreach ($songsRaw as $song) {
+        if (is_array($song) && !empty($song['audioUrl'])) {
+            $result[] = [
+                'id' => $song['id'] ?? '',
+                'audioUrl' => $song['audioUrl'] ?? '',
+                'streamAudioUrl' => $song['streamAudioUrl'] ?? '',
+                'imageUrl' => $song['imageUrl'] ?? '',
+                'title' => $song['title'] ?? '',
+                'tags' => $song['tags'] ?? '',
+                'prompt' => $song['prompt'] ?? '',
+                'duration' => $song['duration'] ?? 0,
+            ];
+        }
+    }
+    return $result;
+}
+
 // ===== GET: Check task status =====
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $taskId = $_GET['taskId'] ?? '';
     if (!$taskId) { echo json_encode(['error'=>'taskId required']); exit; }
 
-    // Poll Suno API directly for status
+    // FIRST: Check if callback already received data (fastest path)
+    $callbackFile = $cacheDir . '/' . $taskId . '.json';
+    if (file_exists($callbackFile)) {
+        $cbData = json_decode(file_get_contents($callbackFile), true);
+        // Callback data structure: { code: 200, data: { status: "SUCCESS", response: { sunoData: [...] } } }
+        $cbStatus = $cbData['data']['status'] ?? $cbData['status'] ?? '';
+        if ($cbStatus === 'SUCCESS' || $cbStatus === 'FIRST_SUCCESS') {
+            $songsRaw = $cbData['data']['response']['sunoData'] ?? $cbData['data']['data'] ?? [];
+            $result = extractSongs($songsRaw);
+            if (!empty($result)) {
+                echo json_encode(['status'=>'complete','taskId'=>$taskId,'songs'=>$result], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+        }
+    }
+
+    // FALLBACK: Poll Suno API directly
     $pollUrl = 'https://apibox.erweima.ai/api/v1/generate/record-info?taskId=' . urlencode($taskId);
     $ch = curl_init($pollUrl);
     curl_setopt_array($ch, [
@@ -62,23 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    // Extract songs - data is in response.sunoData
+    // Extract songs
     $songsRaw = $taskData['response']['sunoData'] ?? $taskData['data'] ?? [];
-    $result = [];
-    foreach ($songsRaw as $song) {
-        if (is_array($song) && !empty($song['audioUrl'])) {
-            $result[] = [
-                'id' => $song['id'] ?? '',
-                'audioUrl' => $song['audioUrl'] ?? '',
-                'streamAudioUrl' => $song['streamAudioUrl'] ?? '',
-                'imageUrl' => $song['imageUrl'] ?? '',
-                'title' => $song['title'] ?? '',
-                'tags' => $song['tags'] ?? '',
-                'prompt' => $song['prompt'] ?? '',
-                'duration' => $song['duration'] ?? 0,
-            ];
-        }
-    }
+    $result = extractSongs($songsRaw);
 
     if (!empty($result)) {
         echo json_encode(['status'=>'complete','taskId'=>$taskId,'songs'=>$result], JSON_UNESCAPED_UNICODE);
@@ -107,7 +129,7 @@ $callbackUrl = $protocol . '://' . $host . '/api/suno-callback.php';
 // Build Suno API request
 $sunoPayload = [
     'callBackUrl' => $callbackUrl,
-    'model' => 'V4', // V4 is faster than V3_5
+    'model' => 'V4_5', // V4.5 - faster generation, same 12 credits
 ];
 
 if ($customMode && $style) {

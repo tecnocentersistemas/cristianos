@@ -98,11 +98,11 @@ foreach ($slideImages as $idx => $imgUrl) {
     if (file_exists($slideFile)) $localSlides[] = $slideFile;
 }
 
-// 4) Generate video with FFmpeg (if available and we have slides)
+// 4) Generate video with FFmpeg in BACKGROUND (non-blocking)
 $videoPath = '';
 $videoFile = $videosDir . '/' . $id . '.mp4';
 if (!file_exists($videoFile) && count($localSlides) >= 2 && file_exists($audioFile)) {
-    $videoPath = generateVideo($localSlides, $audioFile, $videoFile, $duration, $title);
+    launchVideoGeneration($localSlides, $audioFile, $videoFile, $duration, $id, $metaDir);
 }
 if (file_exists($videoFile)) $videoPath = '/media/videos/' . $id . '.mp4';
 
@@ -133,39 +133,44 @@ function dlFile($url) {
     return ($err || !$data) ? null : $data;
 }
 
-function generateVideo($slides, $audioFile, $outputFile, $duration, $title) {
+function launchVideoGeneration($slides, $audioFile, $outputFile, $duration, $id, $metaDir) {
     $ffmpeg = trim(shell_exec('which ffmpeg 2>/dev/null') ?: '');
-    if (!$ffmpeg) return '';
+    if (!$ffmpeg) return;
 
     $numSlides = count($slides);
     $durPerSlide = $duration > 0 ? $duration / $numSlides : 16;
     $durPerSlide = max(5, min(25, $durPerSlide));
 
-    // Simple approach: create a concat file with images
+    // Create a concat file
     $listFile = dirname($outputFile) . '/' . basename($outputFile, '.mp4') . '_list.txt';
     $listContent = '';
     foreach ($slides as $slide) {
         $listContent .= "file " . escapeshellarg($slide) . "\nduration " . round($durPerSlide, 1) . "\n";
     }
-    // Add last image again (ffmpeg concat requires it)
     $listContent .= "file " . escapeshellarg($slides[count($slides)-1]) . "\n";
     file_put_contents($listFile, $listContent);
 
+    // Build FFmpeg command
     $cmd = $ffmpeg . ' -f concat -safe 0 -i ' . escapeshellarg($listFile)
         . ' -i ' . escapeshellarg($audioFile)
         . ' -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1"'
         . ' -c:v libx264 -preset fast -crf 23 -r 24 -pix_fmt yuv420p'
         . ' -c:a aac -b:a 192k -shortest -movflags +faststart'
-        . ' -y ' . escapeshellarg($outputFile) . ' 2>&1';
+        . ' -y ' . escapeshellarg($outputFile) . ' 2>/dev/null';
 
-    // Run synchronously (simpler, more reliable)
-    $output = shell_exec($cmd);
+    // Create a wrapper script that generates video + updates metadata
+    $baseUrl = 'https://cristianos.centralchat.pro';
+    $updateScript = dirname($outputFile) . '/' . $id . '_gen.sh';
+    $metaFile = $metaDir . '/' . $id . '.json';
+    $scriptContent = "#!/bin/bash\n" . $cmd . "\n";
+    // After video is generated, update the metadata JSON to include videoUrl
+    $scriptContent .= "if [ -f " . escapeshellarg($outputFile) . " ]; then\n";
+    $scriptContent .= "  php -r '\$f=\"" . addslashes($metaFile) . "\";\$m=json_decode(file_get_contents(\$f),true);\$m[\"videoUrl\"]=\"" . $baseUrl . "/media/videos/" . $id . ".mp4\";file_put_contents(\$f,json_encode(\$m,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));'\n";
+    $scriptContent .= "fi\n";
+    $scriptContent .= "rm -f " . escapeshellarg($listFile) . " " . escapeshellarg($updateScript) . "\n";
+    file_put_contents($updateScript, $scriptContent);
+    chmod($updateScript, 0755);
 
-    // Log for debugging
-    file_put_contents(dirname($outputFile) . '/' . basename($outputFile, '.mp4') . '_log.txt', $cmd . "\n\n" . $output);
-
-    // Clean up list file
-    @unlink($listFile);
-
-    return file_exists($outputFile) ? $outputFile : '';
+    // Launch in background - returns immediately
+    shell_exec('nohup bash ' . escapeshellarg($updateScript) . ' > /dev/null 2>&1 &');
 }
