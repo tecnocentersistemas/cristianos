@@ -193,10 +193,19 @@ function startVideoExperience(video) {
     slidesContainer.appendChild(div);
   });
 
-  // Audio
+  // Audio - preload and play when ready
   var audioEl = document.getElementById('bgAudio');
   audioEl.pause(); audioEl.currentTime = 0;
-  if (video.audio) { audioEl.src = video.audio; audioEl.volume = 0.7; audioEl.load(); }
+  if (video.audio) {
+    audioEl.src = video.audio;
+    audioEl.volume = 0.7;
+    audioEl.load();
+    // Play as soon as enough data is buffered
+    audioEl.oncanplay = function() {
+      audioEl.play().catch(function(){});
+      audioEl.oncanplay = null;
+    };
+  }
   var npEl = document.getElementById('nowPlaying');
   var npText = document.getElementById('nowPlayingText');
   if (video.audioName) { npText.textContent = video.audioName; npEl.style.display = 'flex'; }
@@ -209,12 +218,9 @@ function startVideoExperience(video) {
 function startPlayback() {
   slideshow.playing = true;
   document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+  // Audio already auto-plays via oncanplay in startVideoExperience
   var audioEl = document.getElementById('bgAudio');
-  if (audioEl.src) {
-    audioEl.play().catch(function() {
-      audioEl.addEventListener('canplaythrough', function retry() { audioEl.play().catch(function(){}); audioEl.removeEventListener('canplaythrough', retry); }, { once: true });
-    });
-  }
+  if (audioEl.src && audioEl.paused) { audioEl.play().catch(function(){}); }
   showSlide(0);
   slideshow.interval = setInterval(function() {
     slideshow.currentSlide++;
