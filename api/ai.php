@@ -129,7 +129,7 @@ RULES:
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => json_encode(['model'=>'gpt-4o-mini','messages'=>[['role'=>'system','content'=>$system],['role'=>'user','content'=>$prompt]],'temperature'=>0.7,'max_tokens'=>2000]),
+        CURLOPT_POSTFIELDS => json_encode(['model'=>'gpt-4o-mini','response_format'=>['type'=>'json_object'],'messages'=>[['role'=>'system','content'=>$system],['role'=>'user','content'=>$prompt]],'temperature'=>0.7,'max_tokens'=>2000]),
         CURLOPT_HTTPHEADER => ['Content-Type: application/json','Authorization: Bearer '.$apiKey],
         CURLOPT_TIMEOUT => 45
     ]);
@@ -163,6 +163,11 @@ $openaiKey = loadKey('openai-key');
 if (!$openaiKey) { http_response_code(500); echo json_encode(['error'=>'No API key']); exit; }
 
 $ai = callOpenAI($openaiKey, $prompt);
+// Retry once if failed
+if (isset($ai['error'])) {
+    sleep(2);
+    $ai = callOpenAI($openaiKey, $prompt);
+}
 if (isset($ai['error'])) { http_response_code(500); echo json_encode($ai); exit; }
 
 $searchTerms = $ai['imageSearchTerms'] ?? [];

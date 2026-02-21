@@ -98,27 +98,45 @@ function sendMessage() {
   input.disabled = true;
   document.getElementById('chatSendBtn').disabled = true;
   addTyping();
-  addMessage('<i class="fas fa-spinner fa-spin"></i> ' + t('cr.generating'), 'ai');
+  var genMsg = addMessage('<i class="fas fa-spinner fa-spin"></i> ' + t('cr.generating'), 'ai');
 
-  fetch('api/ai.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: text, lang: currentLang }) })
+  fetch('api/ai.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: text, lang: currentLang })
+  })
   .then(function(res) {
-    if (!res.ok) return res.text().then(function(t) { try { return JSON.parse(t); } catch(e) { return { error: 'Server error ' + res.status }; } });
-    return res.json();
+    return res.text().then(function(body) {
+      if (!body || !body.trim()) return { error: 'Servidor no respondió. Intentá de nuevo.' };
+      try { return JSON.parse(body); }
+      catch(e) { return { error: 'Respuesta inválida del servidor' }; }
+    });
   })
   .then(function(data) {
     removeTyping();
+    if (genMsg) genMsg.remove();
     input.disabled = false; document.getElementById('chatSendBtn').disabled = false; input.focus();
-    if (data.error) { addMessage('<i class="fas fa-exclamation-circle"></i> ' + t('cr.error') + ' (' + data.error + ')', 'ai'); return; }
+    if (!data || data.error) {
+      addMessage('<i class="fas fa-exclamation-circle"></i> ' + t('cr.error') + (data && data.error ? ' (' + data.error + ')' : ''), 'ai');
+      return;
+    }
     if (data.success && data.video) {
-      var isMobile = window.innerWidth <= 768;
-      addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
-      startVideoExperience(data.video);
+      try {
+        var isMobile = window.innerWidth <= 768;
+        addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
+        startVideoExperience(data.video);
+      } catch(e) {
+        console.error('Video render error:', e);
+        addMessage('<i class="fas fa-exclamation-circle"></i> Error al mostrar el video. Intentá de nuevo.', 'ai');
+      }
     }
   })
   .catch(function(err) {
-    removeTyping(); input.disabled = false; document.getElementById('chatSendBtn').disabled = false;
-    addMessage('<i class="fas fa-exclamation-circle"></i> ' + t('cr.error'), 'ai');
-    console.error('API Error:', err);
+    removeTyping();
+    if (genMsg) genMsg.remove();
+    input.disabled = false; document.getElementById('chatSendBtn').disabled = false;
+    addMessage('<i class="fas fa-exclamation-circle"></i> ' + t('cr.error') + ' (conexión)', 'ai');
+    console.error('Fetch error:', err);
   });
 }
 document.getElementById('chatInput').addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
