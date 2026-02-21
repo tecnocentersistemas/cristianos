@@ -3,14 +3,14 @@
 html { scroll-behavior: smooth; }
 
 :root {
-  --primary: #d97706;
-  --primary-dark: #b45309;
-  --secondary: #7c3aed;
+  --primary: #0ea5e9;
+  --primary-dark: #0284c7;
+  --secondary: #f59e0b;
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --dark: #0f172a;
-  --dark-light: #1e293b;
+  --dark: #0c1222;
+  --dark-light: #162032;
   --gray: #64748b;
   --light: #e2e8f0;
 }
