@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css?v=20250622b">
-  <link rel="stylesheet" href="css/creator.css?v=20250622g">
+  <link rel="stylesheet" href="css/creator.css?v=20250622h">
 </head>
 <body>
   <!-- Nav -->
@@ -115,8 +115,11 @@
 
         <!-- Action buttons: Download + Share -->
         <div class="player-actions" id="playerActions" style="display:none;">
-          <button class="player-action-btn download-btn" id="downloadBtn" onclick="downloadVideo()">
-            <i class="fas fa-download"></i> <span data-i18n="cr.download">Descargar</span>
+          <button class="player-action-btn download-btn" id="downloadVideoBtn" onclick="downloadFile('video')" style="display:none">
+            <i class="fas fa-video"></i> <span data-i18n="cr.downloadVideo">Video MP4</span>
+          </button>
+          <button class="player-action-btn download-btn" id="downloadBtn" onclick="downloadFile('audio')">
+            <i class="fas fa-music"></i> <span data-i18n="cr.downloadAudio">Audio MP3</span>
           </button>
           <button class="player-action-btn share-btn" onclick="toggleShareMenu()">
             <i class="fas fa-share-alt"></i> <span data-i18n="cr.share">Compartir</span>
@@ -154,7 +157,7 @@
   <!-- Hidden audio player -->
   <audio id="bgAudio" preload="auto"></audio>
 
-  <script src="js/creator.js?v=20250622g"></script>
+  <script src="js/creator.js?v=20250622h"></script>
 </body>
 </html>
 

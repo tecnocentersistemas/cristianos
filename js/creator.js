@@ -40,6 +40,7 @@ var CL = {
     'cr.sunoWaiting':'⏳ La canción se está generando... ({seconds}s)',
     'cr.sunoWaitingShort':'Esperando canción de Suno AI...',
     'cr.download':'Descargar','cr.share':'Compartir','cr.copyLink':'Copiar link',
+    'cr.downloadVideo':'Video MP4','cr.downloadAudio':'Audio MP3',
     'cr.lyricsTitle':'Letra de la canción','cr.copied':'¡Link copiado!','cr.downloadStarted':'Descarga iniciada...'
   },
   en: {
@@ -493,28 +494,42 @@ function pollSunoStatus(taskId, elapsed) {
 }
 
 function saveSongToVPS(song, audioUrl, taskId) {
+  // Collect slide image URLs
+  var slideImgs = [];
+  if (slideshow.images) slideshow.images.forEach(function(img) { if (img.url) slideImgs.push(img.url); });
   fetch('api/save-song.php', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ audioUrl: audioUrl, title: song.title || '', lyrics: song.prompt || '', tags: song.tags || '', duration: song.duration || 0, imageUrl: song.imageUrl || '', taskId: taskId || '' })
+    body: JSON.stringify({ audioUrl: audioUrl, title: song.title || '', lyrics: song.prompt || '', tags: song.tags || '', duration: song.duration || 0, imageUrl: song.imageUrl || '', taskId: taskId || '', slideImages: slideImgs, creator: '' })
   }).then(function(r){return r.json();}).then(function(d){
-    if (d.success && d.song) { window._savedSong = d.song; if (d.song.audioUrl) window._sunoAudioUrl = d.song.audioUrl; }
+    if (d.success && d.song) {
+      window._savedSong = d.song;
+      if (d.song.audioUrl) window._sunoAudioUrl = d.song.audioUrl;
+      // Show video download button if video was generated
+      if (d.song.videoUrl) {
+        var vBtn = document.getElementById('downloadVideoBtn');
+        if (vBtn) vBtn.style.display = 'flex';
+      }
+    }
   }).catch(function(e){ console.warn('Save error:', e); });
 }
 
 // ===== Download & Share =====
-function downloadVideo() {
+function downloadFile(type) {
   var saved = window._savedSong, song = window._sunoSong;
-  var audioUrl = (saved && saved.audioUrl) || window._sunoAudioUrl;
-  if (!audioUrl) return;
-  var btn = document.getElementById('downloadBtn');
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t('cr.downloadStarted'); btn.disabled = true;
-  fetch(audioUrl).then(function(r){return r.blob();}).then(function(b){
+  var url = '', ext = '.mp3';
+  if (type === 'video' && saved && saved.videoUrl) { url = saved.videoUrl; ext = '.mp4'; }
+  else { url = (saved && saved.audioUrl) || window._sunoAudioUrl; ext = '.mp3'; }
+  if (!url) return;
+  var btnId = type === 'video' ? 'downloadVideoBtn' : 'downloadBtn';
+  var btn = document.getElementById(btnId);
+  if (btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ...'; btn.disabled = true; }
+  fetch(url).then(function(r){return r.blob();}).then(function(b){
     var a = document.createElement('a');
-    var ti = (song && song.title) ? song.title.replace(/[^\w\s\u00C0-\u024F]/g, '').trim() : 'FaithTunes';
-    a.href = URL.createObjectURL(b); a.download = ti + ' - FaithTunes.mp3';
+    var ti = (song && song.title) ? song.title.replace(/[^\w\s\u00C0-\u024F]/g,'').trim() : 'FaithTunes';
+    a.href = URL.createObjectURL(b); a.download = ti + ' - FaithTunes' + ext;
     document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
-    btn.innerHTML = '<i class="fas fa-download"></i> ' + t('cr.download'); btn.disabled = false;
-  }).catch(function(){ window.open(audioUrl,'_blank'); btn.innerHTML = '<i class="fas fa-download"></i> ' + t('cr.download'); btn.disabled = false; });
+    if(btn){btn.innerHTML='<i class="fas fa-'+(type==='video'?'video':'music')+'"></i> '+(type==='video'?'Video MP4':'Audio MP3');btn.disabled=false;}
+  }).catch(function(){window.open(url,'_blank');if(btn)btn.disabled=false;});
 }
 
 function toggleShareMenu() {

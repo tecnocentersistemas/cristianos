@@ -338,4 +338,70 @@ window.setLang = function(l) {
 (function() {
   var lang = detectLang();
   applyLang(lang);
+  // Load AI songs gallery
+  loadAISongs();
 })();
+
+// ===== AI Songs Gallery =====
+function loadAISongs() {
+  var grid = document.getElementById('aiSongsGrid');
+  if (!grid) return;
+  fetch('api/save-song.php?action=list')
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (!data.songs || data.songs.length === 0) {
+      grid.innerHTML = '<div style="text-align:center;color:var(--gray);padding:2rem;grid-column:1/-1"><i class="fas fa-music" style="font-size:2rem;opacity:0.3;display:block;margin-bottom:0.5rem"></i>Aun no hay canciones. Se la primera persona en crear una!</div>';
+      return;
+    }
+    grid.innerHTML = '';
+    data.songs.forEach(function(s) {
+      var hasVideo = !!s.videoUrl;
+      var card = document.createElement('div');
+      card.className = 'ai-song-card';
+      var thumbContent = '';
+      if (s.imageUrl) thumbContent = '<img src="' + s.imageUrl + '" alt="' + (s.title||'') + '">';
+      else thumbContent = '<div style="width:100%;height:100%;background:linear-gradient(135deg,#d97706,#7c3aed);display:flex;align-items:center;justify-content:center"><i class="fas fa-music" style="font-size:2rem;color:white;opacity:0.5"></i></div>';
+
+      var actBtns = '';
+      if (hasVideo) actBtns += '<a class="ai-song-btn dl-vid" href="' + s.videoUrl + '" download><i class="fas fa-video"></i> Video</a>';
+      actBtns += '<a class="ai-song-btn dl-aud" href="' + s.audioUrl + '" download><i class="fas fa-music"></i> Audio</a>';
+      actBtns += '<a class="ai-song-btn share" href="' + s.shareUrl + '" target="_blank"><i class="fas fa-share-alt"></i></a>';
+
+      var creator = s.creator ? 'Por: ' + s.creator : '';
+      var tagsShort = (s.tags || '').split(',').slice(0,2).join(', ');
+
+      card.innerHTML = '<div class="ai-song-thumb">' + thumbContent + '<button class="ai-song-play" onclick="playAISong(\'' + s.id + '\')"><i class="fas fa-play"></i></button></div>'
+        + '<div class="ai-song-body"><div class="ai-song-title">' + (s.title || 'Sin titulo') + '</div>'
+        + (creator ? '<div class="ai-song-creator">' + creator + '</div>' : '')
+        + (tagsShort ? '<div class="ai-song-tags">' + tagsShort + '</div>' : '')
+        + '<div class="ai-song-actions">' + actBtns + '</div></div>';
+      grid.appendChild(card);
+    });
+  })
+  .catch(function() {
+    grid.innerHTML = '<div style="text-align:center;color:var(--gray);padding:2rem;grid-column:1/-1">Error al cargar canciones</div>';
+  });
+}
+
+function playAISong(id) {
+  fetch('api/save-song.php?id=' + id)
+  .then(function(r) { return r.json(); })
+  .then(function(s) {
+    if (s.videoUrl) {
+      // Open video in modal
+      var modal = document.getElementById('videoModal');
+      if (modal) {
+        var player = modal.querySelector('video');
+        if (player) { player.src = s.videoUrl; player.play(); }
+        var title = modal.querySelector('h3');
+        if (title) title.textContent = s.title || '';
+        var desc = modal.querySelector('p');
+        if (desc) desc.textContent = s.creator ? 'Creado por: ' + s.creator : '';
+        modal.classList.add('active');
+      }
+    } else if (s.audioUrl) {
+      // Play audio
+      window.open(s.shareUrl, '_blank');
+    }
+  });
+}
