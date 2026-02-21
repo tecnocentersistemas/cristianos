@@ -14,6 +14,8 @@
   flex-direction: column;
   background: var(--dark);
   border-right: 1px solid rgba(255,255,255,0.08);
+  min-height: 0;
+  overflow: hidden;
 }
 
 .chat-header {
