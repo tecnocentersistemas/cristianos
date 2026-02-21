@@ -137,23 +137,19 @@
     </div>
   </section>
 
-  <!-- Catalog -->
+  <!-- Catalog - AI Songs Only -->
   <section class="section-alt" id="catalog">
     <div class="section-header">
       <span class="section-badge" data-i18n="cat.badge">Catálogo</span>
-      <h2 data-i18n="cat.title">Videos listos para disfrutar</h2>
-      <p data-i18n="cat.subtitle">Explorá nuestra colección de videos musicales cristianos</p>
+      <h2><i class="fas fa-microphone-alt" style="color:var(--primary)"></i> <span data-i18n="cat.aititle">Canciones Creadas con IA</span></h2>
+      <p data-i18n="cat.aisubtitle">Canciones cristianas reales generadas por nuestra comunidad usando inteligencia artificial</p>
     </div>
-    <div class="catalog-filters" id="catalogFilters">
-      <button class="filter-btn active" data-filter="all" data-i18n="cat.all">Todos</button>
-      <button class="filter-btn" data-filter="faith" data-i18n="cat.faith">Fe</button>
-      <button class="filter-btn" data-filter="hope" data-i18n="cat.hope">Esperanza</button>
-      <button class="filter-btn" data-filter="love" data-i18n="cat.love">Amor</button>
-      <button class="filter-btn" data-filter="peace" data-i18n="cat.peace">Paz</button>
-      <button class="filter-btn" data-filter="gratitude" data-i18n="cat.gratitude">Gratitud</button>
-      <button class="filter-btn" data-filter="strength" data-i18n="cat.strength">Fortaleza</button>
+    <div class="ai-songs-grid" id="aiSongsGrid">
+      <div style="text-align:center;color:var(--gray);padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Cargando canciones...</div>
     </div>
-    <div class="catalog-grid" id="catalogGrid"></div>
+    <div style="text-align:center;margin-top:2rem;">
+      <a href="creator.html" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-i18n="cat.createbtn">Crear mi propia canción</span></a>
+    </div>
   </section>
 
   <!-- Features -->
@@ -233,18 +229,6 @@
     </div>
   </section>
 
-  <!-- AI Songs Gallery -->
-  <section class="section" id="aiSongs" style="padding:3rem 1rem;">
-    <h2 class="section-title"><i class="fas fa-microphone-alt" style="color:var(--primary)"></i> Canciones Creadas con IA</h2>
-    <p style="text-align:center;color:var(--gray);margin-bottom:2rem;">Canciones cristianas reales generadas por nuestra comunidad usando inteligencia artificial</p>
-    <div class="ai-songs-grid" id="aiSongsGrid">
-      <div style="text-align:center;color:var(--gray);padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Cargando canciones...</div>
-    </div>
-    <div style="text-align:center;margin-top:2rem;">
-      <a href="creator.html" class="btn btn-primary"><i class="fas fa-plus"></i> Crear mi propia cancion</a>
-    </div>
-  </section>
-
   <!-- CTA -->
   <section class="cta">
     <h2 data-i18n="cta.title">¿Listo para inspirarte con música y fe?</h2>
@@ -268,24 +252,6 @@
   </footer>
 
   <!-- Video Player Modal -->
-  <div class="video-modal" id="videoModal">
-    <div class="video-modal-backdrop" onclick="closeVideoModal()"></div>
-    <div class="video-modal-content">
-      <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close">
-        <i class="fas fa-times"></i>
-      </button>
-      <div class="video-modal-player">
-        <video id="videoPlayer" controls preload="metadata">
-          <source src="" type="video/mp4">
-        </video>
-      </div>
-      <div class="video-modal-info">
-        <h3 id="videoTitle"></h3>
-        <p id="videoDesc"></p>
-      </div>
-    </div>
-  </div>
-
-  <script src="js/app.js?v=20250623b"></script>
+  <script src="js/app.js?v=20250623e"></script>
 </body>
 </html>

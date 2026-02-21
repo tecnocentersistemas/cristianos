@@ -34,141 +34,6 @@ function toggleTheme() {
   if (icon) icon.className = saved === 'light' ? 'fas fa-sun' : 'fas fa-moon';
 })();
 
-// ===== Catalog Data =====
-var CATALOG = [
-  { id:1,  title:{es:'Montañas de Fe',en:'Mountains of Faith',pt:'Montanhas de Fé'}, genre:'country', theme:'faith', langs:['es','en','pt'], bg:'linear-gradient(135deg,#2d5016,#065f46)', icon:'fa-mountain-sun' },
-  { id:2,  title:{es:'Águilas del Cielo',en:'Eagles of Heaven',pt:'Águias do Céu'}, genre:'rock', theme:'hope', langs:['es','en'], bg:'linear-gradient(135deg,#7f1d1d,#92400e)', icon:'fa-dove' },
-  { id:3,  title:{es:'Ríos de Paz',en:'Rivers of Peace',pt:'Rios de Paz'}, genre:'worship', theme:'peace', langs:['es','en','pt'], bg:'linear-gradient(135deg,#0c4a6e,#155e75)', icon:'fa-water' },
-  { id:4,  title:{es:'Cordero de Dios',en:'Lamb of God',pt:'Cordeiro de Deus'}, genre:'gospel', theme:'faith', langs:['es','en','pt'], bg:'linear-gradient(135deg,#581c87,#4c1d95)', icon:'fa-cross' },
-  { id:5,  title:{es:'Amanecer de Gracia',en:'Dawn of Grace',pt:'Amanhecer da Graça'}, genre:'ballad', theme:'love', langs:['es','en','pt'], bg:'linear-gradient(135deg,#9a3412,#c2410c)', icon:'fa-sun' },
-  { id:6,  title:{es:'Bosque de Esperanza',en:'Forest of Hope',pt:'Floresta de Esperança'}, genre:'folk', theme:'hope', langs:['es','pt'], bg:'linear-gradient(135deg,#14532d,#166534)', icon:'fa-tree' },
-  { id:7,  title:{es:'Alabanza Eterna',en:'Eternal Praise',pt:'Louvor Eterno'}, genre:'worship', theme:'gratitude', langs:['es','en','pt'], bg:'linear-gradient(135deg,#1e3a5f,#312e81)', icon:'fa-hands-praying' },
-  { id:8,  title:{es:'Valle de Amor',en:'Valley of Love',pt:'Vale do Amor'}, genre:'country', theme:'love', langs:['es','en'], bg:'linear-gradient(135deg,#365314,#4d7c0f)', icon:'fa-heart' },
-  { id:9,  title:{es:'Cielos Abiertos',en:'Open Skies',pt:'Céus Abertos'}, genre:'rock', theme:'faith', langs:['es','en','pt'], bg:'linear-gradient(135deg,#1e40af,#3730a3)', icon:'fa-cloud-sun' },
-  { id:10, title:{es:'Palomas de Paz',en:'Doves of Peace',pt:'Pombas da Paz'}, genre:'gospel', theme:'peace', langs:['es','en','pt'], bg:'linear-gradient(135deg,#0f766e,#0d9488)', icon:'fa-dove' },
-  { id:11, title:{es:'Gratitud Infinita',en:'Infinite Gratitude',pt:'Gratidão Infinita'}, genre:'ballad', theme:'gratitude', langs:['es','en','pt'], bg:'linear-gradient(135deg,#7c2d12,#a16207)', icon:'fa-star' },
-  { id:12, title:{es:'Senderos de Luz',en:'Paths of Light',pt:'Caminhos de Luz'}, genre:'folk', theme:'hope', langs:['es','en','pt'], bg:'linear-gradient(135deg,#064e3b,#047857)', icon:'fa-road' },
-  { id:13, title:{es:'Fortaleza en la Roca',en:'Strength in the Rock',pt:'Fortaleza na Rocha'}, genre:'rock', theme:'strength', langs:['es','en','pt'], bg:'linear-gradient(135deg,#451a03,#78350f)', icon:'fa-shield-halved' },
-  { id:14, title:{es:'Leones de Judá',en:'Lions of Judah',pt:'Leões de Judá'}, genre:'gospel', theme:'strength', langs:['es','en','pt'], bg:'linear-gradient(135deg,#92400e,#b45309)', icon:'fa-shield' },
-  { id:15, title:{es:'Cascadas de Gracia',en:'Waterfalls of Grace',pt:'Cachoeiras de Graça'}, genre:'worship', theme:'love', langs:['es','en','pt'], bg:'linear-gradient(135deg,#0e7490,#0891b2)', icon:'fa-droplet' },
-  { id:16, title:{es:'Ciervos del Alba',en:'Deer at Dawn',pt:'Cervos da Aurora'}, genre:'country', theme:'hope', langs:['es','en','pt'], bg:'linear-gradient(135deg,#3f6212,#65a30d)', icon:'fa-leaf' },
-  { id:17, title:{es:'Estrellas del Creador',en:'Stars of the Creator',pt:'Estrelas do Criador'}, genre:'ballad', theme:'faith', langs:['es','en','pt'], bg:'linear-gradient(135deg,#1e1b4b,#312e81)', icon:'fa-star' },
-  { id:18, title:{es:'Jardín de Oración',en:'Garden of Prayer',pt:'Jardim de Oração'}, genre:'folk', theme:'peace', langs:['es','en','pt'], bg:'linear-gradient(135deg,#166534,#15803d)', icon:'fa-seedling' },
-  { id:19, title:{es:'Océano de Misericordia',en:'Ocean of Mercy',pt:'Oceano de Misericórdia'}, genre:'worship', theme:'love', langs:['es','en','pt'], bg:'linear-gradient(135deg,#0c4a6e,#0369a1)', icon:'fa-water' },
-  { id:20, title:{es:'Cumbres de Victoria',en:'Peaks of Victory',pt:'Cumes de Vitória'}, genre:'rock', theme:'strength', langs:['es','en','pt'], bg:'linear-gradient(135deg,#1e3a8a,#1d4ed8)', icon:'fa-flag' },
-  { id:21, title:{es:'Colibríes del Edén',en:'Hummingbirds of Eden',pt:'Beija-flores do Éden'}, genre:'folk', theme:'gratitude', langs:['es','en','pt'], bg:'linear-gradient(135deg,#047857,#059669)', icon:'fa-feather' },
-  { id:22, title:{es:'Desierto Floreciente',en:'Blooming Desert',pt:'Deserto Florescente'}, genre:'country', theme:'hope', langs:['es','en','pt'], bg:'linear-gradient(135deg,#a16207,#ca8a04)', icon:'fa-sun-plant-wilt' },
-  { id:23, title:{es:'Arcoíris de Promesas',en:'Rainbow of Promises',pt:'Arco-íris de Promessas'}, genre:'gospel', theme:'hope', langs:['es','en','pt'], bg:'linear-gradient(135deg,#7c3aed,#c026d3)', icon:'fa-rainbow' },
-  { id:24, title:{es:'Nido de Protección',en:'Nest of Protection',pt:'Ninho de Proteção'}, genre:'ballad', theme:'peace', langs:['es','en','pt'], bg:'linear-gradient(135deg,#78350f,#a16207)', icon:'fa-feather-pointed' },
-  { id:25, title:{es:'Cosecha de Bendiciones',en:'Harvest of Blessings',pt:'Colheita de Bênçãos'}, genre:'country', theme:'gratitude', langs:['es','en','pt'], bg:'linear-gradient(135deg,#854d0e,#a16207)', icon:'fa-wheat-awn' },
-  { id:26, title:{es:'Aurora Boreal Divina',en:'Divine Northern Lights',pt:'Aurora Boreal Divina'}, genre:'worship', theme:'faith', langs:['es','en','pt'], bg:'linear-gradient(135deg,#4c1d95,#7c3aed)', icon:'fa-wand-magic-sparkles' },
-  { id:27, title:{es:'Mariposas de Transformación',en:'Butterflies of Transformation',pt:'Borboletas de Transformação'}, genre:'folk', theme:'hope', langs:['es','en','pt'], bg:'linear-gradient(135deg,#7e22ce,#a855f7)', icon:'fa-spa' },
-  { id:28, title:{es:'Rebaño del Pastor',en:"The Shepherd's Flock",pt:'Rebanho do Pastor'}, genre:'gospel', theme:'love', langs:['es','en','pt'], bg:'linear-gradient(135deg,#166534,#4d7c0f)', icon:'fa-hands-holding-child' },
-  { id:29, title:{es:'Torrente de Alabanza',en:'Torrent of Praise',pt:'Torrente de Louvor'}, genre:'rock', theme:'gratitude', langs:['es','en','pt'], bg:'linear-gradient(135deg,#1e40af,#0ea5e9)', icon:'fa-bolt' },
-  { id:30, title:{es:'Camino al Hogar',en:'Journey Home',pt:'Caminho ao Lar'}, genre:'ballad', theme:'faith', langs:['es','en','pt'], bg:'linear-gradient(135deg,#92400e,#d97706)', icon:'fa-house-chimney' },
-];
-
-var THEME_LABELS = {
-  faith:     {es:'Fe',en:'Faith',pt:'Fé'},
-  hope:      {es:'Esperanza',en:'Hope',pt:'Esperança'},
-  love:      {es:'Amor',en:'Love',pt:'Amor'},
-  peace:     {es:'Paz',en:'Peace',pt:'Paz'},
-  gratitude: {es:'Gratitud',en:'Gratitude',pt:'Gratidão'},
-  strength:  {es:'Fortaleza',en:'Strength',pt:'Fortaleza'}
-};
-
-// ===== Video Files Available =====
-// Maps catalog IDs to real video files on server
-var VIDEO_FILES = {
-  1:  { file: 'montanas_de_fe.mp4', thumb: 'montanas_de_fe_thumb.jpg' },
-  2:  { file: 'aguilas_del_cielo.mp4', thumb: 'aguilas_del_cielo_thumb.jpg' },
-  3:  { file: 'rios_de_paz.mp4', thumb: 'rios_de_paz_thumb.jpg' }
-};
-
-function renderCatalog(filter) {
-  var grid = document.getElementById('catalogGrid');
-  if (!grid) return;
-  var lang = document.documentElement.lang || 'es';
-  var items = filter && filter !== 'all' ? CATALOG.filter(function(v){ return v.theme === filter; }) : CATALOG;
-  grid.innerHTML = items.map(function(v) {
-    var t = v.title[lang] || v.title.es;
-    var thLabel = THEME_LABELS[v.theme] ? (THEME_LABELS[v.theme][lang] || THEME_LABELS[v.theme].es) : v.theme;
-    var hasVideo = VIDEO_FILES[v.id];
-    var thumbStyle = hasVideo
-      ? 'background:url(media/videos/'+hasVideo.thumb+') center/cover no-repeat, '+v.bg
-      : 'background:'+v.bg;
-    var playClass = hasVideo ? 'catalog-play catalog-play-real' : 'catalog-play';
-    var videoBadge = hasVideo ? '<span class="video-ready-badge"><i class="fas fa-check-circle"></i> VIDEO</span>' : '';
-    return '<div class="catalog-card" data-theme-filter="'+v.theme+'" data-video-id="'+v.id+'" onclick="openVideo('+v.id+')">' +
-      '<div class="catalog-thumb" style="'+thumbStyle+'">' +
-        (hasVideo ? '' : '<i class="fas '+v.icon+' catalog-thumb-icon"></i>') +
-        videoBadge +
-        '<div class="'+playClass+'"><i class="fas fa-play"></i></div>' +
-        '<span class="catalog-genre-tag">'+v.genre.charAt(0).toUpperCase()+v.genre.slice(1)+'</span>' +
-        '<div class="catalog-langs">'+v.langs.map(function(l){return '<span class="catalog-lang-badge">'+l.toUpperCase()+'</span>';}).join('')+'</div>' +
-      '</div>' +
-      '<div class="catalog-info"><h4>'+t+'</h4><span class="catalog-theme-tag">'+thLabel+'</span></div>' +
-    '</div>';
-  }).join('');
-}
-
-// ===== Video Player =====
-function openVideo(id) {
-  var vf = VIDEO_FILES[id];
-  if (!vf) {
-    var lang = document.documentElement.lang || 'es';
-    var msgs = {
-      es: 'Este video estará disponible pronto. ¡Estamos generando contenido nuevo!',
-      en: 'This video will be available soon. We are generating new content!',
-      pt: 'Este vídeo estará disponível em breve. Estamos gerando novo conteúdo!'
-    };
-    alert(msgs[lang] || msgs.es);
-    return;
-  }
-  var item = CATALOG.find(function(c){ return c.id === id; });
-  var lang = document.documentElement.lang || 'es';
-  var modal = document.getElementById('videoModal');
-  var player = document.getElementById('videoPlayer');
-  var title = document.getElementById('videoTitle');
-  var desc = document.getElementById('videoDesc');
-
-  player.src = 'media/videos/' + vf.file;
-  title.textContent = item ? (item.title[lang] || item.title.es) : '';
-
-  var descs = {
-    es: 'Video musical cristiano con paisajes inspiradores y versículos bíblicos.',
-    en: 'Christian music video with inspiring landscapes and Bible verses.',
-    pt: 'Vídeo musical cristão com paisagens inspiradoras e versículos bíblicos.'
-  };
-  desc.textContent = descs[lang] || descs.es;
-
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-  player.play().catch(function(){});
-}
-
-function closeVideoModal() {
-  var modal = document.getElementById('videoModal');
-  var player = document.getElementById('videoPlayer');
-  player.pause();
-  player.src = '';
-  modal.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeVideoModal();
-});
-
-// Catalog filters
-document.addEventListener('click', function(e) {
-  var btn = e.target.closest('.filter-btn');
-  if (!btn) return;
-  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
-  renderCatalog(btn.getAttribute('data-filter'));
-});
-
 // ===== i18n =====
 var L = {
   es: {
@@ -189,8 +54,7 @@ var L = {
     'genre.folk':'Sonidos acústicos con bosques y ríos cristalinos',
     'genre.worship':'Alabanza contemporánea con atardeceres y naturaleza',
     'genre.balladName':'Balada','genre.ballad':'Piano y cuerdas con valles verdes y animales en paz',
-    'cat.badge':'Catálogo','cat.title':'Videos listos para disfrutar','cat.subtitle':'Explorá nuestra colección de videos musicales cristianos',
-    'cat.all':'Todos','cat.faith':'Fe','cat.hope':'Esperanza','cat.love':'Amor','cat.peace':'Paz','cat.gratitude':'Gratitud','cat.strength':'Fortaleza',
+    'cat.badge':'Catálogo','cat.aititle':'Canciones Creadas con IA','cat.aisubtitle':'Canciones cristianas reales generadas por nuestra comunidad usando inteligencia artificial','cat.createbtn':'Crear mi propia canción',
     'feat.badge':'Características','feat.title':'¿Por qué elegir FaithTunes?',
     'feat.f1t':'Multilingüe','feat.f1d':'Videos en español, inglés y portugués. La interfaz se adapta automáticamente.',
     'feat.f2t':'Paisajes Inspiradores','feat.f2d':'Montañas, ríos, atardeceres y bosques que elevan el espíritu.',
@@ -229,8 +93,7 @@ var L = {
     'genre.folk':'Acoustic sounds with forests and crystal-clear rivers',
     'genre.worship':'Contemporary praise with sunsets and nature',
     'genre.balladName':'Ballad','genre.ballad':'Piano and strings with green valleys and peaceful animals',
-    'cat.badge':'Catalog','cat.title':'Videos ready to enjoy','cat.subtitle':'Explore our collection of Christian music videos',
-    'cat.all':'All','cat.faith':'Faith','cat.hope':'Hope','cat.love':'Love','cat.peace':'Peace','cat.gratitude':'Gratitude','cat.strength':'Strength',
+    'cat.badge':'Catalog','cat.aititle':'AI-Created Songs','cat.aisubtitle':'Real Christian songs generated by our community using artificial intelligence','cat.createbtn':'Create my own song',
     'feat.badge':'Features','feat.title':'Why choose FaithTunes?',
     'feat.f1t':'Multilingual','feat.f1d':'Videos in Spanish, English and Portuguese. The interface adapts automatically.',
     'feat.f2t':'Inspiring Landscapes','feat.f2d':'Mountains, rivers, sunsets and forests that uplift the spirit.',
@@ -269,8 +132,7 @@ var L = {
     'genre.folk':'Sons acústicos com florestas e rios cristalinos',
     'genre.worship':'Louvor contemporâneo com pôr do sol e natureza',
     'genre.balladName':'Balada','genre.ballad':'Piano e cordas com vales verdes e animais em paz',
-    'cat.badge':'Catálogo','cat.title':'Vídeos prontos para curtir','cat.subtitle':'Explore nossa coleção de vídeos musicais cristãos',
-    'cat.all':'Todos','cat.faith':'Fé','cat.hope':'Esperança','cat.love':'Amor','cat.peace':'Paz','cat.gratitude':'Gratidão','cat.strength':'Fortaleza',
+    'cat.badge':'Catálogo','cat.aititle':'Canções Criadas com IA','cat.aisubtitle':'Canções cristãs reais geradas pela nossa comunidade usando inteligência artificial','cat.createbtn':'Criar minha própria canção',
     'feat.badge':'Recursos','feat.title':'Por que escolher FaithTunes?',
     'feat.f1t':'Multilíngue','feat.f1d':'Vídeos em espanhol, inglês e português. A interface se adapta automaticamente.',
     'feat.f2t':'Paisagens Inspiradoras','feat.f2d':'Montanhas, rios, pôr do sol e florestas que elevam o espírito.',
@@ -325,7 +187,6 @@ function applyLang(lang) {
   document.querySelectorAll('.lang-btn').forEach(function(b) {
     b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang);
   });
-  renderCatalog(document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all');
 }
 
 window.setLang = function(l) {
