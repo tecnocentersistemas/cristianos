@@ -151,9 +151,12 @@ function launchVideoGeneration($slides, $audioFile, $outputFile, $duration, $id,
     if (!$ffmpeg) return;
 
     // Get REAL audio duration from file (not from API which may be wrong)
-    $probeDur = trim(shell_exec($ffmpeg . 'probe -v error -show_entries format=duration -of csv=p=0 ' . escapeshellarg($audioFile) . ' 2>/dev/null') ?: '');
-    $realDuration = floatval($probeDur);
-    if ($realDuration > 0) $duration = $realDuration;
+    $ffprobe = trim(shell_exec('which ffprobe 2>/dev/null') ?: '');
+    if ($ffprobe) {
+        $probeDur = trim(shell_exec($ffprobe . ' -v error -show_entries format=duration -of csv=p=0 ' . escapeshellarg($audioFile) . ' 2>/dev/null') ?: '');
+        $realDuration = floatval($probeDur);
+        if ($realDuration > 0) $duration = $realDuration;
+    }
     if ($duration <= 0) $duration = 180; // fallback 3 min
 
     $numSlides = count($slides);
