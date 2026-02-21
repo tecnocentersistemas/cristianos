@@ -13,9 +13,8 @@ $imgsDir = __DIR__ . '/../media/images/slides';
 $metaDir = __DIR__ . '/../data/songs';
 foreach ([$songsDir, $videosDir, $imgsDir, $metaDir] as $d) { if (!is_dir($d)) mkdir($d, 0755, true); }
 
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'] ?? 'cristianos.centralchat.pro';
-$baseUrl = $protocol . '://' . $host;
+$baseUrl = 'https://' . $host;
 
 // ===== GET: list all songs or get one =====
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
