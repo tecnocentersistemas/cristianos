@@ -133,7 +133,7 @@ $callbackUrl = 'https://' . $host . '/api/suno-callback.php';
 // Build Suno API request
 $sunoPayload = [
     'callBackUrl' => $callbackUrl,
-    'model' => 'V4_5ALL', // V4.5ALL - best structure, max 8 min
+    'model' => 'V5', // V5 - fastest generation
 ];
 
 if ($customMode && $style) {

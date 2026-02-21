@@ -150,9 +150,21 @@ function launchVideoGeneration($slides, $audioFile, $outputFile, $duration, $id,
     $ffmpeg = trim(shell_exec('which ffmpeg 2>/dev/null') ?: '');
     if (!$ffmpeg) return;
 
+    // Get REAL audio duration from file (not from API which may be wrong)
+    $probeDur = trim(shell_exec($ffmpeg . 'probe -v error -show_entries format=duration -of csv=p=0 ' . escapeshellarg($audioFile) . ' 2>/dev/null') ?: '');
+    $realDuration = floatval($probeDur);
+    if ($realDuration > 0) $duration = $realDuration;
+    if ($duration <= 0) $duration = 180; // fallback 3 min
+
     $numSlides = count($slides);
-    $durPerSlide = $duration > 0 ? $duration / $numSlides : 16;
-    $durPerSlide = max(5, min(25, $durPerSlide));
+    $durPerSlide = $duration / $numSlides;
+    $durPerSlide = max(5, min(30, $durPerSlide));
+
+    // Recalculate total to ensure slides cover FULL audio
+    $totalSlidesDur = $durPerSlide * $numSlides;
+    if ($totalSlidesDur < $duration && $numSlides > 0) {
+        $durPerSlide = ceil($duration / $numSlides * 10) / 10; // round up
+    }
 
     // Create a concat file
     $listFile = dirname($outputFile) . '/' . basename($outputFile, '.mp4') . '_list.txt';
@@ -163,12 +175,12 @@ function launchVideoGeneration($slides, $audioFile, $outputFile, $duration, $id,
     $listContent .= "file " . escapeshellarg($slides[count($slides)-1]) . "\n";
     file_put_contents($listFile, $listContent);
 
-    // Build FFmpeg command
+    // Build FFmpeg command — NO -shortest, audio determines total length
     $cmd = $ffmpeg . ' -f concat -safe 0 -i ' . escapeshellarg($listFile)
         . ' -i ' . escapeshellarg($audioFile)
         . ' -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1"'
         . ' -c:v libx264 -preset fast -crf 23 -r 24 -pix_fmt yuv420p'
-        . ' -c:a aac -b:a 192k -shortest -movflags +faststart'
+        . ' -c:a aac -b:a 192k -movflags +faststart'
         . ' -y ' . escapeshellarg($outputFile) . ' 2>/dev/null';
 
     // Create a wrapper script that generates video + updates metadata
@@ -176,9 +188,12 @@ function launchVideoGeneration($slides, $audioFile, $outputFile, $duration, $id,
     $updateScript = dirname($outputFile) . '/' . $id . '_gen.sh';
     $metaFile = $metaDir . '/' . $id . '.json';
     $scriptContent = "#!/bin/bash\n" . $cmd . "\n";
-    // After video is generated, update the metadata JSON to include videoUrl
+    // After video is generated, extract thumbnail frame + update metadata
+    $thumbFile = dirname($audioFile) . '/' . $id . '_cover.jpg';
     $scriptContent .= "if [ -f " . escapeshellarg($outputFile) . " ]; then\n";
-    $scriptContent .= "  php -r '\$f=\"" . addslashes($metaFile) . "\";\$m=json_decode(file_get_contents(\$f),true);\$m[\"videoUrl\"]=\"" . $baseUrl . "/media/videos/" . $id . ".mp4\";file_put_contents(\$f,json_encode(\$m,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));'\n";
+    // Extract frame at 5 seconds as thumbnail
+    $scriptContent .= "  " . $ffmpeg . " -i " . escapeshellarg($outputFile) . " -ss 5 -vframes 1 -q:v 2 -y " . escapeshellarg($thumbFile) . " 2>/dev/null\n";
+    $scriptContent .= "  php -r '\$f=\"" . addslashes($metaFile) . "\";\$m=json_decode(file_get_contents(\$f),true);\$m[\"videoUrl\"]=\"" . $baseUrl . "/media/videos/" . $id . ".mp4\";if(file_exists(\"" . addslashes($thumbFile) . "\")&&filesize(\"" . addslashes($thumbFile) . "\")>5000){\$m[\"imageUrl\"]=\"" . $baseUrl . "/media/audio/songs/" . $id . "_cover.jpg?v=\".time();}file_put_contents(\$f,json_encode(\$m,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));'\n";
     $scriptContent .= "fi\n";
     $scriptContent .= "rm -f " . escapeshellarg($listFile) . " " . escapeshellarg($updateScript) . "\n";
     file_put_contents($updateScript, $scriptContent);
