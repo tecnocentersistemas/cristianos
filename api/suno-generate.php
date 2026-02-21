@@ -24,11 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!$taskId) { echo json_encode(['error'=>'taskId required']); exit; }
 
     // Poll Suno API directly for status
-    $ch = curl_init('https://apibox.erweima.ai/api/v1/generate/record-info?taskId=' . urlencode($taskId));
+    $pollUrl = 'https://apibox.erweima.ai/api/v1/generate/record-info?taskId=' . urlencode($taskId);
+    $ch = curl_init($pollUrl);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $sunoKey],
-        CURLOPT_TIMEOUT => 15
+        CURLOPT_TIMEOUT => 15,
+        CURLOPT_SSL_VERIFYPEER => false
     ]);
     $resp = curl_exec($ch);
     $err = curl_error($ch);
@@ -36,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     curl_close($ch);
 
     if ($err || $code !== 200) {
-        echo json_encode(['status'=>'processing','taskId'=>$taskId]);
+        echo json_encode(['status'=>'processing','taskId'=>$taskId,'debug'=>['curlErr'=>$err,'httpCode'=>$code,'respLen'=>strlen($resp ?: '')]]);
         exit;
     }
 
