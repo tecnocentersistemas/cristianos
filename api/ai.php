@@ -127,13 +127,28 @@ RULES:
 
     $ch = curl_init('https://api.openai.com/v1/chat/completions');
     curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER=>true, CURLOPT_POST=>true,
-        CURLOPT_POSTFIELDS=>json_encode(['model'=>'gpt-4o-mini','messages'=>[['role'=>'system','content'=>$system],['role'=>'user','content'=>$prompt]],'temperature'=>0.7,'max_tokens'=>1200]),
+        'temperature'=>0.7,'max_tokens'=>2000]),
         CURLOPT_HTTPHEADER=>['Content-Type: application/json','Authorization: Bearer '.$apiKey], CURLOPT_TIMEOUT=>30]);
-    $resp = curl_exec($ch); $code = curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+    $resp = curl_exec($ch); $err = curl_error($ch); $code = curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+    if ($err) return ['error'=>'Curl error: '.$err];
     if ($code !== 200) return ['error'=>'OpenAI error '.$code];
-    $data = json_decode($resp, true); $content = trim($data['choices'][0]['message']['content'] ?? '');
-    if (strpos($content, '```') !== false) { preg_match('/```(?:json)?\s*(.*?)\s*```/s', $content, $m); $content = $m[1] ?? $content; }
-    return json_decode($content, true) ?: ['error'=>'JSON parse failed'];
+    $data = json_decode($resp, true);
+    if (!$data || !isset($data['choices'][0]['message']['content'])) return ['error'=>'Empty OpenAI response'];
+    $content = trim($data['choices'][0]['message']['content']);
+    // Strip markdown fences
+    if (strpos($content, '```') !== false) { preg_match('/```(?:json)?\s*(.*?)\s*```/s', $content, $m); if (!empty($m[1])) $content = $m[1]; }
+    // Strip leading/trailing non-JSON chars
+    $content = trim($content);
+    $start = strpos($content, '{');
+    $end = strrpos($content, '}');
+    if ($start !== false && $end !== false) { $content = substr($content, $start, $end - $start + 1); }
+    $result = json_decode($content, true);
+    if (!$result) {
+        // Retry: attempt to fix common issues (trailing commas, etc)
+        $content = preg_replace('/,\s*([}\]])/', '$1', $content);
+        $result = json_decode($content, true);
+    }
+    return $result ?: ['error'=>'JSON parse failed','raw'=>substr($content, 0, 200)];
 }
 
 // ===== MAIN =====
