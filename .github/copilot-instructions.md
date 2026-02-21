@@ -30,10 +30,11 @@ URL de producción: **https://cristianos.centralchat.pro/**
 - NUNCA subir archivos con `scp`. Todo va por git.
 - NUNCA compilar ni usar `run_build`.
 - Usar `;` como separador en PowerShell, NO `&&`.
+- **NO modificar archivos en VPS por comandos directos; todo debe hacerse a través de `git push` y `git pull`.**
 
 ## VPS
 - IP: `172.96.8.245`
-- SSH: `ssh -i "$env:USERPROFILE\.ssh\nueva_llave" root@172.96.8.245`
+- SSH: `ssh -i "$env:USERPROFILE\.ssh\nueva_llave" root@172.96.8.245` (con identity file, sin passphrase/firma)
 - Ruta del proyecto en VPS: `/var/www/cristianos`
 - Servidor web: Nginx
 - Subdominio: `cristianos.centralchat.pro`
