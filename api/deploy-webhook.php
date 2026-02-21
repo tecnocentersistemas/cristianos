@@ -9,7 +9,7 @@ if ($secret && $sig) {
 }
 $payload = json_decode($body, true);
 if (($payload['ref'] ?? '') === 'refs/heads/main') {
-    $output = shell_exec('cd /var/www/cristianos && git pull origin main 2>&1');
+    $output = shell_exec('git config --global --add safe.directory /var/www/cristianos 2>/dev/null; cd /var/www/cristianos && git pull origin main 2>&1');
     echo "Deployed:\n" . $output;
 } else {
     echo 'Not main branch, skipping.';

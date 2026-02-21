@@ -23,52 +23,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $taskId = $_GET['taskId'] ?? '';
     if (!$taskId) { echo json_encode(['error'=>'taskId required']); exit; }
 
-    $cacheFile = $cacheDir . '/' . $taskId . '.json';
-    if (!file_exists($cacheFile)) {
+    // Poll Suno API directly for status
+    $ch = curl_init('https://apibox.erweima.ai/api/v1/generate/record-info?taskId=' . urlencode($taskId));
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $sunoKey],
+        CURLOPT_TIMEOUT => 15
+    ]);
+    $resp = curl_exec($ch);
+    $err = curl_error($ch);
+    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($err || $code !== 200) {
         echo json_encode(['status'=>'processing','taskId'=>$taskId]);
         exit;
     }
 
-    $data = json_decode(file_get_contents($cacheFile), true);
-    if (!$data) {
+    $data = json_decode($resp, true);
+    if (!$data || ($data['code'] ?? 0) !== 200) {
+        $status = $data['data']['status'] ?? 'UNKNOWN';
+        if ($status === 'CREATE_FAIL' || !empty($data['data']['errorMessage'])) {
+            echo json_encode(['status'=>'error','taskId'=>$taskId,'error'=>$data['data']['errorMessage'] ?? 'Generation failed']);
+        } else {
+            echo json_encode(['status'=>'processing','taskId'=>$taskId]);
+        }
+        exit;
+    }
+
+    // Check status
+    $taskData = $data['data'] ?? [];
+    $status = $taskData['status'] ?? '';
+
+    if ($status !== 'SUCCESS') {
+        echo json_encode(['status'=>'processing','taskId'=>$taskId,'sunoStatus'=>$status]);
+        exit;
+    }
+
+    // Extract songs
+    $songsRaw = $taskData['data'] ?? [];
+    $result = [];
+    foreach ($songsRaw as $song) {
+        if (is_array($song) && !empty($song['audioUrl'])) {
+            $result[] = [
+                'id' => $song['id'] ?? '',
+                'audioUrl' => $song['audioUrl'] ?? '',
+                'streamAudioUrl' => $song['streamAudioUrl'] ?? '',
+                'imageUrl' => $song['imageUrl'] ?? '',
+                'title' => $song['title'] ?? '',
+                'tags' => $song['tags'] ?? '',
+                'prompt' => $song['prompt'] ?? '',
+                'duration' => $song['duration'] ?? 0,
+            ];
+        }
+    }
+
+    if (!empty($result)) {
+        echo json_encode(['status'=>'complete','taskId'=>$taskId,'songs'=>$result], JSON_UNESCAPED_UNICODE);
+    } else {
         echo json_encode(['status'=>'processing','taskId'=>$taskId]);
-        exit;
     }
-
-    // Extract song data from Suno callback
-    // Suno callback structure: { code, msg, data: { taskId, callBackUrl, data: [ { id, audioUrl, ... } ] } }
-    $songs = $data['data']['data'] ?? $data['data'] ?? [];
-    if (is_array($songs) && !empty($songs)) {
-        $result = [];
-        foreach ($songs as $song) {
-            if (is_array($song) && isset($song['audioUrl'])) {
-                $result[] = [
-                    'id' => $song['id'] ?? '',
-                    'audioUrl' => $song['audioUrl'] ?? '',
-                    'streamAudioUrl' => $song['streamAudioUrl'] ?? '',
-                    'imageUrl' => $song['imageUrl'] ?? '',
-                    'title' => $song['title'] ?? '',
-                    'tags' => $song['tags'] ?? '',
-                    'duration' => $song['duration'] ?? 0,
-                    'createTime' => $song['createTime'] ?? '',
-                ];
-            }
-        }
-        if (!empty($result)) {
-            echo json_encode(['status'=>'complete','taskId'=>$taskId,'songs'=>$result]);
-            exit;
-        }
-    }
-
-    // If we have data but no songs yet, it might be an error or still processing
-    $code = $data['code'] ?? null;
-    $msg = $data['msg'] ?? '';
-    if ($code && $code !== 200) {
-        echo json_encode(['status'=>'error','taskId'=>$taskId,'error'=>$msg]);
-        exit;
-    }
-
-    echo json_encode(['status'=>'processing','taskId'=>$taskId,'raw'=>$data]);
     exit;
 }
 
