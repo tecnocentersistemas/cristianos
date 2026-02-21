@@ -22,3 +22,4 @@ media/audio/**/*.mp3
 media/videos/**/*.mp4
 media/videos/**/*.jpg
 .pexels-key
+.webhook-secret

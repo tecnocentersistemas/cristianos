@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // GitHub Webhook - Auto deploy on push
 $secret = trim(@file_get_contents(__DIR__.'/../.webhook-secret') ?: '');
 $sig = $_SERVER['HTTP_X_HUB_SIGNATURE_256'] ?? '';
