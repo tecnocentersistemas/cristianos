@@ -235,7 +235,7 @@ function loadAISongs() {
       var creator = s.creator ? 'Por: ' + s.creator : '';
       var tagsShort = (s.tags || '').split(',').slice(0,2).join(', ');
 
-      card.innerHTML = '<div class="ai-song-thumb">' + thumbContent + '<button class="ai-song-play" onclick="playAISong(\'' + s.id + '\')"><i class="fas fa-play"></i></button></div>'
+      card.innerHTML = '<div class="ai-song-thumb" onclick="playAISong(\'' + s.id + '\')" style="cursor:pointer">' + thumbContent + '<div class="ai-song-play"><i class="fas fa-play"></i></div></div>'
         + '<div class="ai-song-body"><div class="ai-song-title">' + (s.title || 'Sin titulo') + '</div>'
         + (creator ? '<div class="ai-song-creator">' + creator + '</div>' : '')
         + (tagsShort ? '<div class="ai-song-tags">' + tagsShort + '</div>' : '')
