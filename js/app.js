@@ -228,7 +228,7 @@ function loadAISongs() {
       }
 
       var actBtns = '';
-      if (hasVideo) actBtns += '<a class="ai-song-btn dl-vid" href="' + s.videoUrl + '" download><i class="fas fa-video"></i> Video</a>';
+      if (hasVideo) actBtns += '<button class="ai-song-btn dl-vid" onclick="event.stopPropagation();playAISong(\'' + s.id + '\')"><i class="fas fa-video"></i> Video</button>';
       actBtns += '<a class="ai-song-btn dl-aud" href="' + s.audioUrl + '" download><i class="fas fa-music"></i> Audio</a>';
       actBtns += '<a class="ai-song-btn share" href="' + s.shareUrl + '" target="_blank"><i class="fas fa-share-alt"></i></a>';
 
@@ -253,20 +253,34 @@ function playAISong(id) {
   .then(function(r) { return r.json(); })
   .then(function(s) {
     if (s.videoUrl) {
-      // Open video in modal
       var modal = document.getElementById('videoModal');
       if (modal) {
-        var player = modal.querySelector('video');
-        if (player) { player.src = s.videoUrl; player.play(); }
-        var title = modal.querySelector('h3');
+        var player = document.getElementById('videoPlayer');
+        if (player) { player.src = s.videoUrl; player.play().catch(function(){}); }
+        var title = document.getElementById('videoTitle');
         if (title) title.textContent = s.title || '';
-        var desc = modal.querySelector('p');
-        if (desc) desc.textContent = s.creator ? 'Creado por: ' + s.creator : '';
+        var desc = document.getElementById('videoDesc');
+        if (desc) desc.textContent = s.tags || '';
+        var acts = document.getElementById('videoActions');
+        if (acts) acts.innerHTML = '<a href="' + s.videoUrl + '" download style="color:var(--primary);text-decoration:none;font-size:0.85rem;"><i class="fas fa-download"></i> Descargar video</a>'
+          + ' &nbsp; <a href="' + (s.shareUrl||'') + '" target="_blank" style="color:var(--primary);text-decoration:none;font-size:0.85rem;"><i class="fas fa-share-alt"></i> Compartir</a>';
         modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
       }
     } else if (s.audioUrl) {
-      // Play audio
-      window.open(s.shareUrl, '_blank');
+      window.open(s.shareUrl || s.audioUrl, '_blank');
     }
   });
 }
+
+function closeVideoModal() {
+  var modal = document.getElementById('videoModal');
+  var player = document.getElementById('videoPlayer');
+  if (player) { player.pause(); player.src = ''; }
+  if (modal) modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeVideoModal();
+});

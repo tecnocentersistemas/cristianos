@@ -252,6 +252,25 @@
   </footer>
 
   <!-- Video Player Modal -->
-  <script src="js/app.js?v=20250623e"></script>
+  <div class="video-modal" id="videoModal">
+    <div class="video-modal-backdrop" onclick="closeVideoModal()"></div>
+    <div class="video-modal-content">
+      <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="video-modal-player">
+        <video id="videoPlayer" controls preload="metadata">
+          <source src="" type="video/mp4">
+        </video>
+      </div>
+      <div class="video-modal-info">
+        <h3 id="videoTitle"></h3>
+        <p id="videoDesc"></p>
+        <div id="videoActions" style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js?v=20250623h"></script>
 </body>
 </html>
