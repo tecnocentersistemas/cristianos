@@ -66,47 +66,49 @@ function staticImages($cats) {
 
 // ===== AUDIO: Genre + mood matching =====
 function pickAudio($genre, $mood = 'peaceful') {
-    $px = 'https://cdn.pixabay.com/audio/';
     $km = 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/';
     $lib = [
         'country'=>[
             ['url'=>$km.'Americana.mp3','name'=>'Country Americana','mood'=>'peaceful'],
-            ['url'=>$km.'Daily%20Beetle.mp3','name'=>'Country Folk','mood'=>'joyful'],
-            ['url'=>$km.'On%20My%20Way.mp3','name'=>'On My Way','mood'=>'uplifting'],
-            ['url'=>$km.'Easy%20Lemon.mp3','name'=>'Easy Country','mood'=>'joyful'],
-            ['url'=>$km.'Local%20Forecast.mp3','name'=>'Country Breeze','mood'=>'peaceful'],
+            ['url'=>$km.'Fretless.mp3','name'=>'Country Fretless','mood'=>'joyful'],
+            ['url'=>$km.'Bass%20Walker.mp3','name'=>'Country Bass','mood'=>'uplifting'],
+            ['url'=>$km.'Americana.mp3','name'=>'Country Classic','mood'=>'reflective'],
         ],
         'rock'=>[
-            ['url'=>$km.'Inspired.mp3','name'=>'Inspired Rock','mood'=>'powerful'],
-            ['url'=>$px.'2022/01/18/audio_d0a13f69d2.mp3','name'=>'Epic Rock Inspiration','mood'=>'powerful'],
-            ['url'=>$px.'2022/11/22/audio_febc508520.mp3','name'=>'Rock Anthem','mood'=>'uplifting'],
-            ['url'=>$km.'Life%20of%20Riley.mp3','name'=>'Rock of Life','mood'=>'joyful'],
+            ['url'=>$km.'Crusade.mp3','name'=>'Epic Crusade','mood'=>'powerful'],
+            ['url'=>$km.'Five%20Armies.mp3','name'=>'Five Armies','mood'=>'powerful'],
+            ['url'=>$km.'Hero%20Theme.mp3','name'=>'Hero Theme','mood'=>'uplifting'],
+            ['url'=>$km.'Impact%20Prelude.mp3','name'=>'Impact Prelude','mood'=>'powerful'],
+            ['url'=>$km.'Volatile%20Reaction.mp3','name'=>'Volatile Reaction','mood'=>'powerful'],
+            ['url'=>$km.'Inspired.mp3','name'=>'Inspired','mood'=>'uplifting'],
         ],
         'gospel'=>[
             ['url'=>$km.'Wholesome.mp3','name'=>'Wholesome Gospel','mood'=>'joyful'],
             ['url'=>$km.'Amazing%20Plan.mp3','name'=>'Amazing Gospel Plan','mood'=>'uplifting'],
-            ['url'=>$km.'Groove%20Grove.mp3','name'=>'Gospel Groove','mood'=>'joyful'],
-            ['url'=>$px.'2022/11/22/audio_febc508520.mp3','name'=>'Gospel Power','mood'=>'powerful'],
+            ['url'=>$km.'Bright%20Wish.mp3','name'=>'Bright Wish','mood'=>'joyful'],
+            ['url'=>$km.'Sovereign.mp3','name'=>'Sovereign','mood'=>'powerful'],
+            ['url'=>$km.'Lasting%20Hope.mp3','name'=>'Lasting Hope','mood'=>'uplifting'],
         ],
         'folk'=>[
-            ['url'=>$km.'Americana.mp3','name'=>'Folk Americana','mood'=>'peaceful'],
             ['url'=>$km.'Garden%20Music.mp3','name'=>'Folk Garden','mood'=>'peaceful'],
             ['url'=>$km.'Perspectives.mp3','name'=>'Folk Perspectives','mood'=>'reflective'],
-            ['url'=>$km.'Dirt%20Rhodes.mp3','name'=>'Folk Rhodes','mood'=>'joyful'],
+            ['url'=>$km.'Thatched%20Villagers.mp3','name'=>'Folk Village','mood'=>'joyful'],
+            ['url'=>$km.'Carefree.mp3','name'=>'Carefree','mood'=>'joyful'],
+            ['url'=>$km.'Dreamer.mp3','name'=>'Dreamer','mood'=>'peaceful'],
         ],
         'worship'=>[
             ['url'=>$km.'Gymnopedie%20No%201.mp3','name'=>'Worship Piano','mood'=>'peaceful'],
             ['url'=>$km.'Peaceful%20Desolation.mp3','name'=>'Peaceful Worship','mood'=>'reflective'],
-            ['url'=>$px.'2022/02/22/audio_d1718ab41b.mp3','name'=>'Peaceful Meditation','mood'=>'peaceful'],
-            ['url'=>$px.'2021/11/25/audio_91b32e02f9.mp3','name'=>'Ambient Worship','mood'=>'peaceful'],
+            ['url'=>$km.'Canon%20in%20D%20Major.mp3','name'=>'Canon in D','mood'=>'peaceful'],
             ['url'=>$km.'Eternal%20Hope.mp3','name'=>'Eternal Hope','mood'=>'uplifting'],
+            ['url'=>$km.'Bathed%20in%20the%20Light.mp3','name'=>'Bathed in Light','mood'=>'peaceful'],
         ],
         'ballad'=>[
-            ['url'=>$px.'2022/08/03/audio_54ca0ffa52.mp3','name'=>'Gentle Piano Ballad','mood'=>'reflective'],
+            ['url'=>$km.'Heartbreaking.mp3','name'=>'Heartbreaking','mood'=>'reflective'],
+            ['url'=>$km.'Bittersweet.mp3','name'=>'Bittersweet','mood'=>'reflective'],
             ['url'=>$km.'At%20Rest.mp3','name'=>'Piano At Rest','mood'=>'peaceful'],
-            ['url'=>$km.'Eternal%20Hope.mp3','name'=>'Hopeful Ballad','mood'=>'uplifting'],
-            ['url'=>$px.'2022/05/27/audio_1808fbf07a.mp3','name'=>'Peaceful Ballad','mood'=>'peaceful'],
-            ['url'=>$px.'2021/11/25/audio_91b32e02f9.mp3','name'=>'Soft Emotional','mood'=>'reflective'],
+            ['url'=>$km.'Gymnopedie%20No%201.mp3','name'=>'Gymnopedie','mood'=>'peaceful'],
+            ['url'=>$km.'Dreamer.mp3','name'=>'Dreamer','mood'=>'uplifting'],
         ],
     ];
     $pool = $lib[$genre] ?? $lib['worship'];

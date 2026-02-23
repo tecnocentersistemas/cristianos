@@ -285,20 +285,26 @@ function closeVideoModal() {
 }
 
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { closeVideoModal(); closeGenreSongs(); }
+  if (e.key === 'Escape') { closeVideoModal(); closeGenreSongs(); closeSlideshowModal(); }
 });
 
 // ===== Genre Songs Player =====
 var _catalogCache = null;
 var _genreAudio = null;
 var _currentGenre = '';
+var _slideshow = { images: [], current: 0, interval: null, playing: false };
 
 function loadCatalog(cb) {
   if (_catalogCache) return cb(_catalogCache);
-  fetch('data/catalog.json')
+  fetch('data/catalog-enhanced.json')
   .then(function(r) { return r.json(); })
   .then(function(data) { _catalogCache = data; cb(data); })
-  .catch(function() { cb(null); });
+  .catch(function() {
+    fetch('data/catalog.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) { _catalogCache = data; cb(data); })
+    .catch(function() { cb(null); });
+  });
 }
 
 function showGenreSongs(genre) {
@@ -314,7 +320,6 @@ function showGenreSongs(genre) {
   panel.style.display = 'block';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  // Highlight active genre card
   document.querySelectorAll('.genre-card').forEach(function(c) { c.classList.remove('genre-active'); });
   var cards = document.querySelectorAll('.genre-card');
   var genres = ['country','rock','gospel','folk','worship','ballad'];
@@ -336,45 +341,155 @@ function showGenreSongs(genre) {
     songs.forEach(function(s) {
       var title = (typeof s.title === 'object') ? (s.title[lang] || s.title.es || s.title.en) : s.title;
       var desc = (typeof s.description === 'object') ? (s.description[lang] || s.description.es || '') : (s.description || '');
-      var mins = Math.floor((s.duration || 0) / 60);
-      var secs = (s.duration || 0) % 60;
-      var durStr = mins + ':' + (secs < 10 ? '0' : '') + secs;
+      var thumbUrl = '';
+      if (s.images && s.images.length > 0) {
+        thumbUrl = s.images[0].url || s.images[0];
+      } else if (s.thumbnail) {
+        thumbUrl = s.thumbnail;
+      }
+      var verseRefs = [];
+      if (s.verses) {
+        s.verses.forEach(function(v) { verseRefs.push(typeof v === 'object' ? v.ref : v); });
+      }
 
       var item = document.createElement('div');
       item.className = 'genre-song-item';
       item.setAttribute('data-id', s.id);
       item.innerHTML = '<div class="genre-song-thumb" style="background:' + (s.bg || 'var(--primary)') + '">'
-        + (s.thumbnail ? '<img src="' + s.thumbnail + '" alt="' + title + '" onerror="this.style.display=\'none\'">' : '')
+        + (thumbUrl ? '<img src="' + thumbUrl + '" alt="' + title + '" onerror="this.style.display=\'none\'" loading="lazy">' : '')
         + '<div class="genre-song-play-overlay"><i class="fas fa-play"></i></div></div>'
         + '<div class="genre-song-info"><div class="genre-song-title">' + title + '</div>'
         + '<div class="genre-song-desc">' + desc + '</div>'
-        + '<div class="genre-song-meta"><span class="genre-song-duration"><i class="fas fa-clock"></i> ' + durStr + '</span>'
-        + (s.verses ? '<span class="genre-song-verses"><i class="fas fa-book-bible"></i> ' + s.verses.join(', ') + '</span>' : '')
+        + '<div class="genre-song-meta"><span class="genre-song-verses"><i class="fas fa-book-bible"></i> ' + verseRefs.slice(0,2).join(', ') + '</span>'
         + '</div></div>';
-      item.onclick = function() { playGenreSong(s); };
+      item.onclick = function() { openSlideshowModal(s); };
       list.appendChild(item);
     });
   });
 }
 
-function playGenreSong(song) {
-  if (_genreAudio) { _genreAudio.pause(); }
+function openSlideshowModal(song) {
+  closeSlideshowModal();
+  var lang = localStorage.getItem('ft_lang') || 'es';
+  var title = (typeof song.title === 'object') ? (song.title[lang] || song.title.es || song.title.en) : (song.title || '');
+  var desc = (typeof song.description === 'object') ? (song.description[lang] || song.description.es || '') : (song.description || '');
 
-  // Remove playing state from all items
+  // Mark playing in list
   document.querySelectorAll('.genre-song-item').forEach(function(el) { el.classList.remove('playing'); });
-
-  // Find and mark current
   var item = document.querySelector('.genre-song-item[data-id="' + song.id + '"]');
   if (item) item.classList.add('playing');
 
+  // Build images array
+  _slideshow.images = [];
+  if (song.images && song.images.length > 0) {
+    song.images.forEach(function(img) {
+      _slideshow.images.push({ url: img.url || img, alt: img.alt || '', credit: img.credit || '' });
+    });
+  }
+  if (_slideshow.images.length === 0 && song.thumbnail) {
+    _slideshow.images.push({ url: song.thumbnail, alt: title, credit: '' });
+  }
+
+  // Build verses HTML
+  var versesHtml = '';
+  if (song.verses && song.verses.length > 0) {
+    song.verses.forEach(function(v) {
+      if (typeof v === 'object') {
+        versesHtml += '<div class="ss-verse"><i class="fas fa-book-bible"></i><div><strong>' + v.ref + '</strong><br>' + v.text + '</div></div>';
+      }
+    });
+  }
+
+  // Create modal
+  var modal = document.createElement('div');
+  modal.id = 'slideshowModal';
+  modal.className = 'ss-modal';
+  modal.innerHTML = '<div class="ss-backdrop" onclick="closeSlideshowModal()"></div>'
+    + '<div class="ss-container">'
+    + '<button class="ss-close" onclick="closeSlideshowModal()"><i class="fas fa-times"></i></button>'
+    + '<div class="ss-player">'
+    + '<div class="ss-slides" id="ssSlides"></div>'
+    + '<div class="ss-overlay">'
+    + '<div class="ss-title">' + title + '</div>'
+    + '<div class="ss-verse-overlay" id="ssVerseOverlay"></div>'
+    + '</div>'
+    + '<div class="ss-credit" id="ssCredit"></div>'
+    + '</div>'
+    + '<div class="ss-info">'
+    + '<div class="ss-desc">' + desc + '</div>'
+    + '<div class="ss-genre-badge"><i class="fas ' + (song.icon || 'fa-music') + '"></i> ' + (song.genre || '') + '</div>'
+    + (versesHtml ? '<div class="ss-verses">' + versesHtml + '</div>' : '')
+    + '</div>'
+    + '</div>';
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+
+  // Build slides
+  var slidesEl = document.getElementById('ssSlides');
+  _slideshow.images.forEach(function(img, idx) {
+    var slide = document.createElement('div');
+    slide.className = 'ss-slide' + (idx === 0 ? ' active' : '');
+    slide.style.backgroundImage = 'url(' + img.url + ')';
+    slidesEl.appendChild(slide);
+  });
+
+  // Start slideshow
+  _slideshow.current = 0;
+  updateVerseOverlay(song, 0);
+  updateCredit(0);
+  _slideshow.interval = setInterval(function() {
+    nextSlide(song);
+  }, 7000);
+  _slideshow.playing = true;
+
+  // Start audio
   _genreAudio = new Audio(song.audioUrl);
   _genreAudio.volume = 0.7;
   _genreAudio.play().catch(function(e) { console.log('Audio play error:', e); });
   _genreAudio.onended = function() {
-    if (item) item.classList.remove('playing');
-    // Auto-play next song in the genre
     autoPlayNext(song);
   };
+
+  setTimeout(function() { modal.classList.add('active'); }, 50);
+}
+
+function nextSlide(song) {
+  var slides = document.querySelectorAll('#ssSlides .ss-slide');
+  if (slides.length === 0) return;
+  slides[_slideshow.current].classList.remove('active');
+  _slideshow.current = (_slideshow.current + 1) % slides.length;
+  slides[_slideshow.current].classList.add('active');
+  updateVerseOverlay(song, _slideshow.current);
+  updateCredit(_slideshow.current);
+}
+
+function updateVerseOverlay(song, idx) {
+  var el = document.getElementById('ssVerseOverlay');
+  if (!el || !song.verses || song.verses.length === 0) return;
+  var v = song.verses[idx % song.verses.length];
+  if (typeof v === 'object') {
+    el.innerHTML = '<div class="ss-verse-text">"' + v.text + '"</div><div class="ss-verse-ref">— ' + v.ref + '</div>';
+  }
+}
+
+function updateCredit(idx) {
+  var el = document.getElementById('ssCredit');
+  if (!el) return;
+  var img = _slideshow.images[idx];
+  el.textContent = img && img.credit ? '📷 ' + img.credit : '';
+}
+
+function closeSlideshowModal() {
+  var modal = document.getElementById('slideshowModal');
+  if (modal) {
+    modal.classList.remove('active');
+    setTimeout(function() { modal.remove(); }, 300);
+  }
+  if (_slideshow.interval) { clearInterval(_slideshow.interval); _slideshow.interval = null; }
+  _slideshow.playing = false;
+  if (_genreAudio) { _genreAudio.pause(); _genreAudio = null; }
+  document.body.style.overflow = '';
+  document.querySelectorAll('.genre-song-item').forEach(function(el) { el.classList.remove('playing'); });
 }
 
 function autoPlayNext(currentSong) {
@@ -385,14 +500,15 @@ function autoPlayNext(currentSong) {
     if (songs[i].id === currentSong.id) { idx = i; break; }
   }
   if (idx >= 0 && idx < songs.length - 1) {
-    playGenreSong(songs[idx + 1]);
+    openSlideshowModal(songs[idx + 1]);
+  } else {
+    closeSlideshowModal();
   }
 }
 
 function closeGenreSongs() {
   var panel = document.getElementById('genreSongsPanel');
   if (panel) panel.style.display = 'none';
-  if (_genreAudio) { _genreAudio.pause(); _genreAudio = null; }
+  closeSlideshowModal();
   document.querySelectorAll('.genre-card').forEach(function(c) { c.classList.remove('genre-active'); });
-  document.querySelectorAll('.genre-song-item').forEach(function(el) { el.classList.remove('playing'); });
 }
