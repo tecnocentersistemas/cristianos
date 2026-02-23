@@ -3,9 +3,9 @@
 html { scroll-behavior: smooth; }
 
 :root {
-  --primary: #0ea5e9;
-  --primary-dark: #0284c7;
-  --secondary: #f59e0b;
+  --primary: #d97706;
+  --primary-dark: #b45309;
+  --secondary: #7c3aed;
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
