@@ -7,8 +7,8 @@
   <title>FaithTunes - Crear Video</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css?v=20250627c">
-  <link rel="stylesheet" href="css/creator.css?v=20250627c">
+  <link rel="stylesheet" href="css/app.css?v=20250628a">
+  <link rel="stylesheet" href="css/creator.css?v=20250628a">
 </head>
 <body>
   <!-- Nav -->
@@ -52,9 +52,26 @@
             <p data-i18n="cr.welcome">¡Hola! Soy FaithTunes AI. Decime qué tipo de video musical cristiano querés crear. Por ejemplo:</p>
             <div class="chat-suggestions">
               <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug1">Creame una canción de amor a Dios con montañas</button>
-              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug2">A song about faith with eagles and sunsets</button>
-              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug3">Um vídeo de esperança com florestas e rios</button>
-              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug4">Video de paz con corderos y campos verdes</button>
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug2">Una canción de fe con águilas y atardeceres</button>
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug3">Un video de esperanza con bosques y ríos</button>
+              <button class="chat-suggestion" onclick="useSuggestion(this)" data-i18n="cr.sug4">Video country de paz con corderos y campos verdes</button>
+            </div>
+            <div class="chat-shortcuts">
+              <p class="shortcuts-title" data-i18n="cr.shortcutsTitle">Accesos rápidos</p>
+              <div class="shortcuts-grid">
+                <button class="shortcut-btn" onclick="useShortcut('animals')"><i class="fas fa-dove"></i> <span data-i18n="cr.shortAnimals">Animales</span></button>
+                <button class="shortcut-btn" onclick="useShortcut('landscapes')"><i class="fas fa-mountain-sun"></i> <span data-i18n="cr.shortLandscapes">Paisajes</span></button>
+                <button class="shortcut-btn" onclick="useShortcut('plants')"><i class="fas fa-seedling"></i> <span data-i18n="cr.shortPlants">Plantas</span></button>
+                <button class="shortcut-btn" onclick="useShortcut('sunsets')"><i class="fas fa-sun"></i> <span data-i18n="cr.shortSunsets">Atardeceres</span></button>
+              </div>
+            </div>
+            <div class="chat-tips">
+              <p class="tips-title"><i class="fas fa-lightbulb"></i> <span data-i18n="cr.tipsTitle">Cómo crear tu video</span></p>
+              <ul class="tips-list">
+                <li data-i18n="cr.tip1">Describí el tema, género y escenario que querés.</li>
+                <li data-i18n="cr.tip2">Podés pedir animales, paisajes, plantas, atardeceres...</li>
+                <li data-i18n="cr.tip3">La IA genera música cantada + video con imágenes reales.</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -160,8 +177,8 @@
   <!-- Hidden audio player -->
   <audio id="bgAudio" preload="auto"></audio>
 
-  <script src="js/i18n.js?v=20250627c"></script>
-  <script src="js/creator.js?v=20250627c"></script>
+  <script src="js/i18n.js?v=20250628a"></script>
+  <script src="js/creator.js?v=20250628a"></script>
 </body>
 </html>
 

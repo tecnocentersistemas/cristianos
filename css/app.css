@@ -230,11 +230,27 @@ body {
   margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .genre-songs-header h3 { font-size: 1.25rem; font-weight: 700; }
+.genre-songs-back {
+  display: none; align-items: center; gap: 0.4rem;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: var(--primary); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer;
+  font-size: 0.82rem; font-weight: 600; font-family: inherit; transition: all 0.3s;
+}
+.genre-songs-back:hover { background: rgba(217,119,6,0.15); border-color: var(--primary); }
+@media (max-width: 768px) { .genre-songs-back { display: flex; } }
 .genre-songs-close {
   background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
   color: var(--gray); width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
   display: flex; align-items: center; justify-content: center; transition: all 0.3s;
 }
+.genre-songs-close:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+.genre-create-cta {
+  text-align: center; margin-top: 1.5rem; padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.genre-create-cta p { color: var(--gray); font-size: 0.88rem; margin-bottom: 0.75rem; }
+.genre-create-cta p i { color: var(--primary); margin-right: 0.3rem; }
+.btn-sm { font-size: 0.85rem; padding: 0.5rem 1.25rem; }
 .genre-songs-close:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
 .genre-songs-list { display: flex; flex-direction: column; gap: 0.5rem; }
 .genre-song-item {
@@ -424,6 +440,8 @@ footer a:hover { transform: scale(1.15); }
 [data-theme="light"] .genre-songs-panel { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
 [data-theme="light"] .genre-songs-header { border-bottom-color: rgba(0,0,0,0.06); }
 [data-theme="light"] .genre-songs-close { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+[data-theme="light"] .genre-songs-back { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+[data-theme="light"] .genre-create-cta { border-top-color: rgba(0,0,0,0.06); }
 [data-theme="light"] .genre-song-item:hover { background: rgba(217,119,6,0.04); border-color: rgba(217,119,6,0.12); }
 [data-theme="light"] .genre-song-item.playing { background: rgba(217,119,6,0.08); }
 [data-theme="light"] .genre-song-desc,
@@ -665,6 +683,24 @@ footer a:hover { transform: scale(1.15); }
   .ss-verse-text { font-size: 0.85rem; }
   .ss-info { padding: 1rem; }
 }
+
+/* Branding overlay at end of video */
+.ss-branding-end {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.88); z-index: 5;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  animation: brandFadeIn 1s ease;
+}
+.ss-branding-end .branding-url {
+  font-size: 2rem; font-weight: 800; color: var(--primary);
+  text-shadow: 0 2px 10px rgba(217,119,6,0.4);
+  letter-spacing: 1px;
+}
+.ss-branding-end .branding-sub {
+  font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 0.5rem;
+}
+@keyframes brandFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 600px) { .ss-branding-end .branding-url { font-size: 1.3rem; } }
 
 @media (max-width: 480px) {
   .nav-brand { font-size: 0.95rem; }

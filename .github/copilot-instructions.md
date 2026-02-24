@@ -1,7 +1,7 @@
 # Copilot Instructions - FaithTunes (cristianos)
 
 ## Proyecto
-Plataforma web para videos musicales cristianos con IA. Nombre de trabajo: "cristianos". Marca: "FaithTunes".
+Plataforma web para videos musicales cristianos con IA. Nombre de trabajo: "cristianos". Marca: "FaithTunes".  
 URL de producción: **https://cristianos.centralchat.pro/**
 
 ## Stack técnico
@@ -80,3 +80,6 @@ cristianos/
 - Proyecto INDEPENDIENTE de CentralChat. Reutiliza patrones (i18n, theme toggle, CSS variables, responsive) pero NO comparte archivos.
 - Repo CentralChat: `tecnocentersistemas/chatbot-centralchat` (separado).
 - Futuro: reutilizar lógica de RAG y OpenAI de CentralChat adaptada para selección de recursos multimedia.
+
+## Mantenimiento de HTML
+- Al usar `multi_replace_string_in_file` para actualizar los cache busters en archivos HTML, verifica que las etiquetas HTML permanezcan intactas. Esto incluye asegurarse de que `<link rel="stylesheet" href="...">` y `<script src="..."></script>` no se conviertan en solo texto. Siempre revisa las líneas afectadas después de las actualizaciones de cache buster.

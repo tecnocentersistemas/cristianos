@@ -62,7 +62,14 @@ var L = {
     'price.p1':'Videos ilimitados','price.p2':'Todos los géneros','price.p3':'Calidad HD',
     'price.p4':'Descarga directa MP4','price.p5':'Videos personalizados con IA','price.p6':'Nuevos videos cada semana','price.getPremium':'Elegir Premium',
     'cta.title':'¿Listo para inspirarte con música y fe?','cta.desc':'Explorá nuestro catálogo de videos musicales cristianos y compartí la palabra de Dios.','cta.btn':'Explorar Videos',
-    'footer.copy':'© 2025 FaithTunes. Todos los derechos reservados.'
+    'footer.copy':'© 2025 FaithTunes. Todos los derechos reservados.',
+    'genre.createCta':'¿Querés crear tu propia canción cantada? La IA la genera a tu gusto.',
+    'genre.createBtn':'Crear mi canción con IA',
+    'genre.back':'Volver a géneros',
+    'cat.createCta':'Podés generar tu propia canción cantada con IA. Elegí el tema, el estilo y listo.',
+    'feat.createCta':'Creá tus propias canciones cristianas cantadas con inteligencia artificial.',
+    'feat.createBtn':'Ir al creador con IA',
+    'branding.end':'yeshuacristiano.com'
   },
   en: {
     'nav.how':'How It Works','nav.genres':'Genres','nav.catalog':'Catalog','nav.pricing':'Pricing','nav.explore':'Explore',
@@ -98,7 +105,14 @@ var L = {
     'price.p1':'Unlimited videos','price.p2':'All genres','price.p3':'HD quality',
     'price.p4':'Direct MP4 download','price.p5':'AI-personalized videos','price.p6':'New videos every week','price.getPremium':'Get Premium',
     'cta.title':'Ready to be inspired by music and faith?','cta.desc':'Explore our catalog of Christian music videos and share the word of God.','cta.btn':'Explore Videos',
-    'footer.copy':'© 2025 FaithTunes. All rights reserved.'
+    'footer.copy':'© 2025 FaithTunes. All rights reserved.',
+    'genre.createCta':'Want to create your own sung song? AI generates it to your taste.',
+    'genre.createBtn':'Create my song with AI',
+    'genre.back':'Back to genres',
+    'cat.createCta':'You can generate your own AI-sung song. Choose the theme, style and you\'re set.',
+    'feat.createCta':'Create your own Christian songs sung with artificial intelligence.',
+    'feat.createBtn':'Go to AI creator',
+    'branding.end':'yeshuacristiano.com'
   },
   pt: {
     'nav.how':'Como Funciona','nav.genres':'Gêneros','nav.catalog':'Catálogo','nav.pricing':'Preços','nav.explore':'Explorar',
@@ -134,7 +148,14 @@ var L = {
     'price.p1':'Vídeos ilimitados','price.p2':'Todos os gêneros','price.p3':'Qualidade HD',
     'price.p4':'Download direto MP4','price.p5':'Vídeos personalizados com IA','price.p6':'Novos vídeos toda semana','price.getPremium':'Escolher Premium',
     'cta.title':'Pronto para se inspirar com música e fé?','cta.desc':'Explore nosso catálogo de vídeos musicais cristãos e compartilhe a palavra de Deus.','cta.btn':'Explorar Vídeos',
-    'footer.copy':'© 2025 FaithTunes. Todos os direitos reservados.'
+    'footer.copy':'© 2025 FaithTunes. Todos os direitos reservados.',
+    'genre.createCta':'Quer criar sua própria música cantada? A IA gera ao seu gosto.',
+    'genre.createBtn':'Criar minha música com IA',
+    'genre.back':'Voltar aos gêneros',
+    'cat.createCta':'Você pode gerar sua própria música cantada com IA. Escolha o tema, estilo e pronto.',
+    'feat.createCta':'Crie suas próprias músicas cristãs cantadas com inteligência artificial.',
+    'feat.createBtn':'Ir ao criador com IA',
+    'branding.end':'yeshuacristiano.com'
   },
   de: {
     'nav.how':'So funktioniert es','nav.genres':'Genres','nav.catalog':'Katalog','nav.pricing':'Preise','nav.explore':'Entdecken',
@@ -170,7 +191,11 @@ var L = {
     'price.p1':'Unbegrenzte Videos','price.p2':'Alle Genres','price.p3':'HD-Qualität',
     'price.p4':'Direkter MP4-Download','price.p5':'KI-personalisierte Videos','price.p6':'Jede Woche neue Videos','price.getPremium':'Premium wählen',
     'cta.title':'Bereit für Inspiration durch Musik und Glauben?','cta.desc':'Entdecke christliche Musikvideos und teile Gottes Wort.','cta.btn':'Videos entdecken',
-    'footer.copy':'© 2025 FaithTunes. Alle Rechte vorbehalten.'
+    'footer.copy':'© 2025 FaithTunes. Alle Rechte vorbehalten.',
+    'genre.createCta':'Möchtest du deinen eigenen gesungenen Song erstellen? Die KI generiert ihn nach deinem Geschmack.',
+    'genre.createBtn':'Meinen Song mit KI erstellen',
+    'genre.back':'Zurück zu Genres',
+    'branding.end':'yeshuacristiano.com'
   },
   fr: {
     'nav.how':'Comment ça marche','nav.genres':'Genres','nav.catalog':'Catalogue','nav.pricing':'Tarifs','nav.explore':'Explorer',
@@ -206,7 +231,11 @@ var L = {
     'price.p1':'Vidéos illimitées','price.p2':'Tous les genres','price.p3':'Qualité HD',
     'price.p4':'Téléchargement MP4 direct','price.p5':'Vidéos personnalisées par IA','price.p6':'Nouvelles vidéos chaque semaine','price.getPremium':'Choisir Premium',
     'cta.title':'Prêt à vous inspirer avec la musique et la foi ?','cta.desc':'Explorez notre catalogue de vidéos musicales chrétiennes et partagez la parole de Dieu.','cta.btn':'Explorer les vidéos',
-    'footer.copy':'© 2025 FaithTunes. Tous droits réservés.'
+    'footer.copy':'© 2025 FaithTunes. Tous droits réservés.',
+    'genre.createCta':'Vous voulez créer votre propre chanson chantée ? L\'IA la génère à votre goût.',
+    'genre.createBtn':'Créer ma chanson avec IA',
+    'genre.back':'Retour aux genres',
+    'branding.end':'yeshuacristiano.com'
   },
   it: {
     'nav.how':'Come funziona','nav.genres':'Generi','nav.catalog':'Catalogo','nav.pricing':'Prezzi','nav.explore':'Esplora',
@@ -242,7 +271,11 @@ var L = {
     'price.p1':'Video illimitati','price.p2':'Tutti i generi','price.p3':'Qualità HD',
     'price.p4':'Download diretto MP4','price.p5':'Video personalizzati con IA','price.p6':'Nuovi video ogni settimana','price.getPremium':'Scegli Premium',
     'cta.title':'Pronto a ispirarti con musica e fede?','cta.desc':'Esplora il nostro catalogo di video musicali cristiani e condividi la parola di Dio.','cta.btn':'Esplora i video',
-    'footer.copy':'© 2025 FaithTunes. Tutti i diritti riservati.'
+    'footer.copy':'© 2025 FaithTunes. Tutti i diritti riservati.',
+    'genre.createCta':'Vuoi creare la tua canzone cantata? L\'IA la genera a tuo gusto.',
+    'genre.createBtn':'Crea la mia canzone con IA',
+    'genre.back':'Torna ai generi',
+    'branding.end':'yeshuacristiano.com'
   },
   pl: {
     'nav.how':'Jak to działa','nav.genres':'Gatunki','nav.catalog':'Katalog','nav.pricing':'Cennik','nav.explore':'Odkrywaj',
@@ -732,7 +765,10 @@ var CL = {
     'cr.sunoReadyMobile':'🎤 ¡Tu canción cantada está lista! Deslizá hacia abajo para escucharla.',
     'cr.sunoWaiting':'⏳ La canción se está generando... ({seconds}s)','cr.sunoWaitingShort':'Esperando canción de Suno AI...',
     'cr.download':'Descargar','cr.share':'Compartir','cr.copyLink':'Copiar link','cr.downloadVideo':'Video MP4','cr.downloadAudio':'Audio MP3',
-    'cr.lyricsTitle':'Letra de la canción','cr.copied':'¡Link copiado!','cr.downloadStarted':'Descarga iniciada...'
+    'cr.lyricsTitle':'Letra de la canción','cr.copied':'¡Link copiado!','cr.downloadStarted':'Descarga iniciada...',
+    'cr.shortcutsTitle':'Accesos rápidos','cr.shortAnimals':'Animales','cr.shortLandscapes':'Paisajes','cr.shortPlants':'Plantas','cr.shortSunsets':'Atardeceres',
+    'cr.tipsTitle':'Cómo crear tu video','cr.tip1':'Describí el tema, género y escenario que querés.','cr.tip2':'Podés pedir animales, paisajes, plantas, atardeceres...','cr.tip3':'La IA genera música cantada + video con imágenes reales.',
+    'cr.sug5':'Un video con delfines y océano en worship','cr.sug6':'Canción folk con flores y jardínes','cr.sug7':'Video con águilas y montañas en rock','cr.sug8':'Balada con atardeceres y naturaleza'
   },
   en: {
     'cr.title':'Create Music Video','cr.subtitle':'Describe what video you want and AI creates it for you',
@@ -750,7 +786,10 @@ var CL = {
     'cr.sunoReadyMobile':'🎤 Your sung song is ready! Scroll down to listen.',
     'cr.sunoWaiting':'⏳ Song is being generated... ({seconds}s)','cr.sunoWaitingShort':'Waiting for Suno AI song...',
     'cr.download':'Download','cr.share':'Share','cr.copyLink':'Copy link','cr.downloadVideo':'Video MP4','cr.downloadAudio':'Audio MP3',
-    'cr.lyricsTitle':'Song Lyrics','cr.copied':'Link copied!','cr.downloadStarted':'Download started...'
+    'cr.lyricsTitle':'Song Lyrics','cr.copied':'Link copied!','cr.downloadStarted':'Download started...',
+    'cr.shortcutsTitle':'Quick access','cr.shortAnimals':'Animals','cr.shortLandscapes':'Landscapes','cr.shortPlants':'Plants','cr.shortSunsets':'Sunsets',
+    'cr.tipsTitle':'How to create your video','cr.tip1':'Describe the theme, genre and scenery you want.','cr.tip2':'You can request animals, landscapes, plants, sunsets...','cr.tip3':'AI generates sung music + video with real images.',
+    'cr.sug5':'A video with dolphins and ocean in worship','cr.sug6':'Folk song with flowers and gardens','cr.sug7':'Video with eagles and mountains in rock','cr.sug8':'Ballad with sunsets and nature'
   },
   pt: {
     'cr.title':'Criar Vídeo Musical','cr.subtitle':'Descreva que vídeo você quer e a IA cria para você',
@@ -768,7 +807,10 @@ var CL = {
     'cr.sunoReadyMobile':'🎤 Sua música cantada está pronta! Role para baixo para ouvir.',
     'cr.sunoWaiting':'⏳ A música está sendo gerada... ({seconds}s)','cr.sunoWaitingShort':'Esperando música do Suno AI...',
     'cr.download':'Baixar','cr.share':'Compartilhar','cr.copyLink':'Copiar link','cr.downloadVideo':'Vídeo MP4','cr.downloadAudio':'Áudio MP3',
-    'cr.lyricsTitle':'Letra da música','cr.copied':'Link copiado!','cr.downloadStarted':'Download iniciado...'
+    'cr.lyricsTitle':'Letra da música','cr.copied':'Link copiado!','cr.downloadStarted':'Download iniciado...',
+    'cr.shortcutsTitle':'Acessos rápidos','cr.shortAnimals':'Animais','cr.shortLandscapes':'Paisagens','cr.shortPlants':'Plantas','cr.shortSunsets':'Pôr do sol',
+    'cr.tipsTitle':'Como criar seu vídeo','cr.tip1':'Descreva o tema, gênero e cenário que você quer.','cr.tip2':'Você pode pedir animais, paisagens, plantas, pôr do sol...','cr.tip3':'A IA gera música cantada + vídeo com imagens reais.',
+    'cr.sug5':'Um vídeo com golfinhos e oceano em worship','cr.sug6':'Música folk com flores e jardins','cr.sug7':'Vídeo com águias e montanhas em rock','cr.sug8':'Balada com pôr do sol e natureza'
   },
   de: {
     'cr.title':'Musikvideo erstellen','cr.subtitle':'Beschreibe dein gewünschtes Video und die KI erstellt es',

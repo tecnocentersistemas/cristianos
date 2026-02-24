@@ -72,6 +72,38 @@ function addTyping() {
 function removeTyping() { var el = document.getElementById('typingIndicator'); if (el) el.remove(); }
 function useSuggestion(btn) { document.getElementById('chatInput').value = btn.textContent; sendMessage(); }
 
+// Quick-access shortcuts for content types
+function useShortcut(type) {
+  var prompts = {
+    animals: {
+      es: 'Creame una canción cristiana con animales de la creación: águilas, delfines, corderos en la naturaleza',
+      en: 'Create a Christian song with animals of creation: eagles, dolphins, lambs in nature',
+      pt: 'Crie uma música cristã com animais da criação: águias, golfinhos, cordeiros na natureza'
+    },
+    landscapes: {
+      es: 'Un video musical con montañas majestuosas, ríos cristalinos y valles verdes',
+      en: 'A music video with majestic mountains, crystal rivers and green valleys',
+      pt: 'Um vídeo musical com montanhas majestosas, rios cristalinos e vales verdes'
+    },
+    plants: {
+      es: 'Canción cristiana con jardines de flores, árboles frondosos y campos de trigo',
+      en: 'Christian song with flower gardens, lush trees and wheat fields',
+      pt: 'Música cristã com jardins de flores, árvores frondosas e campos de trigo'
+    },
+    sunsets: {
+      es: 'Video de worship con atardeceres espectaculares sobre el océano y la naturaleza',
+      en: 'Worship video with spectacular sunsets over the ocean and nature',
+      pt: 'Vídeo de worship com pôr do sol espetaculares sobre o oceano e a natureza'
+    }
+  };
+  var lang = currentLang;
+  var prompt = prompts[type] ? (prompts[type][lang] || prompts[type].es) : '';
+  if (prompt) {
+    document.getElementById('chatInput').value = prompt;
+    sendMessage();
+  }
+}
+
 // Unlock audio on user interaction (required by browsers)
 var _audioUnlocked = false;
 function unlockAudio() {
@@ -279,11 +311,20 @@ function startVideoExperience(video) {
   slideshow.currentSlide = 0;
   startPlayback();
   if (window.innerWidth <= 768) { document.getElementById('creatorPlayer').scrollIntoView({ behavior: 'smooth' }); }
+
+  // Show branding when audio ends
+  var audioForBranding = document.getElementById('bgAudio');
+  audioForBranding.onended = function() {
+    showCreatorBranding();
+  };
 }
 
 function startPlayback() {
   slideshow.playing = true;
   document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+  // Remove branding overlay if present
+  var brandingEl = document.querySelector('.slideshow-branding-end');
+  if (brandingEl) brandingEl.remove();
   // Audio already auto-plays via oncanplay in startVideoExperience
   var audioEl = document.getElementById('bgAudio');
   if (audioEl.src && audioEl.paused) { audioEl.play().catch(function(){}); }
@@ -348,6 +389,17 @@ function restartPlayback() {
 }
 
 // unmute removed - audio plays automatically after user interaction
+
+function showCreatorBranding() {
+  var container = document.getElementById('slideshowContainer');
+  if (!container) return;
+  var existing = container.querySelector('.slideshow-branding-end');
+  if (existing) return;
+  var overlay = document.createElement('div');
+  overlay.className = 'slideshow-branding-end';
+  overlay.innerHTML = '<div class="branding-url">yeshuacristiano.com</div><div class="branding-sub">FaithTunes \u2022 M\u00fasica cristiana con IA</div>';
+  container.appendChild(overlay);
+}
 
 function toggleMute() {
   var a = document.getElementById('bgAudio');

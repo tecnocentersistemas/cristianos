@@ -193,7 +193,24 @@ function playAISong(id) {
       var modal = document.getElementById('videoModal');
       if (modal) {
         var player = document.getElementById('videoPlayer');
-        if (player) { player.src = s.videoUrl; player.play().catch(function(){}); }
+        if (player) {
+          player.src = s.videoUrl;
+          player.play().catch(function(){});
+          // Show branding at end of video
+          player.onended = function() {
+            var acts = document.getElementById('videoActions');
+            if (acts) {
+              var brandEl = acts.querySelector('.video-branding');
+              if (!brandEl) {
+                brandEl = document.createElement('div');
+                brandEl.className = 'video-branding';
+                brandEl.style.cssText = 'width:100%;text-align:center;margin-top:0.5rem;font-weight:800;color:var(--primary);font-size:1.1rem;';
+                brandEl.textContent = 'yeshuacristiano.com';
+                acts.appendChild(brandEl);
+              }
+            }
+          };
+        }
         var title = document.getElementById('videoTitle');
         if (title) title.textContent = s.title || '';
         var desc = document.getElementById('videoDesc');
@@ -252,7 +269,14 @@ function showGenreSongs(genre) {
   titleEl.textContent = (genreNames[genre] || genre);
   list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gray)"><i class="fas fa-spinner fa-spin"></i></div>';
   panel.style.display = 'block';
-  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Scroll to the panel so it's visible (especially on mobile)
+  setTimeout(function() { panel.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+
+  // Push history state for mobile back button
+  if (window.innerWidth <= 768) {
+    history.pushState({ genre: genre }, '', '#genre-' + genre);
+  }
 
   document.querySelectorAll('.genre-card').forEach(function(c) { c.classList.remove('genre-active'); });
   var cards = document.querySelectorAll('.genre-card');
@@ -353,6 +377,7 @@ function openSlideshowModal(song) {
     + '<div class="ss-desc">' + desc + '</div>'
     + '<div class="ss-genre-badge"><i class="fas ' + (song.icon || 'fa-music') + '"></i> ' + (song.genre || '') + '</div>'
     + (versesHtml ? '<div class="ss-verses">' + versesHtml + '</div>' : '')
+    + '<div style="text-align:center;margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.06);"><a href="creator.html" style="color:var(--primary);font-size:0.82rem;text-decoration:none;font-weight:600;"><i class="fas fa-wand-magic-sparkles"></i> ' + (L[localStorage.getItem('ft_lang')||'es']||L.es)['genre.createBtn'] + '</a></div>'
     + '</div>'
     + '</div>';
   document.body.appendChild(modal);
@@ -381,7 +406,8 @@ function openSlideshowModal(song) {
   _genreAudio.volume = 0.7;
   _genreAudio.play().catch(function(e) { console.log('Audio play error:', e); });
   _genreAudio.onended = function() {
-    autoPlayNext(song);
+    // Show branding before moving to next song
+    showSlideshowBranding(function() { autoPlayNext(song); });
   };
 
   setTimeout(function() { modal.classList.add('active'); }, 50);
@@ -426,6 +452,21 @@ function closeSlideshowModal() {
   document.querySelectorAll('.genre-song-item').forEach(function(el) { el.classList.remove('playing'); });
 }
 
+function showSlideshowBranding(callback) {
+  var player = document.querySelector('.ss-player');
+  if (!player) { if (callback) callback(); return; }
+  var existing = player.querySelector('.ss-branding-end');
+  if (existing) existing.remove();
+  var overlay = document.createElement('div');
+  overlay.className = 'ss-branding-end';
+  overlay.innerHTML = '<div class="branding-url">yeshuacristiano.com</div><div class="branding-sub">FaithTunes \u2022 M\u00fasica cristiana con IA</div>';
+  player.appendChild(overlay);
+  setTimeout(function() {
+    if (overlay.parentNode) overlay.remove();
+    if (callback) callback();
+  }, 3500);
+}
+
 function autoPlayNext(currentSong) {
   if (!_catalogCache || !_currentGenre) return;
   var songs = _catalogCache.videos.filter(function(v) { return v.genre === _currentGenre; });
@@ -445,4 +486,21 @@ function closeGenreSongs() {
   if (panel) panel.style.display = 'none';
   closeSlideshowModal();
   document.querySelectorAll('.genre-card').forEach(function(c) { c.classList.remove('genre-active'); });
+  // Scroll back to genres section on mobile
+  var genresSection = document.getElementById('genres');
+  if (genresSection && window.innerWidth <= 768) {
+    genresSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
+
+// Mobile back button support
+window.addEventListener('popstate', function(e) {
+  var panel = document.getElementById('genreSongsPanel');
+  if (panel && panel.style.display === 'block') {
+    closeGenreSongs();
+  }
+  var ssModal = document.getElementById('slideshowModal');
+  if (ssModal) {
+    closeSlideshowModal();
+  }
+});

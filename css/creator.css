@@ -584,3 +584,97 @@
   transition: opacity 0.5s ease;
 }
 .slideshow-credit.visible { opacity: 1; }
+
+/* Creator shortcuts */
+.chat-shortcuts {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.shortcuts-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+.shortcut-btn {
+  display: flex; align-items: center; gap: 0.4rem;
+  background: rgba(124,58,237,0.1);
+  border: 1px solid rgba(124,58,237,0.2);
+  color: var(--secondary);
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.shortcut-btn:hover {
+  background: rgba(124,58,237,0.2);
+  border-color: var(--secondary);
+}
+.shortcut-btn i { font-size: 0.85rem; }
+
+/* Creator tips */
+.chat-tips {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: rgba(217,119,6,0.06);
+  border-radius: 10px;
+  border: 1px solid rgba(217,119,6,0.1);
+}
+.tips-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.4rem;
+}
+.tips-title i { margin-right: 0.3rem; }
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tips-list li {
+  font-size: 0.75rem;
+  color: var(--gray);
+  padding: 0.15rem 0;
+  padding-left: 0.75rem;
+  position: relative;
+}
+.tips-list li::before {
+  content: '•';
+  color: var(--primary);
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+}
+
+/* Branding overlay for creator */
+.slideshow-branding-end {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.88); z-index: 5;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  animation: brandFadeIn 1s ease;
+}
+.slideshow-branding-end .branding-url {
+  font-size: 1.8rem; font-weight: 800; color: var(--primary);
+  text-shadow: 0 2px 10px rgba(217,119,6,0.4);
+  letter-spacing: 1px;
+}
+.slideshow-branding-end .branding-sub {
+  font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.4rem;
+}
+
+/* Light theme for shortcuts/tips */
+[data-theme="light"] .chat-shortcuts { border-top-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .shortcut-btn { background: rgba(124,58,237,0.06); border-color: rgba(124,58,237,0.15); }
+[data-theme="light"] .chat-tips { background: rgba(217,119,6,0.04); border-color: rgba(217,119,6,0.08); }

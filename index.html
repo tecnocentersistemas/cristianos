@@ -8,7 +8,7 @@
   <meta name="description" content="Genera y disfruta videos musicales cristianos con paisajes, animales y versículos bíblicos. Country, rock, gospel y más géneros en múltiples idiomas.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css?v=20250627c">
+  <link rel="stylesheet" href="css/app.css?v=20250628a">
 </head>
 <body>
   <div class="particles" id="particles"></div>
@@ -109,7 +109,8 @@
     <div class="ai-songs-grid" id="aiSongsGrid">
       <div style="text-align:center;color:var(--gray);padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Cargando canciones...</div>
     </div>
-    <div style="text-align:center;margin-top:2rem;">
+    <div style="text-align:center;margin-top:1.5rem;">
+      <p style="color:var(--gray);font-size:0.9rem;margin-bottom:0.75rem;"><i class="fas fa-wand-magic-sparkles" style="color:var(--primary)"></i> <span data-i18n="cat.createCta">Podés generar tu propia canción cantada con IA. Elegí el tema, el estilo y listo.</span></p>
       <a href="creator.html" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-i18n="cat.createbtn">Crear mi propia canción</span></a>
     </div>
   </section>
@@ -162,10 +163,15 @@
     <!-- Genre Songs Player -->
     <div id="genreSongsPanel" class="genre-songs-panel" style="display:none">
       <div class="genre-songs-header">
+        <button onclick="closeGenreSongs()" class="genre-songs-back"><i class="fas fa-arrow-left"></i> <span data-i18n="genre.back">Volver a géneros</span></button>
         <h3 id="genreSongsTitle"></h3>
         <button onclick="closeGenreSongs()" class="genre-songs-close"><i class="fas fa-times"></i></button>
       </div>
       <div id="genreSongsList" class="genre-songs-list"></div>
+      <div class="genre-create-cta">
+        <p><i class="fas fa-wand-magic-sparkles"></i> <span data-i18n="genre.createCta">¿Querés crear tu propia canción cantada? La IA la genera a tu gusto.</span></p>
+        <a href="creator.html" class="btn btn-primary btn-sm"><i class="fas fa-microphone-alt"></i> <span data-i18n="genre.createBtn">Crear mi canción con IA</span></a>
+      </div>
     </div>
   </section>
 
@@ -206,6 +212,10 @@
         <h3 data-i18n="feat.f6t">Potenciado por IA</h3>
         <p data-i18n="feat.f6d">Inteligencia artificial para contenido único y personalizado.</p>
       </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <p style="color:var(--gray);font-size:0.9rem;margin-bottom:0.75rem;"><i class="fas fa-microphone-alt" style="color:var(--primary)"></i> <span data-i18n="feat.createCta">Creá tus propias canciones cristianas cantadas con inteligencia artificial.</span></p>
+      <a href="creator.html" class="btn btn-outline" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;"><i class="fas fa-wand-magic-sparkles"></i> <span data-i18n="feat.createBtn">Ir al creador con IA</span></a>
     </div>
   </section>
 
@@ -286,7 +296,7 @@
     </div>
   </div>
 
-  <script src="js/i18n.js?v=20250627c"></script>
-  <script src="js/app.js?v=20250627c"></script>
+  <script src="js/i18n.js?v=20250628a"></script>
+  <script src="js/app.js?v=20250628a"></script>
 </body>
 </html>
