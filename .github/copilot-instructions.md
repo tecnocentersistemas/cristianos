@@ -73,7 +73,8 @@ cristianos/
   cd C:\cristianos; git add -A; git commit -m "mensaje descriptivo"; git push origin main
   ```
 ## Configuración en VPS
-- Cuando necesites configurar cosas en el VPS, NO ejecutar comandos SSH largos. En su lugar, crea un archivo de script local, súbelo a través de git y luego ejecútalo en el VPS con un comando SSH corto. Esto evita frustraciones por comandos largos o que se agoten el tiempo de espera.
+- Cuando necesites configurar cosas en el VPS, NO ejecutar comandos SSH largos. En su lugar, crea un archivo de script local, súbelo a través de git y luego ejecútalo en el VPS con un comando SSH corto. Esto evita frustraciones por comandos largos o que se agoten el tiempo de espera.  
+- **Evitar múltiples comandos SSH secuenciales.** Utiliza scripts locales para simplificar la ejecución en el VPS.
 
 ## Relación con CentralChat
 - Proyecto INDEPENDIENTE de CentralChat. Reutiliza patrones (i18n, theme toggle, CSS variables, responsive) pero NO comparte archivos.

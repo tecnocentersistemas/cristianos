@@ -1,0 +1,24 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{A1C3E5F7-2B4D-4F6A-8C9E-0D1F2A3B4C5D}</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="index.html" />
+    <Content Include="creator.html" />
+    <Content Include="share.php" />
+    <Content Include="css\app.css" />
+    <Content Include="css\creator.css" />
+    <Content Include="js\app.js" />
+    <Content Include="js\creator.js" />
+    <Content Include="api\songs.php" />
+    <Content Include="api\ai.php" />
+    <Content Include="api\suno-generate.php" />
+    <Content Include="api\suno-lyrics.php" />
+    <Content Include="api\suno-callback.php" />
+    <Content Include="api\save-song.php" />
+    <Content Include="api\generate-catalog.php" />
+    <Content Include=".github\copilot-instructions.md" />
+  </ItemGroup>
+</Project>
