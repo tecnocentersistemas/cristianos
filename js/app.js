@@ -108,19 +108,27 @@ function buildLangDropdown() {
 
 function toggleLangDropdown() {
   var dd = document.getElementById('langDropdown');
-  if (dd) dd.classList.toggle('active');
+  if (!dd) return;
+  dd.classList.toggle('active');
+  // Mobile overlay
+  var ov = document.getElementById('langOverlay');
+  if (ov) ov.classList.toggle('active', dd.classList.contains('active'));
 }
 
 function selectLang(code) {
   setLang(code);
   var dd = document.getElementById('langDropdown');
   if (dd) dd.classList.remove('active');
+  var ov = document.getElementById('langOverlay');
+  if (ov) ov.classList.remove('active');
 }
 
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.lang-globe-wrapper')) {
     var dd = document.getElementById('langDropdown');
     if (dd) dd.classList.remove('active');
+    var ov = document.getElementById('langOverlay');
+    if (ov) ov.classList.remove('active');
   }
 });
 

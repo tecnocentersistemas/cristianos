@@ -498,7 +498,21 @@ footer a:hover { transform: scale(1.15); }
   .theme-toggle-btn { width: 32px; height: 32px; font-size: 0.85rem; border-radius: 8px; }
   .lang-globe-btn { padding: 5px 8px; font-size: 0.8rem; border-radius: 8px; }
   .lang-globe-current { font-size: 0.7rem; }
-  .lang-dropdown { min-width: 160px; max-height: 260px; }
+  .lang-dropdown {
+    position: fixed; top: 56px; left: 8px; right: 8px;
+    min-width: auto; max-height: 55vh; overflow-y: auto;
+    border-radius: 14px; padding: 8px;
+    display: none;
+  }
+  .lang-dropdown.active {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; animation: dropIn 0.2s ease;
+  }
+  .lang-dropdown-item { padding: 10px 8px; font-size: 0.8rem; gap: 6px; }
+  .lang-flag { font-size: 1.1rem; }
+  .lang-name { font-size: 0.75rem; }
+  .lang-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 999; }
+  .lang-overlay.active { display: block; }
 
   .hero { padding: 5rem 1.5rem 3rem; min-height: auto; }
   .hero-badge { font-size: 0.75rem; padding: 0.4rem 0.8rem; margin-bottom: 1.5rem; }
