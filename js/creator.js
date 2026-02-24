@@ -19,82 +19,37 @@ function toggleTheme() {
   if (icon) icon.className = saved === 'light' ? 'fas fa-sun' : 'fas fa-moon';
 })();
 
-// ===== i18n =====
-var CL = {
-  es: {
-    'cr.title':'Crear Video Musical','cr.subtitle':'Describí qué video querés y la IA lo crea para vos',
-    'cr.welcome':'¡Hola! Soy FaithTunes AI. Decime qué tipo de video musical cristiano querés crear. Por ejemplo:',
-    'cr.sug1':'Creame una canción de amor a Dios con montañas','cr.sug2':'Una canción de fe con águilas y atardeceres',
-    'cr.sug3':'Un video de esperanza con bosques y ríos','cr.sug4':'Video country de paz con corderos y campos verdes',
-    'cr.placeholder':'Describí tu video musical cristiano...','cr.emptyTitle':'Tu video aparecerá aquí',
-    'cr.emptyDesc':'Escribí en el chat qué tipo de video querés crear y la IA lo generará para vos.',
-    'cr.generating':'Creando tu video musical... Esto puede tardar unos segundos.',
-    'cr.ready':'¡Tu video está listo! Miralo en el panel de la derecha. 🎬',
-    'cr.error':'Hubo un error al crear el video. Intentá de nuevo.',
-    'cr.readyMobile':'¡Tu video está listo! Deslizá hacia abajo para verlo. 🎬',
-    'cr.sunoLabel':'🎤 Canción cantada con IA',
-    'cr.sunoBeta':'BETA',
-    'cr.sunoGenerating':'🎤 Generando canción cantada con Suno AI... Esto tarda 1-3 minutos.',
-    'cr.sunoReady':'🎤 ¡Tu canción cantada está lista! Escuchala en el panel de la derecha.',
-    'cr.sunoReadyMobile':'🎤 ¡Tu canción cantada está lista! Deslizá hacia abajo para escucharla.',
-    'cr.sunoWaiting':'⏳ La canción se está generando... ({seconds}s)',
-    'cr.sunoWaitingShort':'Esperando canción de Suno AI...',
-    'cr.download':'Descargar','cr.share':'Compartir','cr.copyLink':'Copiar link',
-    'cr.downloadVideo':'Video MP4','cr.downloadAudio':'Audio MP3',
-    'cr.lyricsTitle':'Letra de la canción','cr.copied':'¡Link copiado!','cr.downloadStarted':'Descarga iniciada...'
-  },
-  en: {
-    'cr.title':'Create Music Video','cr.subtitle':'Describe what video you want and AI creates it for you',
-    'cr.welcome':'Hi! I\'m FaithTunes AI. Tell me what kind of Christian music video you want to create. For example:',
-    'cr.sug1':'Create a love song to God with mountains','cr.sug2':'A song about faith with eagles and sunsets',
-    'cr.sug3':'A hope video with forests and rivers','cr.sug4':'Country peace video with lambs and green fields',
-    'cr.placeholder':'Describe your Christian music video...','cr.emptyTitle':'Your video will appear here',
-    'cr.emptyDesc':'Type in the chat what kind of video you want and AI will generate it for you.',
-    'cr.generating':'Creating your music video... This may take a few seconds.',
-    'cr.ready':'Your video is ready! Watch it in the right panel. 🎬',
-    'cr.error':'There was an error creating the video. Try again.',
-    'cr.readyMobile':'Your video is ready! Scroll down to watch it. 🎬',
-    'cr.sunoLabel':'🎤 AI Sung Song',
-    'cr.sunoBeta':'BETA',
-    'cr.sunoGenerating':'🎤 Generating sung song with Suno AI... This takes 1-3 minutes.',
-    'cr.sunoReady':'🎤 Your sung song is ready! Listen in the right panel.',
-    'cr.sunoReadyMobile':'🎤 Your sung song is ready! Scroll down to listen.',
-    'cr.sunoWaiting':'⏳ Song is being generated... ({seconds}s)',
-    'cr.sunoWaitingShort':'Waiting for Suno AI song...',
-    'cr.download':'Download','cr.share':'Share','cr.copyLink':'Copy link',
-    'cr.lyricsTitle':'Song Lyrics','cr.copied':'Link copied!','cr.downloadStarted':'Download started...'
-  },
-  pt: {
-    'cr.title':'Criar Vídeo Musical','cr.subtitle':'Descreva que vídeo você quer e a IA cria para você',
-    'cr.welcome':'Olá! Sou FaithTunes AI. Me diga que tipo de vídeo musical cristão quer criar. Por exemplo:',
-    'cr.sug1':'Crie uma canção de amor a Deus com montanhas','cr.sug2':'Uma canção de fé com águias e pôr do sol',
-    'cr.sug3':'Um vídeo de esperança com florestas e rios','cr.sug4':'Vídeo country de paz com cordeiros e campos verdes',
-    'cr.placeholder':'Descreva seu vídeo musical cristão...','cr.emptyTitle':'Seu vídeo aparecerá aqui',
-    'cr.emptyDesc':'Digite no chat que tipo de vídeo quer criar e a IA vai gerá-lo para você.',
-    'cr.generating':'Criando seu vídeo musical... Isso pode levar alguns segundos.',
-    'cr.ready':'Seu vídeo está pronto! Assista no painel da direita. 🎬',
-    'cr.error':'Houve um erro ao criar o vídeo. Tente novamente.',
-    'cr.readyMobile':'Seu vídeo está pronto! Role para baixo para assistir. 🎬',
-    'cr.sunoLabel':'🎤 Música cantada com IA',
-    'cr.sunoBeta':'BETA',
-    'cr.sunoGenerating':'🎤 Gerando música cantada com Suno AI... Isso leva 1-3 minutos.',
-    'cr.sunoReady':'🎤 Sua música cantada está pronta! Ouça no painel da direita.',
-    'cr.sunoReadyMobile':'🎤 Sua música cantada está pronta! Role para baixo para ouvir.',
-    'cr.sunoWaiting':'⏳ A música está sendo gerada... ({seconds}s)',
-    'cr.sunoWaitingShort':'Esperando música do Suno AI...',
-    'cr.download':'Baixar','cr.share':'Compartilhar','cr.copyLink':'Copiar link',
-    'cr.lyricsTitle':'Letra da música','cr.copied':'Link copiado!','cr.downloadStarted':'Download iniciado...'
-  }
-};
+// ===== i18n (translations loaded from i18n.js) =====
 var currentLang = localStorage.getItem('ft_lang') || 'es';
 function t(key) { return (CL[currentLang] || CL.es)[key] || CL.es[key] || key; }
 function applyCreatorLang(lang) {
   currentLang = lang; document.documentElement.lang = lang;
+  document.documentElement.dir = RTL_LANGS.indexOf(lang) >= 0 ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(function(el) { var k = el.getAttribute('data-i18n'); var text = t(k); if (text) el.innerHTML = text; });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) { var k = el.getAttribute('data-i18n-placeholder'); var text = t(k); if (text) el.placeholder = text; });
-  document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang); });
+  var currentEl = document.querySelector('.lang-globe-current');
+  if (currentEl) currentEl.textContent = lang.toUpperCase();
+  document.querySelectorAll('.lang-dropdown-item').forEach(function(item) {
+    item.classList.toggle('active', item.dataset.lang === lang);
+  });
 }
 window.setLang = function(l) { if (!CL[l]) return; localStorage.setItem('ft_lang', l); applyCreatorLang(l); };
+
+function buildLangDropdown() {
+  var dd = document.getElementById('langDropdown');
+  if (!dd) return;
+  var html = '';
+  LANGS.forEach(function(lang) {
+    html += '<div class="lang-dropdown-item' + (lang.code === currentLang ? ' active' : '') + '" data-lang="' + lang.code + '" onclick="selectLang(\'' + lang.code + '\')">'
+      + '<span class="lang-flag">' + lang.flag + '</span>'
+      + '<span class="lang-name">' + lang.name + '</span>'
+      + '</div>';
+  });
+  dd.innerHTML = html;
+}
+function toggleLangDropdown() { var dd = document.getElementById('langDropdown'); if (dd) dd.classList.toggle('active'); }
+function selectLang(code) { setLang(code); var dd = document.getElementById('langDropdown'); if (dd) dd.classList.remove('active'); }
+document.addEventListener('click', function(e) { if (!e.target.closest('.lang-globe-wrapper')) { var dd = document.getElementById('langDropdown'); if (dd) dd.classList.remove('active'); } });
 
 // ===== Chat =====
 function addMessage(text, type) {
@@ -695,6 +650,7 @@ function shareOn(platform) {
 (function() {
   var lang = localStorage.getItem('ft_lang') || 'es';
   var navLangs = navigator.languages || [navigator.language || ''];
-  if (!localStorage.getItem('ft_lang')) { for (var i = 0; i < navLangs.length; i++) { var c = navLangs[i].split('-')[0].toLowerCase(); if (CL[c]) { lang = c; break; } } }
+  if (!localStorage.getItem('ft_lang')) { for (var i = 0; i < navLangs.length; i++) { var c = navLangs[i].split('-')[0].toLowerCase(); if (c === 'no') c = 'nb'; if (CL[c]) { lang = c; break; } } }
   applyCreatorLang(lang);
+  buildLangDropdown();
 })();
