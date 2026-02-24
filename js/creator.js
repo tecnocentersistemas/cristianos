@@ -262,51 +262,49 @@ function startVideoExperience(video) {
   var audioEl = document.getElementById('bgAudio');
   audioEl.pause(); audioEl.currentTime = 0;
   audioEl.muted = false;
+  // Remove old timeupdate listeners
+  audioEl.onended = null;
+  audioEl.onerror = null;
+  audioEl.oncanplay = null;
 
-  // In Suno mode, skip instrumental audio entirely - wait for real song
-  if (video._skipAudio) {
-    var npEl = document.getElementById('nowPlaying');
-    var npText = document.getElementById('nowPlayingText');
-    if (npEl && npText) { npText.textContent = '🎤 ' + t('cr.sunoWaitingShort'); npEl.style.display = 'flex'; }
-  } else if (video.audio) {
+  if (video.audio) {
     audioEl.src = video.audio;
     audioEl.volume = 0.7;
     audioEl.load();
-    // Fallback audio if the main one fails to load
-    var _audioFallbacks = [
-      'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Eternal%20Hope.mp3',
-      'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Americana.mp3',
-      'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Gymnopedie%20No%201.mp3'
-    ];
-    var _fallbackTried = false;
-    audioEl.onerror = function() {
-      if (_fallbackTried) return;
-      _fallbackTried = true;
-      console.warn('Audio failed to load, trying fallback...');
-      var fb = _audioFallbacks[Math.floor(Math.random() * _audioFallbacks.length)];
-      audioEl.src = fb;
-      audioEl.load();
-      audioEl.oncanplay = function() {
-        audioEl.play().catch(function(){});
-        audioEl.oncanplay = null;
+    // Fallback audio if the main one fails to load (only for non-Suno)
+    if (!video._isSuno) {
+      var _audioFallbacks = [
+        'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Eternal%20Hope.mp3',
+        'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Americana.mp3',
+        'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Gymnopedie%20No%201.mp3'
+      ];
+      var _fallbackTried = false;
+      audioEl.onerror = function() {
+        if (_fallbackTried) return;
+        _fallbackTried = true;
+        var fb = _audioFallbacks[Math.floor(Math.random() * _audioFallbacks.length)];
+        audioEl.src = fb; audioEl.load();
+        audioEl.oncanplay = function() { audioEl.play().catch(function(){}); audioEl.oncanplay = null; };
       };
-    };
+    }
     // Play as soon as enough data is buffered
     audioEl.oncanplay = function() {
       audioEl.play().then(function() {
-        // Audio playing successfully
+        hideTapToPlay();
       }).catch(function(err) {
-        console.warn('Audio autoplay blocked, retrying...', err);
-        setTimeout(function() { audioEl.play().catch(function(){}); }, 500);
+        console.warn('Autoplay blocked:', err);
+        showTapToPlay();
       });
       audioEl.oncanplay = null;
     };
+    // Fallback if oncanplay already fired
+    if (audioEl.readyState >= 3) {
+      audioEl.play().then(function() { hideTapToPlay(); }).catch(function() { showTapToPlay(); });
+    }
   }
-  if (!video._skipAudio) {
-    var npEl = document.getElementById('nowPlaying');
-    var npText = document.getElementById('nowPlayingText');
-    if (video.audioName) { npText.textContent = video.audioName; npEl.style.display = 'flex'; }
-  }
+  var npEl = document.getElementById('nowPlaying');
+  var npText = document.getElementById('nowPlayingText');
+  if (video.audioName) { npText.textContent = video.audioName; npEl.style.display = 'flex'; }
 
   slideshow.currentSlide = 0;
   startPlayback();
@@ -349,14 +347,20 @@ function showSlide(index) {
     else { creditEl.classList.remove('visible'); }
   }
 
-  // Animate text
+  // Animate text - sync to audio time if available, else use slide index
   var textEl = document.getElementById('slideshowText');
   var refEl = document.getElementById('slideshowRef');
   textEl.classList.remove('visible'); refEl.classList.remove('visible');
   setTimeout(function() {
-    var td = slideshow.texts[index % slideshow.texts.length];
+    var textIdx = index;
+    var audioEl = document.getElementById('bgAudio');
+    if (audioEl && audioEl.duration > 0 && slideshow.texts.length > 0 && !isNaN(audioEl.currentTime)) {
+      var pct = audioEl.currentTime / audioEl.duration;
+      textIdx = Math.min(Math.floor(pct * slideshow.texts.length), slideshow.texts.length - 1);
+    }
+    var td = slideshow.texts[textIdx % slideshow.texts.length];
     if (td) { textEl.textContent = td.text; refEl.textContent = td.ref; textEl.classList.add('visible'); refEl.classList.add('visible'); }
-  }, 1500);
+  }, 500);
 }
 
 function updateProgress() {
@@ -388,7 +392,32 @@ function restartPlayback() {
   startPlayback();
 }
 
-// unmute removed - audio plays automatically after user interaction
+// Tap-to-play overlay for autoplay-blocked scenarios
+function showTapToPlay() {
+  var container = document.getElementById('slideshowContainer');
+  if (!container || container.querySelector('.tap-to-play')) return;
+  var overlay = document.createElement('div');
+  overlay.className = 'tap-to-play';
+  overlay.innerHTML = '<div class="tap-icon"><i class="fas fa-play"></i></div><div class="tap-text">Toca para escuchar</div>';
+  overlay.onclick = function() {
+    var a = document.getElementById('bgAudio');
+    a.muted = false; a.volume = 0.7;
+    a.play().then(function() {
+      hideTapToPlay();
+      var mb = document.getElementById('muteBtn');
+      if (mb) mb.innerHTML = '<i class="fas fa-volume-up"></i>';
+    }).catch(function(){});
+  };
+  container.appendChild(overlay);
+  var mb = document.getElementById('muteBtn');
+  if (mb) mb.innerHTML = '<i class="fas fa-volume-mute"></i>';
+}
+function hideTapToPlay() {
+  var el = document.querySelector('.tap-to-play');
+  if (el) el.remove();
+  var mb = document.getElementById('muteBtn');
+  if (mb) mb.innerHTML = '<i class="fas fa-volume-up"></i>';
+}
 
 function showCreatorBranding() {
   var container = document.getElementById('slideshowContainer');
@@ -405,8 +434,18 @@ function toggleMute() {
   var a = document.getElementById('bgAudio');
   var btn = document.getElementById('muteBtn');
   if (!btn) return;
-  if (a.muted || a.volume === 0) { a.muted = false; a.volume = 0.7; btn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
-  else { a.muted = true; btn.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
+  if (a.muted || a.volume === 0 || a.paused) {
+    a.muted = false; a.volume = 0.7;
+    a.play().then(function() {
+      hideTapToPlay();
+      btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+    }).catch(function() {
+      btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+    });
+  } else {
+    a.muted = true;
+    btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  }
 }
 
 // ===== Suno AI - Real sung song generation =====
@@ -481,38 +520,16 @@ function pollSunoStatus(taskId, elapsed) {
       var isMobile = window.innerWidth <= 768;
       addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.sunoReadyMobile' : 'cr.sunoReady') + (song.title ? ' &mdash; <strong>' + song.title + '</strong>' : ''), 'ai');
 
-      // NOW start the full slideshow experience with the real audio
+      // NOW start the full slideshow experience with the REAL Suno audio
       var videoData = window._pendingVideoData;
       if (videoData) {
-        videoData._skipAudio = true; // We'll set audio manually below
+        videoData.audio = playUrl;
+        videoData.audioName = song.title || 'FaithTunes';
+        videoData._isSuno = true;
         startVideoExperience(videoData);
       }
 
-      // Play audio IMMEDIATELY from stream URL
       var audioEl = document.getElementById('bgAudio');
-      audioEl.pause(); audioEl.src = playUrl; audioEl.volume = 0.7; audioEl.load();
-      // Robust play: try immediately, retry on fail, retry on user click
-      function tryPlay() {
-        audioEl.play().then(function() {
-          var mb = document.getElementById('muteBtn');
-          if (mb) mb.innerHTML = '<i class="fas fa-volume-up"></i>';
-        }).catch(function() {
-          // Autoplay blocked — retry on next click
-          var mb = document.getElementById('muteBtn');
-          if (mb) mb.innerHTML = '<i class="fas fa-volume-mute"></i>';
-          document.addEventListener('click', function retryOnClick() {
-            audioEl.play().catch(function(){});
-            if (mb) mb.innerHTML = '<i class="fas fa-volume-up"></i>';
-            document.removeEventListener('click', retryOnClick);
-          });
-        });
-      }
-      audioEl.oncanplay = function() { tryPlay(); audioEl.oncanplay = null; };
-      // Fallback if oncanplay already fired
-      if (audioEl.readyState >= 3) tryPlay();
-
-      var npEl = document.getElementById('nowPlaying'), npText = document.getElementById('nowPlayingText');
-      if (npEl && npText) { npText.textContent = song.title || 'FaithTunes'; npEl.style.display = 'flex'; }
 
       // Show FULL lyrics - use the LONGEST between Suno's response and our original poem
       var sunoLyrics = song.prompt || '';

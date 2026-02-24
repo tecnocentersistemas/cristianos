@@ -678,3 +678,24 @@
 [data-theme="light"] .chat-shortcuts { border-top-color: rgba(0,0,0,0.06); }
 [data-theme="light"] .shortcut-btn { background: rgba(124,58,237,0.06); border-color: rgba(124,58,237,0.15); }
 [data-theme="light"] .chat-tips { background: rgba(217,119,6,0.04); border-color: rgba(217,119,6,0.08); }
+
+/* Tap to play overlay */
+.tap-to-play {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7); z-index: 6;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer; animation: fadeIn 0.3s ease;
+}
+.tap-to-play .tap-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; color: white;
+  margin-bottom: 0.75rem;
+  animation: pulse 1.5s infinite;
+}
+.tap-to-play .tap-text {
+  color: white; font-size: 0.9rem; font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
