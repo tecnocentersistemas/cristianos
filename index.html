@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FaithTunes">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="media/icons/icon-192.svg">
   <title>FaithTunes - Videos Musicales Cristianos con IA</title>
   <meta name="description" content="Genera y disfruta videos musicales cristianos con paisajes, animales y versículos bíblicos. Country, rock, gospel y más géneros en múltiples idiomas.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -298,5 +303,10 @@
 
   <script src="js/i18n.js?v=20250628a"></script>
   <script src="js/app.js?v=20250628a"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+  }
+  </script>
 </body>
 </html>
