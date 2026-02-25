@@ -538,13 +538,9 @@ function pollSunoStatus(taskId, elapsed) {
       if (lyricsText) {
         var lP = document.getElementById('playerLyrics'), lC = document.getElementById('lyricsContent');
         if (lP && lC) {
-          var h = '';
-          lyricsText.split('\n').forEach(function(l) {
-            if (/^\[.+\]$/.test(l.trim())) h += '<span class="lyrics-section">' + l.replace(/[\[\]]/g, '') + '</span>';
-            else if (l.trim()) h += '<span class="lyrics-line">' + l + '</span>';
-          });
-          lC.innerHTML = h;
+          renderLyricsHtml(lyricsText);
           lP.style.display = 'block';
+          initLyricsLang(lyricsText);
         }
         // Update poem panel with full lyrics too
         var pe = document.getElementById('playerPoem');
@@ -584,15 +580,8 @@ function pollSunoStatus(taskId, elapsed) {
           if (lr.success && lr.lyrics && lr.lyrics.length > lyricsText.length) {
             // Update lyrics display with real Suno lyrics
             lyricsText = lr.lyrics;
-            var lC = document.getElementById('lyricsContent');
-            if (lC) {
-              var h = '';
-              lyricsText.split('\n').forEach(function(l) {
-                if (/^\[.+\]$/.test(l.trim())) h += '<span class="lyrics-section">' + l.replace(/[\[\]]/g, '') + '</span>';
-                else if (l.trim()) h += '<span class="lyrics-line">' + l + '</span>';
-              });
-              lC.innerHTML = h;
-            }
+            renderLyricsHtml(lyricsText);
+            initLyricsLang(lyricsText);
             var pe = document.getElementById('playerPoem');
             if (pe) { pe.innerHTML = lyricsText.replace(/\[([^\]]+)\]/g, '<strong style="color:var(--primary)">$1</strong>').replace(/\n/g, '<br>'); }
           }
@@ -714,6 +703,109 @@ function shareOn(platform) {
   }
   document.getElementById('shareMenu').style.display = 'none';
 }
+
+// ===== Lyrics Translation =====
+var _lyricsOriginal = '';
+var _lyricsLang = '';
+var _lyricsTranslateCache = {};
+
+function buildLyricsLangDropdown() {
+  var dd = document.getElementById('lyricsLangDropdown');
+  if (!dd) return;
+  var html = '';
+  LANGS.forEach(function(lang) {
+    html += '<div class="lyrics-lang-item' + (lang.code === _lyricsLang ? ' active' : '') + '" data-lang="' + lang.code + '" onclick="selectLyricsLang(\'' + lang.code + '\')">'
+      + '<span class="lang-flag">' + lang.flag + '</span>'
+      + '<span class="lang-name">' + lang.name + '</span>'
+      + '</div>';
+  });
+  dd.innerHTML = html;
+}
+
+function toggleLyricsLang() {
+  var dd = document.getElementById('lyricsLangDropdown');
+  if (!dd) return;
+  dd.classList.toggle('active');
+}
+
+function selectLyricsLang(code) {
+  var dd = document.getElementById('lyricsLangDropdown');
+  if (dd) dd.classList.remove('active');
+  if (code === _lyricsLang) return;
+  _lyricsLang = code;
+  var cur = document.getElementById('lyricsLangCurrent');
+  if (cur) cur.textContent = code.toUpperCase();
+  dd.querySelectorAll('.lyrics-lang-item').forEach(function(item) {
+    item.classList.toggle('active', item.dataset.lang === code);
+  });
+  translateLyrics(code);
+}
+
+function translateLyrics(targetLang) {
+  if (!_lyricsOriginal) return;
+  // If original language, restore
+  var origLang = currentLang;
+  if (targetLang === origLang || !targetLang) {
+    renderLyricsHtml(_lyricsOriginal);
+    return;
+  }
+  // Check cache
+  var cacheKey = targetLang + '|' + _lyricsOriginal.substring(0, 50);
+  if (_lyricsTranslateCache[cacheKey]) {
+    renderLyricsHtml(_lyricsTranslateCache[cacheKey]);
+    return;
+  }
+  // Show loading
+  var tEl = document.getElementById('lyricsTranslating');
+  var tText = document.getElementById('lyricsTranslatingText');
+  if (tEl) tEl.style.display = 'flex';
+  var translatingLabels = { es:'Traduciendo...', en:'Translating...', pt:'Traduzindo...', de:'Übersetzen...', fr:'Traduction...', it:'Traduzione...', ja:'翻訳中...' };
+  if (tText) tText.textContent = translatingLabels[targetLang] || translatingLabels.en;
+
+  fetch('api/translate.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: _lyricsOriginal, lang: targetLang })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (tEl) tEl.style.display = 'none';
+    if (data.success && data.translated) {
+      _lyricsTranslateCache[cacheKey] = data.translated;
+      renderLyricsHtml(data.translated);
+    }
+  })
+  .catch(function() {
+    if (tEl) tEl.style.display = 'none';
+  });
+}
+
+function renderLyricsHtml(text) {
+  var lC = document.getElementById('lyricsContent');
+  if (!lC) return;
+  var h = '';
+  text.split('\n').forEach(function(l) {
+    if (/^\[.+\]$/.test(l.trim())) h += '<span class="lyrics-section">' + l.replace(/[\[\]]/g, '') + '</span>';
+    else if (l.trim()) h += '<span class="lyrics-line">' + l + '</span>';
+  });
+  lC.innerHTML = h;
+}
+
+function initLyricsLang(lyricsText) {
+  _lyricsOriginal = lyricsText;
+  _lyricsLang = currentLang;
+  var cur = document.getElementById('lyricsLangCurrent');
+  if (cur) cur.textContent = currentLang.toUpperCase();
+  buildLyricsLangDropdown();
+}
+
+// Close lyrics dropdown on outside click
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.lyrics-lang-wrapper')) {
+    var dd = document.getElementById('lyricsLangDropdown');
+    if (dd) dd.classList.remove('active');
+  }
+});
 
 // ===== Init =====
 (function() {

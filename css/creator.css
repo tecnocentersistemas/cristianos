@@ -429,14 +429,55 @@
   max-height: 450px;
   overflow-y: auto;
 }
+.lyrics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
 .player-lyrics h4 {
   color: var(--primary);
   font-size: 0.85rem;
-  margin-bottom: 0.6rem;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
+
+/* Lyrics language selector */
+.lyrics-lang-wrapper { position: relative; }
+.lyrics-lang-btn {
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(217,119,6,0.1); border: 1px solid rgba(217,119,6,0.25);
+  color: var(--primary); padding: 3px 8px; border-radius: 6px;
+  cursor: pointer; font-size: 0.72rem; font-weight: 600;
+  transition: all 0.2s;
+}
+.lyrics-lang-btn:hover { background: rgba(217,119,6,0.2); }
+.lyrics-lang-btn i { font-size: 0.75rem; }
+.lyrics-lang-current { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; }
+.lyrics-lang-dropdown {
+  display: none; position: absolute; top: calc(100% + 4px); right: 0;
+  background: var(--dark-light, #1e293b); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px; padding: 4px; min-width: 150px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5); z-index: 50;
+  max-height: 240px; overflow-y: auto;
+}
+.lyrics-lang-dropdown.active { display: block; animation: dropIn 0.2s ease; }
+.lyrics-lang-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px; border-radius: 6px; cursor: pointer;
+  color: var(--gray); font-size: 0.78rem; transition: all 0.2s;
+}
+.lyrics-lang-item:hover { background: rgba(255,255,255,0.08); color: var(--light); }
+.lyrics-lang-item.active { background: var(--primary); color: #fff; }
+.lyrics-lang-item .lang-flag { font-size: 1rem; }
+.lyrics-lang-item .lang-name { font-weight: 500; }
+.lyrics-translating {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 0; color: var(--primary); font-size: 0.78rem;
+}
+[data-theme="light"] .lyrics-lang-dropdown { background: #fff; border-color: rgba(0,0,0,0.1); }
 .lyrics-content {
   font-size: 0.82rem;
   line-height: 1.7;
