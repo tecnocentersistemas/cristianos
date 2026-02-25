@@ -48,6 +48,7 @@ function switchMode(mode) {
   if (playerEmpty) playerEmpty.style.display = 'flex';
   if (playerActive) playerActive.style.display = 'none';
   stopCounselAudio();
+  _counselHistory = [];
 
   // Update empty state
   var emptyIcon = playerEmpty ? playerEmpty.querySelector('.player-empty-icon i') : null;
@@ -96,16 +97,20 @@ function addCreatorWelcome() {
   container.appendChild(div);
 }
 
+// ===== Conversation history =====
+var _counselHistory = [];
+
 // ===== Send counsel request =====
 function sendCounselMessage(text) {
   if (!text || !text.trim()) return;
   addMessage(text, 'user');
+  _counselHistory.push({ type: 'user', text: text });
   var typingDiv = addTyping();
 
   fetch('api/consejo.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ topic: text, lang: currentLang })
+    body: JSON.stringify({ topic: text, lang: currentLang, history: _counselHistory })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
@@ -114,6 +119,7 @@ function sendCounselMessage(text) {
       addMessage('<i class="fas fa-exclamation-circle"></i> ' + data.error, 'ai');
       return;
     }
+    _counselHistory.push({ type: 'ai', title: data.title, counsel: data.counsel });
     showCounselResult(data);
   })
   .catch(function(err) {

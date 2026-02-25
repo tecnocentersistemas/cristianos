@@ -31,6 +31,7 @@ curl_setopt_array($ch, [
         'file' => $cFile,
         'model' => 'whisper-1',
         'language' => $whisperLang,
+        'prompt' => 'Mensaje sobre temas bíblicos, cristianos, fe, oración, Dios, Jesús, Biblia, iglesia, divorcio, ansiedad, esperanza, amor, perdón.',
         'response_format' => 'json'
     ],
     CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $apiKey],

@@ -19,26 +19,42 @@ if (!$apiKey) { http_response_code(500); echo json_encode(['error'=>'No API key'
 $input = json_decode(file_get_contents('php://input'), true);
 $topic = $input['topic'] ?? '';
 $lang = $input['lang'] ?? 'es';
+$history = $input['history'] ?? []; // Previous messages for context
 if (!$topic || strlen($topic) < 3) { echo json_encode(['error'=>'Topic required']); exit; }
 if (strlen($topic) > 2000) { echo json_encode(['error'=>'Topic too long']); exit; }
 
 $langNames = ['es'=>'Spanish','en'=>'English','pt'=>'Portuguese','de'=>'German','fr'=>'French','it'=>'Italian','pl'=>'Polish','ru'=>'Russian','uk'=>'Ukrainian','sv'=>'Swedish','fi'=>'Finnish','nb'=>'Norwegian','lv'=>'Latvian','sl'=>'Slovenian','ja'=>'Japanese','ko'=>'Korean','zh'=>'Chinese','ar'=>'Arabic','fa'=>'Persian'];
 $langName = $langNames[$lang] ?? 'Spanish';
 
-// Voice map per language
-$voiceMap = ['es'=>'nova','en'=>'nova','pt'=>'nova','de'=>'onyx','fr'=>'shimmer','it'=>'shimmer','ja'=>'nova','ko'=>'nova','zh'=>'nova','ar'=>'onyx','fa'=>'onyx'];
-$voice = $voiceMap[$lang] ?? 'nova';
+// Voice map per language - using most natural-sounding voices
+$voiceMap = ['es'=>'alloy','en'=>'alloy','pt'=>'alloy','de'=>'onyx','fr'=>'shimmer','it'=>'shimmer','ja'=>'alloy','ko'=>'alloy','zh'=>'alloy','ar'=>'echo','fa'=>'echo'];
+$voice = $voiceMap[$lang] ?? 'alloy';
 
 // ===== Step 1: Generate counsel with GPT =====
 $system = 'You are a compassionate Christian biblical counselor. You provide wise, loving counsel based on Scripture. Return ONLY valid JSON:
-{"title":"Brief title for this counsel","counsel":"A warm, empathetic 3-4 paragraph counsel (150-250 words). Start by acknowledging the person\'s feelings. Then provide biblical wisdom. End with encouragement and hope. Use a warm conversational tone, as if speaking to a friend.","verses":[{"ref":"Book Ch:Vs","text":"Full verse text"},{"ref":"...","text":"..."},{"ref":"...","text":"..."}],"prayer":"A short prayer (2-3 sentences) relevant to their situation.","imageSearchTerms":["term1","term2","term3","term4","term5"]}
+{"title":"Brief title for this counsel","counsel":"A warm, empathetic counsel (80-120 words MAX). Be concise but caring. Acknowledge feelings briefly, give ONE key biblical insight, end with hope. Like a wise friend giving a short spoken message.","verses":[{"ref":"Book Ch:Vs","text":"Full verse text"},{"ref":"...","text":"..."},{"ref":"...","text":"..."}],"prayer":"A very short prayer (1-2 sentences).","imageSearchTerms":["term1","term2","term3","term4","term5"]}
 RULES:
 - ALL text MUST be in ' . $langName . '.
-- counsel: Warm, empathetic, biblically grounded. NOT preachy. Like a wise friend.
-- verses: 3 REAL Bible verses directly relevant to the topic. In ' . $langName . '.
-- prayer: Short, heartfelt prayer. In ' . $langName . '.
-- imageSearchTerms: 5 calming nature/landscape photo terms IN ENGLISH (sunsets, peaceful lake, etc).
+- counsel: 80-120 words MAX. Warm, concise, NOT preachy. Will be read aloud so keep it SHORT and natural.
+- verses: 3 REAL Bible verses directly relevant. In ' . $langName . '.
+- prayer: 1-2 sentences MAX. In ' . $langName . '.
+- imageSearchTerms: 5 calming nature photo terms IN ENGLISH.
+- RESPOND TO THE USER MESSAGE IN CONTEXT OF THE CONVERSATION.
 - ONLY JSON output.';
+
+// Build messages with conversation history
+$messages = [['role' => 'system', 'content' => $system]];
+// Add up to last 6 history messages for context
+$historySlice = array_slice($history, -6);
+foreach ($historySlice as $msg) {
+    $role = ($msg['type'] === 'user') ? 'user' : 'assistant';
+    if ($role === 'assistant' && !empty($msg['counsel'])) {
+        $messages[] = ['role' => 'assistant', 'content' => json_encode(['title'=>$msg['title']??'','counsel'=>$msg['counsel']])];
+    } else {
+        $messages[] = ['role' => $role, 'content' => $msg['text'] ?? ''];
+    }
+}
+$messages[] = ['role' => 'user', 'content' => $topic];
 
 $ch = curl_init('https://api.openai.com/v1/chat/completions');
 curl_setopt_array($ch, [
@@ -47,12 +63,9 @@ curl_setopt_array($ch, [
     CURLOPT_POSTFIELDS => json_encode([
         'model' => 'gpt-4o-mini',
         'response_format' => ['type' => 'json_object'],
-        'messages' => [
-            ['role' => 'system', 'content' => $system],
-            ['role' => 'user', 'content' => $topic]
-        ],
+        'messages' => $messages,
         'temperature' => 0.7,
-        'max_tokens' => 1500
+        'max_tokens' => 800
     ]),
     CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Authorization: Bearer ' . $apiKey],
     CURLOPT_TIMEOUT => 30
@@ -93,10 +106,11 @@ if (file_exists($audioFile) && filesize($audioFile) > 1000) {
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => json_encode([
-            'model' => 'tts-1',
+            'model' => 'tts-1-hd',
             'voice' => $voice,
             'input' => $ttsText,
-            'response_format' => 'mp3'
+            'response_format' => 'mp3',
+            'speed' => 0.95
         ]),
         CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Authorization: Bearer ' . $apiKey],
         CURLOPT_TIMEOUT => 60
