@@ -1,5 +1,5 @@
 // FaithTunes Service Worker - PWA offline support
-var CACHE_NAME = 'faithtunes-v1';
+var CACHE_NAME = 'faithtunes-v2';
 var STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -9,6 +9,7 @@ var STATIC_ASSETS = [
   '/js/app.js',
   '/js/i18n.js',
   '/js/creator.js',
+  '/js/consejero.js',
   '/manifest.json'
 ];
 

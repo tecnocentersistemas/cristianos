@@ -768,7 +768,12 @@ var CL = {
     'cr.lyricsTitle':'Letra de la canción','cr.copied':'¡Link copiado!','cr.downloadStarted':'Descarga iniciada...',
     'cr.shortcutsTitle':'Accesos rápidos','cr.shortAnimals':'Animales','cr.shortLandscapes':'Paisajes','cr.shortPlants':'Plantas','cr.shortSunsets':'Atardeceres',
     'cr.tipsTitle':'Cómo crear tu video','cr.tip1':'Describí el tema, género y escenario que querés.','cr.tip2':'Podés pedir animales, paisajes, plantas, atardeceres...','cr.tip3':'La IA genera música cantada + video con imágenes reales.',
-    'cr.sug5':'Un video con delfines y océano en worship','cr.sug6':'Canción folk con flores y jardínes','cr.sug7':'Video con águilas y montañas en rock','cr.sug8':'Balada con atardeceres y naturaleza'
+    'cr.sug5':'Un video con delfines y océano en worship','cr.sug6':'Canción folk con flores y jardínes','cr.sug7':'Video con águilas y montañas en rock','cr.sug8':'Balada con atardeceres y naturaleza',
+    'co.tabSong':'Crear Canción','co.tabCounsel':'Consejero Bíblico',
+    'co.welcome':'¡Hola! Soy tu consejero bíblico con IA. Contame qué situación estás atravesando y te daré consejo basado en la Palabra de Dios. También podés enviar un audio.',
+    'co.sug1':'Estoy pasando por un divorcio y me siento perdido','co.sug2':'Tengo ansiedad y miedo por el futuro','co.sug3':'Perdí a un ser querido y no sé cómo seguir','co.sug4':'Siento que Dios no escucha mis oraciones',
+    'co.placeholder':'Contame tu situación o enviá un audio...','co.emptyTitle':'Tu consejo aparecerá aquí','co.emptyDesc':'Escribí o enviá un audio con tu situación y la IA te dará consejo bíblico hablado.',
+    'co.listenBtn':'Escuchar consejo','co.pauseBtn':'Pausar','co.downloadBtn':'Descargar audio','co.transcribing':'Transcribiendo tu audio...'
   },
   en: {
     'cr.title':'Create Music Video','cr.subtitle':'Describe what video you want and AI creates it for you',
@@ -789,7 +794,12 @@ var CL = {
     'cr.lyricsTitle':'Song Lyrics','cr.copied':'Link copied!','cr.downloadStarted':'Download started...',
     'cr.shortcutsTitle':'Quick access','cr.shortAnimals':'Animals','cr.shortLandscapes':'Landscapes','cr.shortPlants':'Plants','cr.shortSunsets':'Sunsets',
     'cr.tipsTitle':'How to create your video','cr.tip1':'Describe the theme, genre and scenery you want.','cr.tip2':'You can request animals, landscapes, plants, sunsets...','cr.tip3':'AI generates sung music + video with real images.',
-    'cr.sug5':'A video with dolphins and ocean in worship','cr.sug6':'Folk song with flowers and gardens','cr.sug7':'Video with eagles and mountains in rock','cr.sug8':'Ballad with sunsets and nature'
+    'cr.sug5':'A video with dolphins and ocean in worship','cr.sug6':'Folk song with flowers and gardens','cr.sug7':'Video with eagles and mountains in rock','cr.sug8':'Ballad with sunsets and nature',
+    'co.tabSong':'Create Song','co.tabCounsel':'Biblical Counselor',
+    'co.welcome':'Hi! I\'m your AI biblical counselor. Tell me what situation you\'re going through and I\'ll give you counsel based on God\'s Word. You can also send a voice message.',
+    'co.sug1':'I\'m going through a divorce and feel lost','co.sug2':'I have anxiety and fear about the future','co.sug3':'I lost a loved one and don\'t know how to move on','co.sug4':'I feel like God doesn\'t hear my prayers',
+    'co.placeholder':'Tell me your situation or send a voice message...','co.emptyTitle':'Your counsel will appear here','co.emptyDesc':'Write or send a voice message about your situation and AI will give you spoken biblical counsel.',
+    'co.listenBtn':'Listen to counsel','co.pauseBtn':'Pause','co.downloadBtn':'Download audio','co.transcribing':'Transcribing your audio...'
   },
   pt: {
     'cr.title':'Criar Vídeo Musical','cr.subtitle':'Descreva que vídeo você quer e a IA cria para você',
@@ -810,7 +820,12 @@ var CL = {
     'cr.lyricsTitle':'Letra da música','cr.copied':'Link copiado!','cr.downloadStarted':'Download iniciado...',
     'cr.shortcutsTitle':'Acessos rápidos','cr.shortAnimals':'Animais','cr.shortLandscapes':'Paisagens','cr.shortPlants':'Plantas','cr.shortSunsets':'Pôr do sol',
     'cr.tipsTitle':'Como criar seu vídeo','cr.tip1':'Descreva o tema, gênero e cenário que você quer.','cr.tip2':'Você pode pedir animais, paisagens, plantas, pôr do sol...','cr.tip3':'A IA gera música cantada + vídeo com imagens reais.',
-    'cr.sug5':'Um vídeo com golfinhos e oceano em worship','cr.sug6':'Música folk com flores e jardins','cr.sug7':'Vídeo com águias e montanhas em rock','cr.sug8':'Balada com pôr do sol e natureza'
+    'cr.sug5':'Um vídeo com golfinhos e oceano em worship','cr.sug6':'Música folk com flores e jardins','cr.sug7':'Vídeo com águias e montanhas em rock','cr.sug8':'Balada com pôr do sol e natureza',
+    'co.tabSong':'Criar Canção','co.tabCounsel':'Conselheiro Bíblico',
+    'co.welcome':'Olá! Sou seu conselheiro bíblico com IA. Me conte o que está passando e darei conselhos baseados na Palavra de Deus. Você também pode enviar um áudio.',
+    'co.sug1':'Estou passando por um divórcio e me sinto perdido','co.sug2':'Tenho ansiedade e medo do futuro','co.sug3':'Perdi um ente querido e não sei como seguir','co.sug4':'Sinto que Deus não ouve minhas orações',
+    'co.placeholder':'Me conte sua situação ou envie um áudio...','co.emptyTitle':'Seu conselho aparecerá aqui','co.emptyDesc':'Escreva ou envie um áudio com sua situação e a IA dará conselho bíblico falado.',
+    'co.listenBtn':'Ouvir conselho','co.pauseBtn':'Pausar','co.downloadBtn':'Baixar áudio','co.transcribing':'Transcrevendo seu áudio...'
   },
   de: {
     'cr.title':'Musikvideo erstellen','cr.subtitle':'Beschreibe dein gewünschtes Video und die KI erstellt es',

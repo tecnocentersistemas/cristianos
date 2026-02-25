@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css?v=20250628a">
-  <link rel="stylesheet" href="css/creator.css?v=20250628c">
+  <link rel="stylesheet" href="css/creator.css?v=20250628d">
 </head>
 <body>
   <!-- Nav -->
@@ -40,15 +40,24 @@
   </nav>
 
   <main class="creator-layout">
-    <!-- Left: Chat -->
-    <section class="creator-chat">
-      <div class="chat-header">
-        <div class="chat-header-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-        <div>
-          <h2 data-i18n="cr.title">Crear Video Musical</h2>
-          <p data-i18n="cr.subtitle">Describí qué video querés y la IA lo crea para vos</p>
-        </div>
-      </div>
+   <!-- Left: Chat -->
+   <section class="creator-chat">
+     <!-- Mode tabs -->
+     <div class="mode-tabs">
+       <button class="mode-tab active" id="tabSong" onclick="switchMode('song')">
+         <i class="fas fa-music"></i> <span data-i18n="co.tabSong">Crear Canción</span>
+       </button>
+       <button class="mode-tab" id="tabCounsel" onclick="switchMode('counsel')">
+         <i class="fas fa-book-bible"></i> <span data-i18n="co.tabCounsel">Consejero Bíblico</span>
+       </button>
+     </div>
+     <div class="chat-header">
+       <div class="chat-header-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+       <div>
+         <h2 data-i18n="cr.title">Crear Video Musical</h2>
+         <p data-i18n="cr.subtitle">Describí qué video querés y la IA lo crea para vos</p>
+       </div>
+     </div>
 
       <div class="chat-messages" id="chatMessages">
         <div class="chat-msg ai">
@@ -93,6 +102,9 @@
         </div>
         <div class="chat-input-wrap">
           <input type="text" id="chatInput" data-i18n-placeholder="cr.placeholder" placeholder="Describí tu video musical cristiano..." autocomplete="off">
+          <button class="chat-mic-btn" id="micBtn" onclick="toggleMic()" style="display:none;" title="Enviar audio">
+            <i class="fas fa-microphone"></i>
+          </button>
           <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()">
             <i class="fas fa-paper-plane"></i>
           </button>
@@ -194,8 +206,9 @@
   <!-- Hidden audio player -->
   <audio id="bgAudio" preload="auto"></audio>
 
-  <script src="js/i18n.js?v=20250628a"></script>
+  <script src="js/i18n.js?v=20250628b"></script>
   <script src="js/creator.js?v=20250628c"></script>
+  <script src="js/consejero.js?v=20250628a"></script>
   <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(function(){});
