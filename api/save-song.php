@@ -13,7 +13,7 @@ $imgsDir = __DIR__ . '/../media/images/slides';
 $metaDir = __DIR__ . '/../data/songs';
 foreach ([$songsDir, $videosDir, $imgsDir, $metaDir] as $d) { if (!is_dir($d)) mkdir($d, 0755, true); }
 
-$host = $_SERVER['HTTP_HOST'] ?? 'cristianos.centralchat.pro';
+$host = $_SERVER['HTTP_HOST'] ?? 'yeshuacristiano.com';
 $baseUrl = 'https://' . $host;
 
 // ===== GET: list all songs or get one =====
@@ -187,7 +187,7 @@ function launchVideoGeneration($slides, $audioFile, $outputFile, $duration, $id,
         . ' -y ' . escapeshellarg($outputFile) . ' 2>/dev/null';
 
     // Create a wrapper script that generates video + updates metadata
-    $baseUrl = 'https://cristianos.centralchat.pro';
+    $baseUrl = 'https://yeshuacristiano.com';
     $updateScript = dirname($outputFile) . '/' . $id . '_gen.sh';
     $metaFile = $metaDir . '/' . $id . '.json';
     $scriptContent = "#!/bin/bash\n" . $cmd . "\n";

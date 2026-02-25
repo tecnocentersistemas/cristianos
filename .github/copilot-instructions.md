@@ -2,7 +2,7 @@
 
 ## Proyecto
 Plataforma web para videos musicales cristianos con IA. Nombre de trabajo: "cristianos". Marca: "FaithTunes".  
-URL de producción: **https://cristianos.centralchat.pro/**
+URL de producción: **https://yeshuacristiano.com/**
 
 ## Stack técnico
 - **Frontend**: HTML5 + CSS3 + JavaScript vanilla (NO frameworks, NO TypeScript, NO bundlers)
@@ -23,7 +23,7 @@ URL de producción: **https://cristianos.centralchat.pro/**
    cd C:\cristianos; git add -A; git commit -m "descripción del cambio"; git push origin main
    ```
 - El despliegue al VPS es AUTOMÁTICO vía webhook - NUNCA hacer ssh para git pull ni actualizar manualmente el VPS.
-- Verificar en: https://cristianos.centralchat.pro/
+- Verificar en: https://yeshuacristiano.com/
 - NUNCA subir archivos con `scp`. Todo va por git.
 - NUNCA compilar ni usar `run_build`.
 - Usar `;` como separador en PowerShell, NO `&&`.
@@ -34,7 +34,7 @@ URL de producción: **https://cristianos.centralchat.pro/**
 - SSH: `ssh -i "$env:USERPROFILE\.ssh\nueva_llave" root@172.96.8.245` (con identity file, sin passphrase/firma)
 - Ruta del proyecto en VPS: `/var/www/cristianos`
 - Servidor web: Nginx
-- Subdominio: `cristianos.centralchat.pro`
+- Dominio: `yeshuacristiano.com`
 
 ## Estructura del proyecto
 ```

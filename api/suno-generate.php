@@ -127,7 +127,7 @@ $customMode = !empty($style);
 if (!$prompt && !$title) { http_response_code(400); echo json_encode(['error'=>'Prompt or title required']); exit; }
 
 // Determine callback URL (always HTTPS)
-$host = $_SERVER['HTTP_HOST'] ?? 'cristianos.centralchat.pro';
+$host = $_SERVER['HTTP_HOST'] ?? 'yeshuacristiano.com';
 $callbackUrl = 'https://' . $host . '/api/suno-callback.php';
 
 // Build Suno API request

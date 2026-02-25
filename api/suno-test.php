@@ -24,7 +24,7 @@ if ($action === 'generate') {
             'customMode' => false,
             'instrumental' => false,
             'model' => 'V3_5',
-            'callBackUrl' => 'https://cristianos.centralchat.pro/api/suno-callback.php'
+            'callBackUrl' => 'https://yeshuacristiano.com/api/suno-callback.php'
         ]),
         CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Authorization: Bearer '.$sunoKey],
         CURLOPT_TIMEOUT => 30,

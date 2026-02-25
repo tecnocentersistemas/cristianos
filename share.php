@@ -4,7 +4,7 @@ $metaDir = __DIR__ . '/data/songs';
 $song = ($id && file_exists($metaDir.'/'.$id.'.json')) ? json_decode(file_get_contents($metaDir.'/'.$id.'.json'), true) : null;
 $t = $song ? ($song['title'] ?? 'FaithTunes') : 'FaithTunes';
 $a = $song['audioUrl'] ?? ''; $v = $song['videoUrl'] ?? ''; $cr = $song['creator'] ?? ''; $ly = $song['lyrics'] ?? '';
-$url = 'https://cristianos.centralchat.pro/share.php?id='.$id;
+$url = 'https://yeshuacristiano.com/share.php?id='.$id;
 $lc = preg_replace('/\[[^\]]+\]\n?/','',$ly); $lc = str_replace("\n",' / ',trim($lc));
 if(strlen($lc)>180) $lc=substr($lc,0,177).'...';
 $desc = $lc ?: 'Canción cristiana creada con IA en FaithTunes';
@@ -13,7 +13,7 @@ $desc = $lc ?: 'Canción cristiana creada con IA en FaithTunes';
 $im = '';
 $coverFile = __DIR__ . '/media/audio/songs/' . $id . '_cover.jpg';
 if (file_exists($coverFile) && filesize($coverFile) > 5000) {
-    $im = 'https://cristianos.centralchat.pro/media/audio/songs/' . $id . '_cover.jpg?v=' . filemtime($coverFile);
+    $im = 'https://yeshuacristiano.com/media/audio/songs/' . $id . '_cover.jpg?v=' . filemtime($coverFile);
 }
 if (!$im && !empty($song['slideImages'][0])) {
     $im = $song['slideImages'][0];
@@ -22,7 +22,7 @@ if (!$im && !empty($song['imageUrl'])) {
     $im = $song['imageUrl'];
 }
 if (!$im) {
-    $im = 'https://cristianos.centralchat.pro/media/images/og-default.jpg';
+    $im = 'https://yeshuacristiano.com/media/images/og-default.jpg';
 }
 
 // Cache bust for video and audio
