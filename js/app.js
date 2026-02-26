@@ -72,7 +72,8 @@ function applyLang(lang) {
   var d = L[lang] || L.es;
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var k = el.getAttribute('data-i18n');
-    if (d[k]) el.innerHTML = d[k];
+    var val = d[k] || (L.en && L.en[k]) || (L.es && L.es[k]);
+    if (val) el.innerHTML = val;
   });
   document.documentElement.lang = lang;
   document.documentElement.dir = RTL_LANGS.indexOf(lang) >= 0 ? 'rtl' : 'ltr';
