@@ -86,7 +86,10 @@ function applyLang(lang) {
 }
 
 window.setLang = function(l) {
-  if (!L[l]) return;
+  // Allow setting any language present in LANGS even if full translations
+  // are not available in `L`. applyLang will fallback to EN/ES keys.
+  var found = (typeof LANGS !== 'undefined') && LANGS.find(function(x){ return x.code === l; });
+  if (!found) return;
   localStorage.setItem('ft_lang', l);
   applyLang(l);
 };
