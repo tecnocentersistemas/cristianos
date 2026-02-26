@@ -40,6 +40,7 @@ RULES:
 - prayer: 1-2 sentences MAX. In ' . $langName . '.
 - imageSearchTerms: 5 calming nature photo terms IN ENGLISH.
 - RESPOND TO THE USER MESSAGE IN CONTEXT OF THE CONVERSATION.
+- CRITICAL CONTENT POLICY: This platform is EXCLUSIVELY Christian, dedicated to Yeshua (Jesus). You MUST REFUSE any request that promotes Islam, Hinduism, Buddhism, or any non-Christian religion. If asked about non-Christian topics, politely redirect to Christian biblical counsel only. No sexual content. Only Bible-based counsel.
 - ONLY JSON output.';
 
 // Build messages with conversation history

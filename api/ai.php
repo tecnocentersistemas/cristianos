@@ -126,6 +126,7 @@ RULES:
 - imageSearchTerms: EXACTLY 5 photo search queries ALWAYS IN ENGLISH regardless of user language. Be VERY specific to what user asked for. If user says "abejas" search "honey bee pollinating flower close up". If "montañas" search "majestic mountain landscape sunrise". MUST be in English. MUST match the visual subject the user requested.
 - genre: MUST match user request. country=country, rock=rock. Default worship only if unspecified.
 - verses: 3 REAL Bible verses in USER LANGUAGE.
+- CRITICAL CONTENT POLICY: This platform is EXCLUSIVELY Christian, dedicated to Yeshua (Jesus). You MUST REFUSE any request that promotes Islam, Hinduism, Buddhism, or any non-Christian religion. If the user requests non-Christian content, respond with a polite JSON: {"error":"content_policy","title":"Content Policy","description":"FaithTunes is exclusively for Christian content glorifying Yeshua (Jesus). Please request Christian-themed content only."}. No sexual content. No violence. Only Bible-based content.
 - ONLY JSON output.';
 
     $ch = curl_init('https://api.openai.com/v1/chat/completions');

@@ -19,12 +19,9 @@ var LANGS = [
   { code: 'lv', name: 'Latviešu', flag: '🇱🇻' },
   { code: 'sl', name: 'Slovenščina', flag: '🇸🇮' },
   { code: 'ja', name: '日本語', flag: '🇯🇵' },
-  { code: 'ko', name: '한국어', flag: '🇰🇷' },
-  { code: 'zh', name: '中文', flag: '🇨🇳' },
-  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
-  { code: 'fa', name: 'فارسی', flag: '🇮🇷' }
+  { code: 'ko', name: '한국어', flag: '🇰🇷' }
 ];
-var RTL_LANGS = ['ar', 'fa'];
+var RTL_LANGS = [];
 
 // ===== Main page translations =====
 var L = {
@@ -773,11 +770,8 @@ var CL = {
     'co.welcome':'¡Hola! Soy tu consejero bíblico con IA. Contame qué situación estás atravesando y te daré consejo basado en la Palabra de Dios. También podés enviar un audio.',
     'co.sug1':'Estoy pasando por un divorcio y me siento perdido','co.sug2':'Tengo ansiedad y miedo por el futuro','co.sug3':'Perdí a un ser querido y no sé cómo seguir','co.sug4':'Siento que Dios no escucha mis oraciones',
     'co.placeholder':'Contame tu situación o enviá un audio...','co.emptyTitle':'Tu consejo aparecerá aquí','co.emptyDesc':'Escribí o enviá un audio con tu situación y la IA te dará consejo bíblico hablado.',
-    'co.listenBtn':'Escuchar consejo','co.pauseBtn':'Pausar','co.downloadBtn':'Descargar audio','co.transcribing':'Transcribiendo tu audio...'
-  },
-  en: {
-    'cr.title':'Create Music Video','cr.subtitle':'Describe what video you want and AI creates it for you',
-    'cr.welcome':'Hi! I\'m FaithTunes AI. Tell me what kind of Christian music video you want to create. For example:',
+    'co.listenBtn':'Escuchar consejo','co.pauseBtn':'Pausar','co.downloadBtn':'Descargar audio','co.transcribing':'Transcribiendo tu audio...',
+    'faith.title':'Declaración de Fe','faith.desc':'FaithTunes es una plataforma exclusivamente cristiana dedicada a glorificar a Yeshua (Jesús), el Hijo de Dios y Creador del universo. Para continuar, por favor confirmá tu fe:','faith.accept':'Declaro que acepto a Yeshua (Jesús) como Señor y Salvador, Hijo de Dios y Creador del universo. Entiendo que esta plataforma es exclusivamente para contenido cristiano.','faith.btn':'Amén, Acepto y Continuar','faith.note':'✝ No se permite contenido de otras religiones. Solo contenido basado en la Biblia Hebrea y cristiana.'
     'cr.sug1':'Create a love song to God with mountains','cr.sug2':'A song about faith with eagles and sunsets',
     'cr.sug3':'A hope video with forests and rivers','cr.sug4':'Country peace video with lambs and green fields',
     'cr.placeholder':'Describe your Christian music video...','cr.emptyTitle':'Your video will appear here',
@@ -799,7 +793,8 @@ var CL = {
     'co.welcome':'Hi! I\'m your AI biblical counselor. Tell me what situation you\'re going through and I\'ll give you counsel based on God\'s Word. You can also send a voice message.',
     'co.sug1':'I\'m going through a divorce and feel lost','co.sug2':'I have anxiety and fear about the future','co.sug3':'I lost a loved one and don\'t know how to move on','co.sug4':'I feel like God doesn\'t hear my prayers',
     'co.placeholder':'Tell me your situation or send a voice message...','co.emptyTitle':'Your counsel will appear here','co.emptyDesc':'Write or send a voice message about your situation and AI will give you spoken biblical counsel.',
-    'co.listenBtn':'Listen to counsel','co.pauseBtn':'Pause','co.downloadBtn':'Download audio','co.transcribing':'Transcribing your audio...'
+    'co.listenBtn':'Listen to counsel','co.pauseBtn':'Pause','co.downloadBtn':'Download audio','co.transcribing':'Transcribing your audio...',
+    'faith.title':'Declaration of Faith','faith.desc':'FaithTunes is an exclusively Christian platform dedicated to glorifying Yeshua (Jesus), the Son of God and Creator of the universe. To continue, please confirm your faith:','faith.accept':'I declare that I accept Yeshua (Jesus) as Lord and Savior, Son of God and Creator of the universe. I understand that this platform is exclusively for Christian content.','faith.btn':'Amen, I Accept and Continue','faith.note':'✝ Content from other religions is not allowed. Only content based on the Hebrew and Christian Bible.'
   },
   pt: {
     'cr.title':'Criar Vídeo Musical','cr.subtitle':'Descreva que vídeo você quer e a IA cria para você',
@@ -825,7 +820,8 @@ var CL = {
     'co.welcome':'Olá! Sou seu conselheiro bíblico com IA. Me conte o que está passando e darei conselhos baseados na Palavra de Deus. Você também pode enviar um áudio.',
     'co.sug1':'Estou passando por um divórcio e me sinto perdido','co.sug2':'Tenho ansiedade e medo do futuro','co.sug3':'Perdi um ente querido e não sei como seguir','co.sug4':'Sinto que Deus não ouve minhas orações',
     'co.placeholder':'Me conte sua situação ou envie um áudio...','co.emptyTitle':'Seu conselho aparecerá aqui','co.emptyDesc':'Escreva ou envie um áudio com sua situação e a IA dará conselho bíblico falado.',
-    'co.listenBtn':'Ouvir conselho','co.pauseBtn':'Pausar','co.downloadBtn':'Baixar áudio','co.transcribing':'Transcrevendo seu áudio...'
+    'co.listenBtn':'Ouvir conselho','co.pauseBtn':'Pausar','co.downloadBtn':'Baixar áudio','co.transcribing':'Transcrevendo seu áudio...',
+    'faith.title':'Declaração de Fé','faith.desc':'FaithTunes é uma plataforma exclusivamente cristã dedicada a glorificar Yeshua (Jesus), o Filho de Deus e Criador do universo. Para continuar, por favor confirme sua fé:','faith.accept':'Declaro que aceito Yeshua (Jesus) como Senhor e Salvador, Filho de Deus e Criador do universo. Entendo que esta plataforma é exclusivamente para conteúdo cristão.','faith.btn':'Amém, Aceito e Continuar','faith.note':'✝ Conteúdo de outras religiões não é permitido. Apenas conteúdo baseado na Bíblia Hebraica e cristã.'
   },
   de: {
     'cr.title':'Musikvideo erstellen','cr.subtitle':'Beschreibe dein gewünschtes Video und die KI erstellt es',

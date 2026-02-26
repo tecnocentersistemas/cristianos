@@ -2,6 +2,31 @@
 // FaithTunes - Biblical Counselor (consejero.js)
 // =============================================
 
+// ===== Faith Declaration Modal =====
+(function initFaithModal() {
+  var accepted = localStorage.getItem('ft_faith_accepted');
+  var modal = document.getElementById('faithModal');
+  if (!modal) return;
+  if (accepted === 'yes') {
+    modal.classList.add('hidden');
+    return;
+  }
+  // Enable button when checkbox is checked
+  var check = document.getElementById('faithCheck');
+  var btn = document.getElementById('faithBtn');
+  if (check && btn) {
+    check.addEventListener('change', function() { btn.disabled = !this.checked; });
+  }
+})();
+
+function acceptFaith() {
+  var check = document.getElementById('faithCheck');
+  if (!check || !check.checked) return;
+  localStorage.setItem('ft_faith_accepted', 'yes');
+  var modal = document.getElementById('faithModal');
+  if (modal) { modal.style.opacity = '0'; modal.style.transition = 'opacity 0.3s'; setTimeout(function() { modal.classList.add('hidden'); modal.style.opacity = ''; }, 300); }
+}
+
 var _counselorMode = false;
 var _counselAudio = null;
 var _counselSlideTimer = null;
