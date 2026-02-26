@@ -158,30 +158,11 @@ function showCounselPlayer(data) {
   if (playerEmpty) playerEmpty.style.display = 'none';
   if (playerActive) playerActive.style.display = 'block';
 
-  // Setup slideshow
-  var slides = document.getElementById('slideshowSlides');
-  if (slides && data.images && data.images.length) {
-    slides.innerHTML = '';
-    data.images.forEach(function(img, i) {
-      var d = document.createElement('div');
-      d.className = 'slideshow-slide' + (i === 0 ? ' active' : '');
-      d.style.backgroundImage = 'url(' + img.url + ')';
-      slides.appendChild(d);
-    });
-    startCounselSlideshow();
-  }
-
-  // Overlay text
-  var overlayText = document.getElementById('slideshowText');
-  if (overlayText) {
-    overlayText.innerHTML = '<div class="counsel-overlay-title">' + (data.title || '') + '</div>';
-  }
-
-  // Hide song-specific elements, show counsel content
+  // Hide song-specific elements
   var lyricsPanel = document.getElementById('playerLyrics');
   if (lyricsPanel) lyricsPanel.style.display = 'none';
 
-  // Player info
+  // Player info - show TEXT immediately
   var playerTitle = document.getElementById('playerTitle');
   var playerDesc = document.getElementById('playerDesc');
   var playerPoem = document.getElementById('playerPoem');
@@ -199,14 +180,13 @@ function showCounselPlayer(data) {
     playerVerses.innerHTML = vh;
   }
 
-  // Audio
+  // AUDIO - play immediately
   if (data.audioUrl) {
     var audioEl = document.getElementById('bgAudio');
     if (audioEl) {
       audioEl.src = data.audioUrl;
       audioEl.play().catch(function(){});
     }
-    // Show action buttons
     var actions = document.getElementById('playerActions');
     if (actions) {
       actions.innerHTML = '<button class="player-action-btn" onclick="toggleCounselAudio()"><i class="fas fa-pause"></i> ' + t('co.pauseBtn') + '</button>'
@@ -215,10 +195,52 @@ function showCounselPlayer(data) {
     }
   }
 
+  // Overlay text
+  var overlayText = document.getElementById('slideshowText');
+  if (overlayText) {
+    overlayText.innerHTML = '<div class="counsel-overlay-title">' + (data.title || '') + '</div>';
+  }
+
   // Scroll to player on mobile
   if (window.innerWidth < 900) {
     setTimeout(function() { playerActive.scrollIntoView({ behavior: 'smooth' }); }, 300);
   }
+
+  // IMAGES - load in background AFTER text+audio are showing
+  var terms = data.imageSearchTerms || data.images;
+  if (terms && terms.length && typeof terms[0] === 'string') {
+    loadCounselImages(terms);
+  } else if (terms && terms.length) {
+    applyCounselSlideshow(terms);
+  }
+}
+
+function loadCounselImages(searchTerms) {
+  fetch('api/pexels-search.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ terms: searchTerms })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.images && data.images.length) {
+      applyCounselSlideshow(data.images);
+    }
+  })
+  .catch(function() {});
+}
+
+function applyCounselSlideshow(images) {
+  var slides = document.getElementById('slideshowSlides');
+  if (!slides || !images.length) return;
+  slides.innerHTML = '';
+  images.forEach(function(img, i) {
+    var d = document.createElement('div');
+    d.className = 'slideshow-slide' + (i === 0 ? ' active' : '');
+    d.style.backgroundImage = 'url(' + img.url + ')';
+    slides.appendChild(d);
+  });
+  startCounselSlideshow();
 }
 
 function startCounselSlideshow() {
