@@ -744,6 +744,47 @@ var L = {
     'price.p4':'دانلود مستقیم MP4','price.p5':'ویدیوهای شخصی‌سازی شده با هوش مصنوعی','price.p6':'ویدیوهای جدید هر هفته','price.getPremium':'انتخاب Premium',
     'cta.title':'آماده الهام گرفتن از موسیقی و ایمان هستید؟','cta.desc':'کاتالوگ ویدیوهای موسیقی مسیحی ما را کاوش کنید و کلام خدا را به اشتراک بگذارید.','cta.btn':'کاوش ویدیوها',
     'footer.copy':'© 2025 FaithTunes. تمامی حقوق محفوظ است.'
+  },
+  af: {
+    'nav.how':'Hoe dit werk','nav.genres':'Genres','nav.catalog':'Katalogus','nav.pricing':'Pryse','nav.explore':'Verken',
+    'hero.badge':'<i class="fas fa-cross"></i> Christelike musiekvideo\'s met KI',
+    'hero.title':'Skep <span class="gradient-text">Christelike musiekvideo\'s</span> met Kunsmatige Intelligensie',
+    'hero.desc':'Genereer video\'s met landskappe, diere en Bybelverse. Country, rock, gospel en meer genres.',
+    'hero.cta':'Sien Katalogus','hero.create':'Skep met KI','hero.how':'Hoe dit werk',
+    'cat.badge':'Katalogus','cat.aititle':'KI-geskepte liedjies','cat.aisubtitle':'Werklike Christelike liedjies geskep deur ons gemeenskap met KI','cat.createbtn':'Skep my eie lied',
+    'genre.badge':'Genres','genre.title':'Veelvuldige style vir elke oomblik','genre.subtitle':'Van sagte country tot inspirerende rock',
+    'cr.title':'Skep Musiekvideo','cr.subtitle':'Beskryf watter video jy wil hê en KI skep dit vir jou','cr.welcome':'Hallo! Ek is FaithTunes KI. Vertel my watter Christelike musiekvideo jy wil skep. Byvoorbeeld:',
+    'cr.sug1':'Skep \"n liefdeslied aan God met berge','cr.sug2':'\"n lied oor geloof met arende en sonsondergange','cr.sug3':'\"n hoop-video met woude en riviere','cr.sug4':'Country vredesvideo met lammers en groen velde',
+    'cr.placeholder':'Beskryf jou Christelike musiekvideo...','cr.emptyTitle':'Jou video sal hier verskyn','cr.emptyDesc':'Tik in die klets watter video jy wil hê en KI sal dit genereer.',
+    'co.tabSong':'Skep Lied','co.tabCounsel':'Bybelse Raadgewer','co.welcome':'Hallo! Ek is jou Bybelse raadgewer met KI. Vertel my wat jy deurgaan en ek sal raad gee gebaseer op die Woord van God.',
+    'faith.title':'Geloofsverklaring','faith.desc':'FaithTunes is \"n uitsluitlik Christelike platform gewy aan die verheerliking van Yeshua (Jesus).','faith.accept':'Ek verklaar dat ek Yeshua (Jesus) aanvaar as Here en Verlosser.','faith.btn':'Amen, Ek Aanvaar en Gaan Voort','faith.reject':'Ek aanvaar nie','faith.note':'✝ Inhoud van ander godsdienste word nie toegelaat nie.','faith.blockedTitle':'Toegang Beperk','faith.blockedDesc':'Hierdie platform is uitsluitlik vir mense wat Yeshua (Jesus) as Here en Verlosser aanvaar.','faith.retry':'Probeer weer',
+    'footer.copy':'© 2025 FaithTunes. Alle regte voorbehou.'
+  },
+  sw: {
+    'nav.how':'Jinsi inavyofanya kazi','nav.genres':'Aina','nav.catalog':'Katalogi','nav.pricing':'Bei','nav.explore':'Chunguza',
+    'hero.badge':'<i class="fas fa-cross"></i> Video za Muziki wa Kikristo na AI',
+    'hero.title':'Tengeneza <span class="gradient-text">video za muziki wa Kikristo</span> na Akili Bandia',
+    'hero.desc':'Tengeneza video zenye mandhari, wanyama na aya za Biblia. Country, rock, gospel na aina zaidi.',
+    'hero.cta':'Tazama Katalogi','hero.create':'Tengeneza na KI','hero.how':'Jinsi inavyofanya kazi',
+    'cat.badge':'Katalogi','cat.aititle':'Nyimbo Zinazotengenezwa na KI','cat.aisubtitle':'Nyimbo halisi za Kikristo zilizotengenezwa na jamii yetu kwa kutumia AI','cat.createbtn':'Tengeneza wimbo wangu',
+    'genre.badge':'Aina','genre.title':'Mitindo mingi kwa kila wakati','genre.subtitle':'Kutoka country laini hadi rock inayovutia',
+    'cr.title':'Tengeneza Video ya Muziki','cr.subtitle':'Eleza video unayotaka na AI itaitengeneza','cr.welcome':'Habari! Mimi ni FaithTunes AI. Niambie unataka kutengeneza video gani ya muziki wa Kikristo. Kwa mfano:',
+    'cr.sug1':'Tengeneza wimbo wa upendo kwa Mungu na milima','cr.sug2':'Wimbo kuhusu imani na tai na machweo','cr.sug3':'Video ya tumaini na misitu na mito','cr.sug4':'Video ya amani na kondoo na mashamba',
+    'cr.placeholder':'Eleza video yako ya muziki wa Kikristo...','cr.emptyTitle':'Video yako itaonekana hapa','cr.emptyDesc':'Andika kwenye mazungumzo video unayotaka na AI itaitengeneza.','cr.generating':'Inatengeneza video yako... Inaweza kuchukua sekunde chache.','cr.ready':'Video yako iko tayari! Itazame kwenye paneli ya kulia. 🎬','cr.error':'Kulikuwa na hitilafu. Jaribu tena','cr.readyMobile':'Video yako iko tayari! Sogeza chini kutazama. 🎬',
+    'co.tabSong':'Tengeneza Wimbo','co.tabCounsel':'Mshauri wa Biblia','co.welcome':'Habari! Mimi ni mshauri wako wa Biblia na AI. Niambie unachopitia na nitakupa ushauri kulingana na Neno la Mungu.','faith.title':'Tamko la Imani','faith.desc':'FaithTunes ni jukwaa la Kikristo pekee linalotukuza Yeshua (Yesu).','faith.accept':'Ninakubali Yeshua (Yesu) kama Bwana na Mwokozi.','faith.btn':'Amina, Nakubali','faith.reject':'Sikubali','faith.note':'✝ Maudhui ya dini nyingine hayaruhusiwi.','faith.blockedTitle':'Ufikiaji Umezuiwa','faith.blockedDesc':'Jukwaa hili ni kwa wale wanaomkubali Yeshua pekee.','faith.retry':'Jaribu tena',
+    'footer.copy':'© 2025 FaithTunes. Hakimiliki.'
+  },
+  zu: {
+    'nav.how':'Isebenza kanjani','nav.genres':'Izinhlobo','nav.catalog':'Ikhathalogi','nav.pricing':'Amanani','nav.explore':'Hlola',
+    'hero.badge':'<i class="fas fa-cross"></i> Amavidiyo Omculo WobuKristu nge-AI',
+    'hero.title':'Dala <span class="gradient-text">amavidiyo omculo wobuKristu</span> nge-Artificial Intelligence',
+    'hero.desc':'Khiqiza amavidiyo anemifanekiso yemvelo, izilwane namavesi eBhayibheli. Country, rock, gospel nezinhlobo eziningi.',
+    'hero.cta':'Buka Ikhathalogi','hero.create':'Dala nge-KI','hero.how':'Isebenza kanjani',
+    'cat.badge':'Ikhathalogi','cat.aititle':'Amaculo adalwe nge-KI','cat.aisubtitle':'Amaculo wobuKristu adalwe ngumphakathi wethu kwa-KI','cat.createbtn':'Dala ingoma yami',
+    'cr.title':'Dala Ividiyo Yomculo','cr.subtitle':'Chaza ividiyo oyifunayo ne-AI izokwenza','cr.welcome':'Sawubona! NgiyiFaithTunes AI. Ngitshele uhlobo luni lwevidiyo yomculo wobuKristu ofuna ukuyidala. Isibonelo:',
+    'cr.sug1':'Dala ingoma yothando kuNkulunkulu nezintaba','cr.sug2':'Ingoma yokukholwa nezinkozi nokushona kwelanga','cr.sug3':'Ividiyo yethemba namahlathi nemifula','cr.sug4':'Ividiyo yokuthula nezimvu namasimu',
+    'cr.placeholder':'Chaza ividiyo yakho yomculo wobuKristu...','cr.emptyTitle':'Ividiyo yakho izovela lapha','cr.emptyDesc':'Bhala engxoxweni ividiyo oyifunayo ne-AI izokhiqiza.','faith.title':'Isimemezelo Sokholo','faith.desc':'FaithTunes yinkundla yobuKristu kuphela ezinikele ekukhazimuliseni uYeshua (uJesu).','faith.accept':'Ngiyamukela uYeshua (uJesu) njengeNkosi noMsindisi.','faith.btn':'Amen, Ngiyavuma','faith.reject':'Angivumi','faith.note':'✝ Okuqukethwe kwezinye izinkolo akuvunyelwe.','faith.blockedTitle':'Ukufinyelela Kuvinjelwe','faith.blockedDesc':'Le nkundla ingeyabo kuphela abamukela uYeshua.','faith.retry':'Zama futhi',
+    'footer.copy':'© 2025 FaithTunes. All rights reserved.'
   }
 };
 
