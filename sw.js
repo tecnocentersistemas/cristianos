@@ -1,5 +1,5 @@
 // FaithTunes Service Worker - PWA offline support
-var CACHE_NAME = 'faithtunes-v2';
+var CACHE_NAME = 'faithtunes-v3';
 var STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -38,6 +38,7 @@ self.addEventListener('activate', function(event) {
 
 // Fetch: network first, fallback to cache
 self.addEventListener('fetch', function(event) {
+  if (event.request.method !== 'GET') return;
   var url = new URL(event.request.url);
 
   // Skip API calls and external resources - always go to network
