@@ -127,7 +127,32 @@ if (file_exists($audioFile) && filesize($audioFile) > 1000) {
     }
 }
 
-// ===== Return text + audio immediately, images load async via client =====
+// ===== Step 3: Get images from Pexels =====
+$images = [];
+$pexelsKey = loadKey('pexels-key');
+$searchTerms = $result['imageSearchTerms'] ?? ['peaceful sunset','calm lake','green meadow','morning light forest','mountain sunrise'];
+if ($pexelsKey) {
+    foreach ($searchTerms as $term) {
+        $url = 'https://api.pexels.com/v1/search?' . http_build_query(['query'=>$term,'per_page'=>2,'orientation'=>'landscape','size'=>'large']);
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER=>true, CURLOPT_HTTPHEADER=>['Authorization: '.$pexelsKey], CURLOPT_TIMEOUT=>8]);
+        $r = curl_exec($ch); $rc = curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+        if ($rc === 200) {
+            $d = json_decode($r, true);
+            foreach (($d['photos'] ?? []) as $photo) {
+                $images[] = ['url'=>$photo['src']['landscape'] ?? $photo['src']['large'], 'alt'=>$photo['alt'] ?: $term, 'credit'=>$photo['photographer'] ?? ''];
+                if (count($images) >= 6) break 2;
+            }
+        }
+    }
+}
+// Fallback images
+if (count($images) < 3) {
+    $P = 'https://images.pexels.com/photos/'; $S = '?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop';
+    $fallback = [$P.'36717/amazing-animal-beautiful-beauty.jpg'.$S,$P.'209831/pexels-photo-209831.jpeg'.$S,$P.'2559484/pexels-photo-2559484.jpeg'.$S,$P.'167698/pexels-photo-167698.jpeg'.$S,$P.'1423600/pexels-photo-1423600.jpeg'.$S];
+    foreach ($fallback as $fb) { $images[] = ['url'=>$fb,'alt'=>'Nature','credit'=>'']; }
+}
+
 echo json_encode([
     'success' => true,
     'title' => $result['title'] ?? '',
@@ -135,5 +160,5 @@ echo json_encode([
     'verses' => $result['verses'] ?? [],
     'prayer' => $result['prayer'] ?? '',
     'audioUrl' => $audioUrl,
-    'imageSearchTerms' => $result['imageSearchTerms'] ?? []
+    'images' => $images
 ], JSON_UNESCAPED_UNICODE);

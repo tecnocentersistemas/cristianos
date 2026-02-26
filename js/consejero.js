@@ -206,28 +206,10 @@ function showCounselPlayer(data) {
     setTimeout(function() { playerActive.scrollIntoView({ behavior: 'smooth' }); }, 300);
   }
 
-  // IMAGES - load in background AFTER text+audio are showing
-  var terms = data.imageSearchTerms || data.images;
-  if (terms && terms.length && typeof terms[0] === 'string') {
-    loadCounselImages(terms);
-  } else if (terms && terms.length) {
-    applyCounselSlideshow(terms);
+  // IMAGES - slideshow
+  if (data.images && data.images.length) {
+    applyCounselSlideshow(data.images);
   }
-}
-
-function loadCounselImages(searchTerms) {
-  fetch('api/pexels-search.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ terms: searchTerms })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (data.images && data.images.length) {
-      applyCounselSlideshow(data.images);
-    }
-  })
-  .catch(function() {});
 }
 
 function applyCounselSlideshow(images) {
