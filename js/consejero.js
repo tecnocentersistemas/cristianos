@@ -4,49 +4,31 @@
 
 // ===== Faith Declaration Modal =====
 (function initFaithModal() {
-  var accepted = localStorage.getItem('ft_faith_accepted');
+  var a = localStorage.getItem('ft_faith_accepted');
   var modal = document.getElementById('faithModal');
   if (!modal) return;
-  if (accepted === 'yes') {
-    modal.classList.add('hidden');
-    return;
-  }
-  if (accepted === 'no') {
-    showFaithBlocked();
-    return;
-  }
-  var check = document.getElementById('faithCheck');
+  if (a === 'yes') { modal.classList.add('hidden'); return; }
+  if (a === 'no') { blockPage(); return; }
+  var chk = document.getElementById('faithCheck');
   var btn = document.getElementById('faithBtn');
-  if (check && btn) {
-    check.addEventListener('change', function() { btn.disabled = !this.checked; });
-  }
+  if (chk) chk.onclick = function() { if (btn) btn.disabled = !chk.checked; };
 })();
 
 function acceptFaith() {
-  var check = document.getElementById('faithCheck');
-  if (!check || !check.checked) return;
+  var chk = document.getElementById('faithCheck');
+  if (!chk || !chk.checked) return;
   localStorage.setItem('ft_faith_accepted', 'yes');
-  var modal = document.getElementById('faithModal');
-  if (modal) { modal.style.opacity = '0'; modal.style.transition = 'opacity 0.3s'; setTimeout(function() { modal.classList.add('hidden'); modal.style.opacity = ''; }, 300); }
+  document.getElementById('faithModal').classList.add('hidden');
 }
 
 function rejectFaith() {
   localStorage.setItem('ft_faith_accepted', 'no');
-  showFaithBlocked();
+  blockPage();
 }
 
-function showFaithBlocked() {
-  var modal = document.getElementById('faithModal');
-  var content = document.getElementById('faithContent');
-  if (!modal || !content) return;
-  modal.classList.remove('hidden');
-  content.innerHTML = '<div class="faith-blocked">'
-    + '<div class="faith-blocked-icon"><i class="fas fa-ban"></i></div>'
-    + '<h2 data-i18n="faith.blockedTitle">' + (t('faith.blockedTitle') || 'Acceso Restringido') + '</h2>'
-    + '<p data-i18n="faith.blockedDesc">' + (t('faith.blockedDesc') || 'Esta plataforma es exclusivamente para personas que aceptan a Yeshua (Jesús) como Señor y Salvador. No es posible utilizar FaithTunes sin aceptar la declaración de fe.') + '</p>'
-    + '<button class="faith-btn-retry" onclick="retryFaith()">'
-    + '<i class="fas fa-redo"></i> ' + (t('faith.retry') || 'Volver a intentar') + '</button>'
-    + '</div>';
+function blockPage() {
+  var c = document.getElementById('faithContent');
+  if (c) c.innerHTML = '<div class="faith-blocked"><div class="faith-blocked-icon"><i class="fas fa-ban"></i></div><h2>Acceso Restringido</h2><p>Esta plataforma es exclusivamente para personas que aceptan a Yeshua (Jesús) como Señor y Salvador. No es posible utilizar FaithTunes sin aceptar la declaración de fe.</p><button class="faith-btn-retry" onclick="retryFaith()"><i class="fas fa-redo"></i> Volver a intentar</button></div>';
 }
 
 function retryFaith() {
