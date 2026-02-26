@@ -11,7 +11,10 @@
     modal.classList.add('hidden');
     return;
   }
-  // Enable button when checkbox is checked
+  if (accepted === 'no') {
+    showFaithBlocked();
+    return;
+  }
   var check = document.getElementById('faithCheck');
   var btn = document.getElementById('faithBtn');
   if (check && btn) {
@@ -25,6 +28,30 @@ function acceptFaith() {
   localStorage.setItem('ft_faith_accepted', 'yes');
   var modal = document.getElementById('faithModal');
   if (modal) { modal.style.opacity = '0'; modal.style.transition = 'opacity 0.3s'; setTimeout(function() { modal.classList.add('hidden'); modal.style.opacity = ''; }, 300); }
+}
+
+function rejectFaith() {
+  localStorage.setItem('ft_faith_accepted', 'no');
+  showFaithBlocked();
+}
+
+function showFaithBlocked() {
+  var modal = document.getElementById('faithModal');
+  var content = document.getElementById('faithContent');
+  if (!modal || !content) return;
+  modal.classList.remove('hidden');
+  content.innerHTML = '<div class="faith-blocked">'
+    + '<div class="faith-blocked-icon"><i class="fas fa-ban"></i></div>'
+    + '<h2 data-i18n="faith.blockedTitle">' + (t('faith.blockedTitle') || 'Acceso Restringido') + '</h2>'
+    + '<p data-i18n="faith.blockedDesc">' + (t('faith.blockedDesc') || 'Esta plataforma es exclusivamente para personas que aceptan a Yeshua (Jesús) como Señor y Salvador. No es posible utilizar FaithTunes sin aceptar la declaración de fe.') + '</p>'
+    + '<button class="faith-btn-retry" onclick="retryFaith()">'
+    + '<i class="fas fa-redo"></i> ' + (t('faith.retry') || 'Volver a intentar') + '</button>'
+    + '</div>';
+}
+
+function retryFaith() {
+  localStorage.removeItem('ft_faith_accepted');
+  location.reload();
 }
 
 var _counselorMode = false;

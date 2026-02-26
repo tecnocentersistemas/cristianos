@@ -767,61 +767,6 @@
   text-align: center; padding: 1rem;
 }
 
-/* --- Faith Declaration Modal --- */
-.faith-modal-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
-  background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 1rem;
-}
-.faith-modal-overlay.hidden { display: none; }
-.faith-modal {
-  background: var(--dark-light); border: 1px solid rgba(217,119,6,0.2);
-  border-radius: 16px; padding: 2rem; max-width: 520px; width: 100%;
-  text-align: center; animation: fadeInUp 0.4s ease;
-}
-@keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-.faith-modal-icon {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 1rem; font-size: 1.5rem; color: #fff;
-}
-.faith-modal h2 {
-  font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.faith-modal p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; margin-bottom: 1rem; }
-.faith-declaration { text-align: left; margin-bottom: 1.25rem; }
-.faith-check {
-  display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer;
-  font-size: 0.82rem; color: var(--light); line-height: 1.5;
-}
-.faith-check input { display: none; }
-.faith-check-mark {
-  width: 22px; height: 22px; min-width: 22px; border-radius: 6px;
-  border: 2px solid var(--gray); display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s; margin-top: 2px;
-}
-.faith-check input:checked + .faith-check-mark {
-  background: var(--primary); border-color: var(--primary);
-}
-.faith-check input:checked + .faith-check-mark::after {
-  content: '✓'; color: #fff; font-size: 0.75rem; font-weight: 800;
-}
-.faith-btn {
-  width: 100%; padding: 0.8rem; border: none; border-radius: 10px;
-  background: var(--primary); color: #fff; font-size: 0.95rem; font-weight: 700;
-  cursor: pointer; transition: all 0.3s; display: flex; align-items: center;
-  justify-content: center; gap: 0.5rem;
-}
-.faith-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.faith-btn:not(:disabled):hover { background: var(--secondary); transform: translateY(-1px); }
-.faith-note {
-  font-size: 0.72rem; color: var(--gray); margin-top: 0.75rem; font-style: italic;
-}
-
 /* Branding overlay for creator */
 .slideshow-branding-end {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;

@@ -208,7 +208,7 @@
 
   <!-- Faith Declaration Modal -->
   <div class="faith-modal-overlay" id="faithModal">
-    <div class="faith-modal">
+    <div class="faith-modal" id="faithContent">
       <div class="faith-modal-icon"><i class="fas fa-cross"></i></div>
       <h2 data-i18n="faith.title">Declaración de Fe</h2>
       <p data-i18n="faith.desc">FaithTunes es una plataforma exclusivamente cristiana dedicada a glorificar a Yeshua (Jesús), el Hijo de Dios y Creador del universo. Para continuar, por favor confirmá tu fe:</p>
@@ -219,9 +219,14 @@
           <span data-i18n="faith.accept">Declaro que acepto a Yeshua (Jesús) como Señor y Salvador, Hijo de Dios y Creador del universo. Entiendo que esta plataforma es exclusivamente para contenido cristiano.</span>
         </label>
       </div>
-      <button class="faith-btn" id="faithBtn" onclick="acceptFaith()" disabled>
-        <i class="fas fa-pray"></i> <span data-i18n="faith.btn">Amén, Acepto y Continuar</span>
-      </button>
+      <div class="faith-buttons">
+        <button class="faith-btn-accept" id="faithBtn" onclick="acceptFaith()" disabled>
+          <i class="fas fa-pray"></i> <span data-i18n="faith.btn">Amén, Acepto y Continuar</span>
+        </button>
+        <button class="faith-btn-reject" onclick="rejectFaith()">
+          <span data-i18n="faith.reject">No acepto</span>
+        </button>
+      </div>
       <p class="faith-note" data-i18n="faith.note">✝ No se permite contenido de otras religiones. Solo contenido basado en la Biblia Hebrea y cristiana.</p>
     </div>
   </div>
