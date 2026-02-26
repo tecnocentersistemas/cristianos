@@ -744,36 +744,6 @@ var L = {
     'price.p4':'دانلود مستقیم MP4','price.p5':'ویدیوهای شخصی‌سازی شده با هوش مصنوعی','price.p6':'ویدیوهای جدید هر هفته','price.getPremium':'انتخاب Premium',
     'cta.title':'آماده الهام گرفتن از موسیقی و ایمان هستید؟','cta.desc':'کاتالوگ ویدیوهای موسیقی مسیحی ما را کاوش کنید و کلام خدا را به اشتراک بگذارید.','cta.btn':'کاوش ویدیوها',
     'footer.copy':'© 2025 FaithTunes. تمامی حقوق محفوظ است.'
-  },
-  af: {
-    'nav.how':'Hoe dit werk','nav.genres':'Genres','nav.catalog':'Katalogus','nav.pricing':'Pryse','nav.explore':'Verken',
-    'hero.badge':'Videos met Christelike Musiek en KI','hero.title':'Melod eBlies van <span class="gradient-text">geloof</span> met inspirerende landskappe','hero.desc':'Geniet Christelike musiekvideo's met landskappe en diere in die agtergrond. Country, rock, gospel en meer genres.','hero.cta':'Sien Katalogus','hero.create':'Skep met KI','hero.how':'Hoe dit werk',
-    'hero.videos':'Videos beskikbaar','hero.genreCount':'Musiekgenres','hero.langCount':'Tale',
-    'how.badge':'So maklik','how.title':'Hoe dit werk','how.subtitle':'Kry jou Christelike musiekvideo in 3 eenvoudige stappe',
-    'how.s1t':'Kies ' + "n tema","how.s1d":"Geloof, hoop, liefde, vrede, dankbaarheid... kies die boodskap wat jy wil deel.",
-    'how.s2t':'Kies ' + "n genre","how.s2d":"Country, rock, gospel, folk, worship of ballade. Elk met sy unieke styl.",
-    'how.s3t':'Geniet jou video','how.s3d':'Kyk of laai af ' + "n video met musiek, inspirerende landskappe en Bybelverse.",
-    'genre.badge':'Genres','genre.title':'Veelvuldige style vir elke oomblik','genre.subtitle':'Van sagte country tot inspirerende rock',
-    'genre.country':'Sagte melodie eb met akoestiese kitaar en landelike landskappe','genre.rock':'Energio en krag met elektriese kitare en berge','genre.gospel':'Kragtige koorwerk met oop hemel en goddelike lig','genre.folk':'Akoestiese klanke met woude en kristalhelder riviere','genre.worship':'Moderne aanbidding met sonsondergange en natuur','genre.balladName':'Ballade','genre.ballad':'Klavier en strykers met groen valleie en rustige diere','genre.listen':'Luister','genre.playing':'Afspeel','genre.nowplaying':'Nou speel',
-    'cat.badge':'Katalogus','cat.aititle':'KI-geskrewe liedjies','cat.aisubtitle':'Werklike Christelike liedjies geskep deur ons gemeenskap met KI','cat.createbtn':'Skep my eie lied',
-    'feat.badge':'Kenmerke','feat.title':'Waarom kies FaithTunes?','feat.f1t':'Veeltaal','feat.f1d':'Videos in baie tale. Die koppelvlak pas outomaties aan.','feat.f2t':'Inspirasie landskappe','feat.f2d':'Berge, riviere, sonsondergange en woude wat die gees lig.','feat.f3t':'Skep sel diere','feat.f3d':'Arende, duif, skape. Die skoonheid van die skepping in elke video.','feat.f4t':'Bybel verse','feat.f4d':'Elke video sluit relevante verse in met elegante tipografie.','feat.f5t':'HD kwaliteit','feat.f5d':'Gereed om te deel op sosiale media, kerke of devosies.','feat.f6t':'KI aangedryf','feat.f6d':'Kunsmatige intelligensie vir unieke en persoonlike inhoud.',
-    'price.badge':'Pryse','price.title':'Eenvoudige en bekostigbare planne','price.subtitle':'Begin gratis en kry toegang tot die hele katalogus','price.free':'Gratis','price.freeDesc':'Om die platform te verken','price.f1':'5 videos per maand','price.f2':'Alle genres','price.f3':'Standaard kwaliteit','price.f4':'19 tale','price.startFree':'Begin Gratis','price.proDesc':'Volledige katalogustoegang','price.p1':'Onbeperkte videos','price.p2':'Alle genres','price.p3':'HD kwaliteit','price.p4':'Regstreekse MP4 aflaai','price.p5':'KI-gespersonaliseerde videos','price.p6':'Nuwe videos elke week','price.getPremium':'Kies Premium',
-    'cta.title':'Klaar om ge { inspireer te word deur musiek en geloof?','cta.desc':'Verken ons katalogus met Christelike musiekvideos en deel die Woord van God.','cta.btn':'Verken Videos','footer.copy':'© 2025 FaithTunes. Alle regte voorbehou.'
-  },
-  sw: {
-    'nav.how':'Jinsi inavyofanya kazi','nav.genres':'Aina','nav.catalog':'Katalogi','nav.pricing':'Bei','nav.explore':'Chunguza',
-    'hero.badge':'Video za Muziki wa Kikristo na AI','hero.title':'Tengeneza <span class="gradient-text">video za muziki wa Kikristo</span> na Akili Bandia','hero.desc':'Tengeneza video zenye mandhari, wanyama na aya za Biblia. Country, rock, gospel na aina zaidi.','hero.cta':'Tazama Katalogi','hero.create':'Tengeneza na KI','hero.how':'Jinsi inavyofanya kazi',
-    'hero.videos':'Video Zinazopatikana','hero.genreCount':'Aina za Muziki','hero.langCount':'Lugha',
-    'how.badge':'Rahisi sana','how.title':'Jinsi inavyofanya kazi','how.subtitle':'Pata video yako ya muziki wa Kikristo kwa hatua 3 rahisi',
-    'genre.badge':'Aina','genre.title':'Mitindo mingi kwa kila wakati','genre.subtitle':'Kutoka country laini hadi rock inayovutia','cat.badge':'Katalogi','cat.aititle':'Nyimbo Zinazotengenezwa na KI','cat.aisubtitle':'Nyimbo halisi za Kikristo zilizotengenezwa na jamii yetu kwa kutumia AI','cat.createbtn':'Tengeneza wimbo wangu',
-    'faith.title':'Tamko la Imani','faith.desc':'FaithTunes ni jukwaa la Kikristo pekee linalotukuza Yeshua (Yesu).','faith.accept':'Ninakubali Yeshua (Yesu) kama Bwana na Mwokozi.','faith.btn':'Amina, Nakubali','faith.reject':'Sikubali','faith.note':'✝ Maudhui ya dini nyingine hayaruhusiwi.','faith.blockedTitle':'Ufikiaji Umezuiwa','faith.blockedDesc':'Jukwaa hili ni kwa wale wanaomkubali Yeshua pekee.','faith.retry':'Jaribu tena',
-    'footer.copy':'© 2025 FaithTunes. Hakimiliki.'
-  },
-  zu: {
-    'nav.how':'Isebenza kanjani','nav.genres':'Izinhlobo','nav.catalog':'Ikhathalogi','nav.pricing':'Amanani','nav.explore':'Hlola',
-    'hero.badge':'Amavidiyo Omculo WobuKristu nge-AI','hero.title':'Dala <span class="gradient-text">amavidiyo omculo wobuKristu</span> nge-Artificial Intelligence','hero.desc':'Khiqiza amavidiyo anemifanekiso yemvelo, izilwane namavesi eBhayibheli. Country, rock, gospel nezinhlobo eziningi.','hero.cta':'Buka Ikhathalogi','hero.create':'Dala nge-KI','hero.how':'Isebenza kanjani',
-    'faith.title':'Isimemezelo Sokholo','faith.desc':'FaithTunes yinkundla yobuKristu kuphela ezinikele ekukhazimuliseni uYeshua (uJesu).','faith.accept':'Ngiyamukela uYeshua (uJesu) njengeNkosi noMsindisi.','faith.btn':'Amen, Ngiyavuma','faith.reject':'Angivumi','faith.note':'✝ Okuqukethwe kwezinye izinkolo akuvunyelwe.','faith.blockedTitle':'Ukufinyelela Kuvinjelwe','faith.blockedDesc':'Le nkundla ingeyabo kuphela abamukela uYeshua.','faith.retry':'Zama futhi',
-    'footer.copy':'© 2025 FaithTunes. All rights reserved.'
   }
 };
 
