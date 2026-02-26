@@ -23,11 +23,11 @@ $history = $input['history'] ?? []; // Previous messages for context
 if (!$topic || strlen($topic) < 3) { echo json_encode(['error'=>'Topic required']); exit; }
 if (strlen($topic) > 2000) { echo json_encode(['error'=>'Topic too long']); exit; }
 
-$langNames = ['es'=>'Spanish','en'=>'English','pt'=>'Portuguese','de'=>'German','fr'=>'French','it'=>'Italian','pl'=>'Polish','ru'=>'Russian','uk'=>'Ukrainian','sv'=>'Swedish','fi'=>'Finnish','nb'=>'Norwegian','lv'=>'Latvian','sl'=>'Slovenian','ja'=>'Japanese','ko'=>'Korean','zh'=>'Chinese','ar'=>'Arabic','fa'=>'Persian'];
+$langNames = ['es'=>'Spanish','en'=>'English','pt'=>'Portuguese','de'=>'German','fr'=>'French','it'=>'Italian','pl'=>'Polish','ru'=>'Russian','uk'=>'Ukrainian','sv'=>'Swedish','fi'=>'Finnish','nb'=>'Norwegian','lv'=>'Latvian','sl'=>'Slovenian','ja'=>'Japanese','ko'=>'Korean','af'=>'Afrikaans','sw'=>'Swahili','zu'=>'Zulu'];
 $langName = $langNames[$lang] ?? 'Spanish';
 
 // Voice map per language
-$voiceMap = ['es'=>'nova','en'=>'nova','pt'=>'nova','de'=>'onyx','fr'=>'shimmer','it'=>'shimmer','ja'=>'nova','ko'=>'nova','zh'=>'nova','ar'=>'echo','fa'=>'echo'];
+$voiceMap = ['es'=>'nova','en'=>'nova','pt'=>'nova','de'=>'onyx','fr'=>'shimmer','it'=>'shimmer','ja'=>'nova','ko'=>'nova','af'=>'nova','sw'=>'nova','zu'=>'nova'];
 $voice = $voiceMap[$lang] ?? 'nova';
 
 // ===== Step 1: Generate counsel with GPT =====

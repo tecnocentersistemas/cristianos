@@ -62,6 +62,8 @@ function detectLang() {
     if (/Ljubljana/.test(tz)) return 'sl';
     if (/Tokyo/.test(tz)) return 'ja';
     if (/Seoul/.test(tz)) return 'ko';
+    if (/Johannesburg/.test(tz)) return 'af';
+    if (/Nairobi/.test(tz)) return 'sw';
   } catch(e) {}
   return 'es';
 }

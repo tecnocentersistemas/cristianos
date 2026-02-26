@@ -19,7 +19,7 @@ if (!isset($_FILES['audio']) || $_FILES['audio']['error'] !== UPLOAD_ERR_OK) {
 
 $tmpFile = $_FILES['audio']['tmp_name'];
 $lang = $_POST['lang'] ?? 'es';
-$langMap = ['es'=>'es','en'=>'en','pt'=>'pt','de'=>'de','fr'=>'fr','it'=>'it','pl'=>'pl','ru'=>'ru','uk'=>'uk','sv'=>'sv','fi'=>'fi','nb'=>'no','lv'=>'lv','sl'=>'sl','ja'=>'ja','ko'=>'ko','zh'=>'zh','ar'=>'ar','fa'=>'fa'];
+$langMap = ['es'=>'es','en'=>'en','pt'=>'pt','de'=>'de','fr'=>'fr','it'=>'it','pl'=>'pl','ru'=>'ru','uk'=>'uk','sv'=>'sv','fi'=>'fi','nb'=>'no','lv'=>'lv','sl'=>'sl','ja'=>'ja','ko'=>'ko','af'=>'af','sw'=>'sw','zu'=>'zu'];
 $whisperLang = $langMap[$lang] ?? 'es';
 
 $cFile = new CURLFile($tmpFile, 'audio/webm', 'voice.webm');
