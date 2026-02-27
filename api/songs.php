@@ -21,9 +21,9 @@ foreach ($files as $f) {
         }
     }
     if ($genre && $songGenre !== $genre) continue;
-    // Fix old domain URLs
+    // Fix old centralchat.pro domain URLs only
     $fixUrl = function($url) use ($canonicalDomain) {
-        if ($url && strpos($url, $canonicalDomain) === false) {
+        if ($url && strpos($url, 'centralchat.pro') !== false) {
             return preg_replace('#https?://[^/]+/#', 'https://' . $canonicalDomain . '/', $url, 1);
         }
         return $url;

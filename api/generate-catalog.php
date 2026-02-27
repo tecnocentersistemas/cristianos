@@ -1,7 +1,7 @@
 <?php
 /**
  * Pre-generate enhanced catalog with Pexels images for each song.
- * Run ONCE: curl https://cristianos.centralchat.pro/api/generate-catalog.php
+ * Run ONCE: curl https://yeshuacristiano.com/api/generate-catalog.php
  * This populates data/catalog-enhanced.json with real images per song.
  */
 header('Content-Type: application/json; charset=utf-8');

@@ -32,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             foreach ($files as $f) {
                 $s = json_decode(file_get_contents($f), true);
                 if ($s && !empty($s['id'])) {
-                    // Fix URLs with old domains to canonical domain
+                    // Fix URLs with old centralchat.pro domain only
                     foreach (['audioUrl','videoUrl','imageUrl','shareUrl'] as $urlKey) {
-                        if (!empty($s[$urlKey]) && strpos($s[$urlKey], $canonicalDomain) === false) {
+                        if (!empty($s[$urlKey]) && strpos($s[$urlKey], 'centralchat.pro') !== false) {
                             $s[$urlKey] = preg_replace('#https?://[^/]+/#', 'https://' . $canonicalDomain . '/', $s[$urlKey], 1);
                         }
                     }
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $s = json_decode(file_get_contents($metaFile), true);
     if ($s) {
         foreach (['audioUrl','videoUrl','imageUrl','shareUrl'] as $urlKey) {
-            if (!empty($s[$urlKey]) && strpos($s[$urlKey], $canonicalDomain) === false) {
+            if (!empty($s[$urlKey]) && strpos($s[$urlKey], 'centralchat.pro') !== false) {
                 $s[$urlKey] = preg_replace('#https?://[^/]+/#', 'https://' . $canonicalDomain . '/', $s[$urlKey], 1);
             }
         }
