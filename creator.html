@@ -223,7 +223,7 @@
   <script src="js/consejero.js?v=20250627f"></script>
   <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(function(){});
+    navigator.serviceWorker.register('/sw.js', {updateViaCache:'none'}).then(function(r){r.update();}).catch(function(){});
   }
   </script>
 </body>
