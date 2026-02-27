@@ -300,10 +300,9 @@ function startVideoExperience(video) {
     slideshow.images.push(slideshow.images[slideshow.images.length - 1]);
   }
 
-  // Build text slides: verses + poem
+  // Build text slides: ONLY Bible verses (no poem/lyrics - they go out of sync)
   slideshow.texts = [];
   if (video.verses) { video.verses.forEach(function(v) { slideshow.texts.push({ text: '"' + v.text + '"', ref: '— ' + v.ref }); }); }
-  if (video.poem) { for (var i = 0; i < video.poem.length; i += 2) { var line = video.poem[i]; if (video.poem[i+1]) line += '\n' + video.poem[i+1]; slideshow.texts.push({ text: line, ref: '' }); } }
 
   // CREATE SLIDES DYNAMICALLY
   var slidesContainer = document.getElementById('slideshowSlides');
@@ -605,14 +604,6 @@ function pollSunoStatus(taskId, elapsed) {
           pe.innerHTML = lyricsText.replace(/\[([^\]]+)\]/g, '<strong style="color:var(--primary)">$1</strong>').replace(/\n/g, '<br>');
           pe.style.display = 'block';
         }
-        // Distribute lyrics across slideshow
-        var cl = lyricsText.replace(/\[[^\]]+\]\n?/g, '').split('\n').filter(function(x) { return x.trim(); });
-        var ns = Math.max(slideshow.images.length, 1);
-        var lps = Math.max(2, Math.ceil(cl.length / ns));
-        slideshow.texts = [];
-        for (var i = 0; i < cl.length; i += lps) {
-          slideshow.texts.push({ text: cl.slice(i, i + lps).join('\n'), ref: '' });
-        }
         // Sync lyrics highlight with audio
         var les = document.querySelectorAll('#lyricsContent .lyrics-line');
         if (les.length > 0 && song.duration > 0) {
@@ -700,7 +691,7 @@ function pollSunoStatus(taskId, elapsed) {
             }).catch(function() {});
           }, 10000);
         }
-      }).catch(function(e) { console.warn('Save error:', e); });
+      }).catch(function(e) { console.warn('Save song error:', e, 'saveUrl:', saveUrl); });
       }, 3000); // delay to allow timestamped lyrics to load
 
     } else if (data.status === 'error') {
@@ -747,7 +738,12 @@ function toggleShareMenu() {
 function shareOn(platform) {
   var song = window._sunoSong, saved = window._savedSong;
   var title = (song && song.title) ? song.title : 'FaithTunes';
-  var shareUrl = (saved && saved.shareUrl) ? saved.shareUrl : window.location.href;
+  // Priority: shareUrl > videoUrl > audioUrl > site home (NEVER creator.html)
+  var shareUrl = (saved && saved.shareUrl) ? saved.shareUrl : '';
+  if (!shareUrl && saved && saved.videoUrl) shareUrl = saved.videoUrl;
+  if (!shareUrl && saved && saved.audioUrl) shareUrl = saved.audioUrl;
+  if (!shareUrl && window._sunoAudioUrl) shareUrl = window._sunoAudioUrl;
+  if (!shareUrl) shareUrl = 'https://yeshuacristiano.com';
   var text = title + ' - Cancion cristiana creada con IA en FaithTunes';
   switch(platform) {
     case 'whatsapp': window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n\n' + shareUrl), '_blank'); break;

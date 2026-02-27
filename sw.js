@@ -1,16 +1,16 @@
 // FaithTunes Service Worker - PWA offline support
-var CACHE_NAME = 'faithtunes-v12';
+var CACHE_NAME = 'faithtunes-v13';
 // Explicitly cache the versioned assets (match query strings used in HTML)
 var STATIC_ASSETS = [
   '/',
   '/index.html',
   '/creator.html',
-  '/css/app.css?v=20250629b',
-  '/css/creator.css?v=20250629b',
-  '/js/app.js?v=20250629b',
-  '/js/i18n.js?v=20250629b',
-  '/js/creator.js?v=20250629b',
-  '/js/consejero.js?v=20250629b',
+  '/css/app.css?v=20250629c',
+  '/css/creator.css?v=20250629c',
+  '/js/app.js?v=20250629c',
+  '/js/i18n.js?v=20250629c',
+  '/js/creator.js?v=20250629c',
+  '/js/consejero.js?v=20250629c',
   '/manifest.json'
 ];
 

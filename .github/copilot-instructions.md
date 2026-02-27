@@ -2,7 +2,7 @@
 
 ## Proyecto
 Plataforma web para videos musicales cristianos con IA. Nombre de trabajo: "cristianos". Marca: "FaithTunes".  
-URL de producción: **https://yeshuacristiano.com/**
+URL de producción: **https://yeshuacristiano.com/** (NO cristianos.centralchat.pro). Siempre verificar que las URLs y dominios sean correctos antes de hacer cambios.
 
 ## Stack técnico
 - **Frontend**: HTML5 + CSS3 + JavaScript vanilla (NO frameworks, NO TypeScript, NO bundlers)

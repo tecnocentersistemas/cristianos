@@ -172,38 +172,7 @@ if (!$openaiKey) { http_response_code(500); echo json_encode(['error'=>'No API k
 $langNames = ['es'=>'Spanish','en'=>'English','pt'=>'Portuguese','de'=>'German','fr'=>'French','it'=>'Italian','pl'=>'Polish','ru'=>'Russian','uk'=>'Ukrainian','sv'=>'Swedish','fi'=>'Finnish','nb'=>'Norwegian','lv'=>'Latvian','sl'=>'Slovenian','ja'=>'Japanese','ko'=>'Korean','zh'=>'Chinese','ar'=>'Arabic','fa'=>'Persian','af'=>'Afrikaans','sw'=>'Swahili','zu'=>'Zulu','el'=>'Greek','km'=>'Khmer','hi'=>'Hindi'];
 $langHint = $langNames[$lang] ?? 'Spanish';
 
-// Detect if user explicitly requests a different language in their prompt
-$langDetectPatterns = [
-    '/\b(?:en|in)\s+(afrikaans|african)/i' => 'Afrikaans',
-    '/\b(?:en|in)\s+(swahili|kiswahili)/i' => 'Swahili',
-    '/\b(?:en|in)\s+(zulu|isizulu)/i' => 'Zulu',
-    '/\b(?:en|in|em)\s+(ingl[eé]s|english)/i' => 'English',
-    '/\b(?:en|in|em)\s+(espa[ñn]ol|spanish)/i' => 'Spanish',
-    '/\b(?:en|in|em)\s+(portugu[eê]s|portuguese)/i' => 'Portuguese',
-    '/\b(?:en|in)\s+(german|deutsch|alem[aá]n)/i' => 'German',
-    '/\b(?:en|in)\s+(french|fran[cç]ais|franc[eé]s)/i' => 'French',
-    '/\b(?:en|in)\s+(italian|italiano)/i' => 'Italian',
-    '/\b(?:en|in)\s+(japanese|japon[eé]s)/i' => 'Japanese',
-    '/\b(?:en|in)\s+(korean|coreano)/i' => 'Korean',
-    '/\b(?:en|in)\s+(russian|ruso)/i' => 'Russian',
-    '/\b(?:en|in)\s+(arabic|[aá]rabe)/i' => 'Arabic',
-    '/\b(?:en|in)\s+(hindi)/i' => 'Hindi',
-    '/\b(?:en|in)\s+(chinese|chino|mandar[ií]n)/i' => 'Chinese',
-    '/\b(?:en|in)\s+(greek|griego)/i' => 'Greek',
-    '/\b(?:en|in)\s+(polish|polaco)/i' => 'Polish',
-    '/\b(?:en|in)\s+(swedish|sueco)/i' => 'Swedish',
-    '/\b(?:en|in)\s+(finnish|fin[eé]s)/i' => 'Finnish',
-    '/\b(?:en|in)\s+(norwegian|noruego)/i' => 'Norwegian',
-    '/\b(?:en|in)\s+(khmer|camboyano)/i' => 'Khmer',
-];
-foreach ($langDetectPatterns as $pattern => $detectedLang) {
-    if (preg_match($pattern, $prompt)) {
-        $langHint = $detectedLang;
-        break;
-    }
-}
-
-$fullPrompt = $prompt . "\n\n[IMPORTANT: All text output (title, poem, verses, description) MUST be in " . $langHint . ". The song lyrics MUST be in " . $langHint . ".]";
+$fullPrompt = $prompt . "\n\n[LANGUAGE RULES: The user's UI is set to " . $langHint . ". However, if the user explicitly requests a DIFFERENT language in their message (e.g. 'in Afrikaans', 'en japonés', 'in English', 'auf Deutsch', etc.), you MUST generate ALL output (title, poem, verses, description) in THAT requested language instead. If no specific language is requested, use " . $langHint . ". ALWAYS detect the language the user is asking for and produce output in that language.]";
 
 $ai = callOpenAI($openaiKey, $fullPrompt);
 // Retry once if failed
