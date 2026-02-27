@@ -2,40 +2,6 @@
 // FaithTunes - Biblical Counselor (consejero.js)
 // =============================================
 
-// ===== Faith Declaration Modal =====
-(function initFaithModal() {
-  var a = localStorage.getItem('ft_faith_accepted');
-  var modal = document.getElementById('faithModal');
-  if (!modal) return;
-  if (a === 'yes') { modal.classList.add('hidden'); return; }
-  if (a === 'no') { blockPage(); return; }
-  var chk = document.getElementById('faithCheck');
-  var btn = document.getElementById('faithBtn');
-  if (chk) chk.onclick = function() { if (btn) btn.disabled = !chk.checked; };
-})();
-
-function acceptFaith() {
-  var chk = document.getElementById('faithCheck');
-  if (!chk || !chk.checked) return;
-  localStorage.setItem('ft_faith_accepted', 'yes');
-  document.getElementById('faithModal').classList.add('hidden');
-}
-
-function rejectFaith() {
-  localStorage.setItem('ft_faith_accepted', 'no');
-  blockPage();
-}
-
-function blockPage() {
-  var c = document.getElementById('faithContent');
-  if (c) c.innerHTML = '<div class="faith-blocked"><div class="faith-blocked-icon"><i class="fas fa-ban"></i></div><h2>Acceso Restringido</h2><p>Esta plataforma es exclusivamente para personas que aceptan a Yeshua (Jesús) como Señor y Salvador. No es posible utilizar FaithTunes sin aceptar la declaración de fe.</p><button class="faith-btn-retry" onclick="retryFaith()"><i class="fas fa-redo"></i> Volver a intentar</button></div>';
-}
-
-function retryFaith() {
-  localStorage.removeItem('ft_faith_accepted');
-  location.reload();
-}
-
 var _counselorMode = false;
 var _counselAudio = null;
 var _counselSlideTimer = null;
@@ -137,6 +103,7 @@ var _counselHistory = [];
 // ===== Send counsel request =====
 function sendCounselMessage(text) {
   if (!text || !text.trim()) return;
+  if (typeof isFaithAccepted === 'function' && !isFaithAccepted()) { showFaithRequired(); return; }
   addMessage(text, 'user');
   _counselHistory.push({ type: 'user', text: text });
   var typingDiv = addTyping();
@@ -150,7 +117,7 @@ function sendCounselMessage(text) {
   .then(function(data) {
     if (typingDiv) typingDiv.remove();
     if (data.error) {
-      addMessage('<i class="fas fa-exclamation-circle"></i> ' + data.error, 'ai');
+      addMessage('<i class="fas fa-exclamation-triangle" style="color:#f59e0b"></i> ' + data.error, 'ai');
       return;
     }
     _counselHistory.push({ type: 'ai', title: data.title, counsel: data.counsel });
@@ -158,7 +125,7 @@ function sendCounselMessage(text) {
   })
   .catch(function(err) {
     if (typingDiv) typingDiv.remove();
-    addMessage('<i class="fas fa-exclamation-circle"></i> Error de conexión', 'ai');
+    addMessage('<i class="fas fa-wifi" style="color:#f59e0b"></i> ' + t('cr.errConnection'), 'ai');
   });
 }
 

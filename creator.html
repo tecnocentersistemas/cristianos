@@ -12,8 +12,8 @@
   <title>FaithTunes - Crear Video</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css?v=20250628h">
-  <link rel="stylesheet" href="css/creator.css?v=20250628h">
+  <link rel="stylesheet" href="css/app.css?v=20250629a">
+  <link rel="stylesheet" href="css/creator.css?v=20250629a">
 </head>
 <body>
   <!-- Nav -->
@@ -92,6 +92,15 @@
       </div>
 
       <div class="chat-input-area">
+        <div class="faith-inline" id="faithInline">
+          <label class="faith-inline-label" id="faithInlineLabel">
+            <input type="checkbox" id="faithInlineCheck">
+            <span class="faith-inline-mark"></span>
+            <span class="faith-inline-text" data-i18n="faith.inline">✝ Acepto a Yeshua (Jesús) como Señor y Salvador</span>
+          </label>
+          <span class="faith-inline-status" id="faithInlineStatus"></span>
+        </div>
+        <div class="faith-inline-msg" id="faithInlineMsg" style="display:none;"></div>
         <div class="suno-toggle-area">
           <label class="suno-toggle" title="Generar canción cantada real con Suno AI">
             <input type="checkbox" id="sunoToggle" checked>
@@ -206,34 +215,9 @@
   <!-- Hidden audio player -->
   <audio id="bgAudio" preload="auto"></audio>
 
-  <!-- Faith Declaration Modal -->
-  <div class="faith-modal-overlay" id="faithModal">
-    <div class="faith-modal" id="faithContent">
-      <div class="faith-modal-icon"><i class="fas fa-cross"></i></div>
-      <h2 data-i18n="faith.title">Declaración de Fe</h2>
-      <p data-i18n="faith.desc">FaithTunes es una plataforma exclusivamente cristiana dedicada a glorificar a Yeshua (Jesús), el Hijo de Dios y Creador del universo. Para continuar, por favor confirmá tu fe:</p>
-      <div class="faith-declaration">
-        <label class="faith-check">
-          <input type="checkbox" id="faithCheck">
-          <span class="faith-check-mark"></span>
-          <span data-i18n="faith.accept">Declaro que acepto a Yeshua (Jesús) como Señor y Salvador, Hijo de Dios y Creador del universo. Entiendo que esta plataforma es exclusivamente para contenido cristiano.</span>
-        </label>
-      </div>
-      <div class="faith-buttons">
-        <button class="faith-btn-accept" id="faithBtn" onclick="acceptFaith()" disabled>
-          <i class="fas fa-pray"></i> <span data-i18n="faith.btn">Amén, Acepto y Continuar</span>
-        </button>
-        <button class="faith-btn-reject" onclick="rejectFaith()">
-          <span data-i18n="faith.reject">No acepto</span>
-        </button>
-      </div>
-      <p class="faith-note" data-i18n="faith.note">✝ No se permite contenido de otras religiones. Solo contenido basado en la Biblia Hebrea y cristiana.</p>
-    </div>
-  </div>
-
-  <script src="js/i18n.js?v=20250628j"></script>
-  <script src="js/creator.js?v=20250628h"></script>
-  <script src="js/consejero.js?v=20250628h"></script>
+  <script src="js/i18n.js?v=20250629a"></script>
+  <script src="js/creator.js?v=20250629a"></script>
+  <script src="js/consejero.js?v=20250629a"></script>
   <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(function(){});

@@ -51,6 +51,57 @@ function toggleLangDropdown() { var dd = document.getElementById('langDropdown')
 function selectLang(code) { setLang(code); var dd = document.getElementById('langDropdown'); if (dd) dd.classList.remove('active'); var ov = document.getElementById('langOverlay'); if (ov) ov.classList.remove('active'); }
 document.addEventListener('click', function(e) { if (!e.target.closest('.lang-globe-wrapper')) { var dd = document.getElementById('langDropdown'); if (dd) dd.classList.remove('active'); var ov = document.getElementById('langOverlay'); if (ov) ov.classList.remove('active'); } });
 
+// ===== Faith Inline Declaration =====
+function isFaithAccepted() {
+  return localStorage.getItem('ft_faith_accepted') === 'yes';
+}
+
+function initFaithInline() {
+  var chk = document.getElementById('faithInlineCheck');
+  var container = document.getElementById('faithInline');
+  var status = document.getElementById('faithInlineStatus');
+  if (!chk || !container) return;
+  // Auto-check if already accepted
+  if (isFaithAccepted()) {
+    chk.checked = true;
+    container.classList.add('accepted');
+    if (status) { status.innerHTML = '<i class="fas fa-check-circle"></i>'; status.title = t('faith.acceptedTip'); }
+  }
+  chk.addEventListener('change', function() {
+    var msg = document.getElementById('faithInlineMsg');
+    if (chk.checked) {
+      localStorage.setItem('ft_faith_accepted', 'yes');
+      container.classList.add('accepted');
+      container.classList.remove('shake');
+      if (status) { status.innerHTML = '<i class="fas fa-check-circle"></i>'; status.title = t('faith.acceptedTip'); }
+      if (msg) msg.style.display = 'none';
+    } else {
+      localStorage.removeItem('ft_faith_accepted');
+      container.classList.remove('accepted');
+      if (status) { status.innerHTML = ''; status.title = ''; }
+    }
+  });
+}
+
+function showFaithRequired() {
+  var container = document.getElementById('faithInline');
+  var msg = document.getElementById('faithInlineMsg');
+  if (container) {
+    container.classList.remove('shake');
+    void container.offsetWidth; // force reflow for re-animation
+    container.classList.add('shake');
+    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  if (msg) {
+    msg.innerHTML = '<i class="fas fa-info-circle"></i> ' + t('faith.required');
+    msg.style.display = 'flex';
+    setTimeout(function() { msg.style.display = 'none'; }, 6000);
+  }
+}
+
+// Initialize faith inline on load
+initFaithInline();
+
 // ===== Chat =====
 function addMessage(text, type) {
   var container = document.getElementById('chatMessages');
@@ -70,7 +121,10 @@ function addTyping() {
   container.appendChild(div); container.scrollTop = container.scrollHeight;
 }
 function removeTyping() { var el = document.getElementById('typingIndicator'); if (el) el.remove(); }
-function useSuggestion(btn) { document.getElementById('chatInput').value = btn.textContent; sendMessage(); }
+function useSuggestion(btn) {
+  if (!isFaithAccepted()) { document.getElementById('chatInput').value = btn.textContent; showFaithRequired(); return; }
+  document.getElementById('chatInput').value = btn.textContent; sendMessage();
+}
 
 // Quick-access shortcuts for content types
 function useShortcut(type) {
@@ -100,6 +154,7 @@ function useShortcut(type) {
   var prompt = prompts[type] ? (prompts[type][lang] || prompts[type].es) : '';
   if (prompt) {
     document.getElementById('chatInput').value = prompt;
+    if (!isFaithAccepted()) { showFaithRequired(); return; }
     sendMessage();
   }
 }
@@ -140,6 +195,7 @@ function sendMessage() {
   var input = document.getElementById('chatInput');
   var text = input.value.trim();
   if (!text) return;
+  if (!isFaithAccepted()) { showFaithRequired(); return; }
   unlockAudio();
   input.value = '';
   addMessage(text, 'user');
@@ -156,9 +212,9 @@ function sendMessage() {
   })
   .then(function(res) {
     return res.text().then(function(body) {
-      if (!body || !body.trim()) return { error: 'Servidor no respondió. Intentá de nuevo.' };
+      if (!body || !body.trim()) return { error: t('cr.errEmpty') };
       try { return JSON.parse(body); }
-      catch(e) { return { error: 'Respuesta inválida del servidor' }; }
+      catch(e) { return { error: t('cr.errParse') }; }
     });
   })
   .then(function(data) {
@@ -166,16 +222,16 @@ function sendMessage() {
     if (genMsg) genMsg.remove();
     input.disabled = false; document.getElementById('chatSendBtn').disabled = false; input.focus();
     if (!data || data.error) {
-      addMessage('<i class="fas fa-exclamation-circle"></i> ' + t('cr.error') + (data && data.error ? ' (' + data.error + ')' : ''), 'ai');
+      var errDetail = data && data.error ? data.error : '';
+      var errIcon = '<i class="fas fa-exclamation-triangle" style="color:#f59e0b"></i> ';
+      addMessage(errIcon + t('cr.error') + (errDetail ? '<br><small style="opacity:0.7">' + errDetail + '</small>' : ''), 'ai');
       return;
     }
     if (data.success && data.video) {
       try {
         var isMobile = window.innerWidth <= 768;
         if (sunoEnabled) {
-          // Store video data for later — DON'T show slideshow yet
           window._pendingVideoData = data.video;
-          // Show a nice waiting state with title and verse
           var waitInfo = '<div style="text-align:center;padding:1rem 0">';
           waitInfo += '<div style="font-size:1.1rem;font-weight:700;color:var(--primary);margin-bottom:0.5rem">' + (data.video.title || '') + '</div>';
           if (data.video.verses && data.video.verses[0]) {
@@ -184,7 +240,6 @@ function sendMessage() {
           }
           waitInfo += '</div>';
           addMessage(waitInfo, 'ai');
-          // Start Suno generation
           startSunoGeneration(null, data.video);
         } else {
           addMessage('<i class="fas fa-check-circle" style="color:#22c55e"></i> ' + t(isMobile ? 'cr.readyMobile' : 'cr.ready'), 'ai');
@@ -192,7 +247,7 @@ function sendMessage() {
         }
       } catch(e) {
         console.error('Video render error:', e);
-        addMessage('<i class="fas fa-exclamation-circle"></i> Error al mostrar el video. Intentá de nuevo.', 'ai');
+        addMessage('<i class="fas fa-exclamation-triangle" style="color:#f59e0b"></i> ' + t('cr.errRender'), 'ai');
       }
     }
   })
@@ -200,7 +255,9 @@ function sendMessage() {
     removeTyping();
     if (genMsg) genMsg.remove();
     input.disabled = false; document.getElementById('chatSendBtn').disabled = false;
-    addMessage('<i class="fas fa-exclamation-circle"></i> ' + t('cr.error') + ' (conexión)', 'ai');
+    var errMsg = t('cr.errConnection');
+    if (err && err.message && err.message.indexOf('timeout') >= 0) errMsg = t('cr.errTimeout');
+    addMessage('<i class="fas fa-wifi" style="color:#f59e0b"></i> ' + errMsg, 'ai');
     console.error('Fetch error:', err);
   });
 }
