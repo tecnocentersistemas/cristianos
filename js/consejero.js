@@ -103,7 +103,6 @@ var _counselHistory = [];
 // ===== Send counsel request =====
 function sendCounselMessage(text) {
   if (!text || !text.trim()) return;
-  if (typeof isFaithAccepted === 'function' && !isFaithAccepted()) { showFaithRequired(); return; }
   addMessage(text, 'user');
   _counselHistory.push({ type: 'user', text: text });
   var typingDiv = addTyping();

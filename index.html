@@ -301,59 +301,9 @@
     </div>
   </div>
 
-  <!-- Faith Declaration Modal -->
-  <div class="faith-modal-overlay" id="faithModal">
-    <div class="faith-modal" id="faithContent">
-      <div class="faith-modal-icon"><i class="fas fa-cross"></i></div>
-      <h2 data-i18n="faith.title">Declaración de Fe</h2>
-      <p data-i18n="faith.desc">FaithTunes es una plataforma exclusivamente cristiana dedicada a glorificar a Yeshua (Jesús), el Hijo de Dios y Creador del universo. Para continuar, por favor confirmá tu fe:</p>
-      <div class="faith-declaration">
-        <label class="faith-check">
-          <input type="checkbox" id="faithCheck">
-          <span class="faith-check-mark"></span>
-          <span data-i18n="faith.accept">Declaro que acepto a Yeshua (Jesús) como Señor y Salvador, Hijo de Dios y Creador del universo. Entiendo que esta plataforma es exclusivamente para contenido cristiano.</span>
-        </label>
-      </div>
-      <div class="faith-buttons">
-        <button class="faith-btn-accept" id="faithBtn" onclick="acceptFaith()" disabled>
-          <i class="fas fa-pray"></i> <span data-i18n="faith.btn">Amén, Acepto y Continuar</span>
-        </button>
-        <button class="faith-btn-reject" onclick="rejectFaith()">
-          <span data-i18n="faith.reject">No acepto</span>
-        </button>
-      </div>
-      <p class="faith-note" data-i18n="faith.note">✝ No se permite contenido de otras religiones. Solo contenido basado en la Biblia Hebrea y cristiana.</p>
-    </div>
-  </div>
-
-  <script src="js/i18n.js?v=20250629c"></script>
-  <script src="js/app.js?v=20250629c"></script>
+  <script src="js/i18n.js?v=20250629d"></script>
+  <script src="js/app.js?v=20250629d"></script>
   <script>
-  (function() {
-    var a = localStorage.getItem('ft_faith_accepted');
-    var m = document.getElementById('faithModal');
-    if (!m) return;
-    if (a === 'yes') { m.classList.add('hidden'); return; }
-    if (a === 'no') { blockPage(); return; }
-    var chk = document.getElementById('faithCheck');
-    var btn = document.getElementById('faithBtn');
-    if (chk) chk.onclick = function() { if (btn) btn.disabled = !chk.checked; };
-  })();
-  function acceptFaith() {
-    var chk = document.getElementById('faithCheck');
-    if (!chk || !chk.checked) return;
-    localStorage.setItem('ft_faith_accepted', 'yes');
-    document.getElementById('faithModal').classList.add('hidden');
-  }
-  function rejectFaith() {
-    localStorage.setItem('ft_faith_accepted', 'no');
-    blockPage();
-  }
-  function blockPage() {
-    var c = document.getElementById('faithContent');
-    if (c) c.innerHTML = '<div class="faith-blocked"><div class="faith-blocked-icon"><i class="fas fa-ban"></i></div><h2>Acceso Restringido</h2><p>Esta plataforma es exclusivamente para personas que aceptan a Yeshua (Jesús) como Señor y Salvador. No es posible utilizar FaithTunes sin aceptar la declaración de fe.</p><button class="faith-btn-retry" onclick="retryFaith()"><i class="fas fa-redo"></i> Volver a intentar</button></div>';
-  }
-  function retryFaith() { localStorage.removeItem('ft_faith_accepted'); location.reload(); }
   if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js').catch(function(){}); }
   </script>
 </body>

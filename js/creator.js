@@ -122,7 +122,6 @@ function addTyping() {
 }
 function removeTyping() { var el = document.getElementById('typingIndicator'); if (el) el.remove(); }
 function useSuggestion(btn) {
-  if (!isFaithAccepted()) { document.getElementById('chatInput').value = btn.textContent; showFaithRequired(); return; }
   document.getElementById('chatInput').value = btn.textContent; sendMessage();
 }
 
@@ -154,7 +153,6 @@ function useShortcut(type) {
   var prompt = prompts[type] ? (prompts[type][lang] || prompts[type].es) : '';
   if (prompt) {
     document.getElementById('chatInput').value = prompt;
-    if (!isFaithAccepted()) { showFaithRequired(); return; }
     sendMessage();
   }
 }
@@ -195,7 +193,6 @@ function sendMessage() {
   var input = document.getElementById('chatInput');
   var text = input.value.trim();
   if (!text) return;
-  if (!isFaithAccepted()) { showFaithRequired(); return; }
   unlockAudio();
   input.value = '';
   addMessage(text, 'user');
@@ -223,6 +220,13 @@ function sendMessage() {
     input.disabled = false; document.getElementById('chatSendBtn').disabled = false; input.focus();
     if (!data || data.error) {
       var errDetail = data && data.error ? data.error : '';
+      // If content_policy, just retry with a Christian wrapper
+      if (errDetail === 'content_policy') {
+        var origInput = document.getElementById('chatInput');
+        origInput.value = 'Cancion cristiana de alabanza a Dios';
+        sendMessage();
+        return;
+      }
       var errIcon = '<i class="fas fa-exclamation-triangle" style="color:#f59e0b"></i> ';
       addMessage(errIcon + t('cr.error') + (errDetail ? '<br><small style="opacity:0.7">' + errDetail + '</small>' : ''), 'ai');
       return;
