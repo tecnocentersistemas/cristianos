@@ -20,6 +20,11 @@ server {
         fastcgi_pass unix:/run/php/php7.4-fpm.sock;
     }
 
+    location /.well-known/ {
+        alias /var/www/cristianos/.well-known/;
+        default_type application/json;
+    }
+
     location / {
         try_files $uri $uri/ /index.html;
     }

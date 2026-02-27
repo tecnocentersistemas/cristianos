@@ -14,6 +14,8 @@ Thumbs.db
 
 # Node
 node_modules/
+package.json
+package-lock.json
 
 # Media files (downloaded/generated on VPS only)
 media/images/**/*.jpg
