@@ -163,7 +163,7 @@ function loadAISongs() {
       // Always use gradient fallback, load image on top if available
       var thumbContent = '<div class="ai-song-gradient"><i class="fas fa-music"></i></div>';
       if (s.imageUrl) {
-        thumbContent = '<img src="' + s.imageUrl + '" alt="' + (s.title||'') + '" onerror="this.style.display=\'none\'">'
+        thumbContent = '<img src="' + s.imageUrl + '" alt="' + (s.title||'') + '" loading="lazy" onerror="this.style.display=\'none\'">'
           + '<div class="ai-song-gradient ai-song-fallback"><i class="fas fa-music"></i></div>';
       }
 
