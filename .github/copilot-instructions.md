@@ -17,17 +17,19 @@ URL de producción: **https://yeshuacristiano.com/** (NO cristianos.centralchat.
 - **Carpeta local**: `C:\cristianos`
 
 ## Flujo de trabajo y deploy
-- SIEMPRE modificar archivos en LOCAL (`C:\cristianos`).
-- Hacer commit y push a GitHub:
-   ```powershell
-   cd C:\cristianos; git add -A; git commit -m "descripción del cambio"; git push origin main
-   ```
-- El despliegue al VPS es AUTOMÁTICO vía webhook - NUNCA hacer ssh para git pull ni actualizar manualmente el VPS.
+- FLUJO DE TRABAJO OBLIGATORIO:
+  1. Analizar archivos EN LOCAL (`C:\cristianos`) - son idénticos al VPS.
+  2. Reparar EN LOCAL.
+  3. Verificar todo localmente.
+  4. Hacer commit y push a GitHub: cd C:\cristianos; git add -A; git commit -m "descripción del cambio"; git push origin main
+  5. El VPS se actualiza automáticamente vía webhook - NUNCA hacer ssh para git pull ni actualizar manualmente el VPS.
 - Verificar en: https://yeshuacristiano.com/
 - NUNCA subir archivos con `scp`. Todo va por git.
 - NUNCA compilar ni usar `run_build`.
 - Usar `;` como separador en PowerShell, NO `&&`.
 - **NO modificar archivos en VPS por comandos directos; todo debe hacerse a través de `git push` y `git pull`.**
+- Cuando necesites configurar cosas en el VPS, NO ejecutar comandos SSH largos. En su lugar, crea un archivo de script local, súbelo a través de git y luego ejecútalo en el VPS con un comando SSH corto. Esto evita frustraciones por comandos largos o que se agoten el tiempo de espera.  
+- **Evitar múltiples comandos SSH secuenciales.** Utiliza scripts locales para simplificar la ejecución en el VPS.
 
 ## VPS
 - IP: `172.96.8.245`
@@ -36,9 +38,7 @@ URL de producción: **https://yeshuacristiano.com/** (NO cristianos.centralchat.
 - Servidor web: Nginx
 - Dominio: `yeshuacristiano.com`
 
-## Estructura del proyecto
-```
-cristianos/
+## Estructura del proyectocristianos/
 ├── index.html           Landing page principal
 ├── css/app.css           Estilos globales (dark/light, responsive)
 ├── js/app.js             JS principal + i18n (ES/EN/PT) + catálogo dinámico
@@ -50,8 +50,6 @@ cristianos/
 ├── api/                  Backend Node.js (futuro)
 ├── deploy/               Config del VPS (nginx)
 └── .github/copilot-instructions.md
-```
-
 ## Paleta de colores
 - Primary: `#d97706` (amber/gold)
 - Secondary: `#7c3aed` (violet)
@@ -68,18 +66,11 @@ cristianos/
 - Sistema: atributos `data-i18n` en HTML + objeto `L` en `js/app.js`.
 
 ## Git workflow
-- Cuando el usuario diga "haz commit y push", ejecutar sin preguntar:
-  ```powershell
-  cd C:\cristianos; git add -A; git commit -m "mensaje descriptivo"; git push origin main
-  ```
-## Configuración en VPS
-- Cuando necesites configurar cosas en el VPS, NO ejecutar comandos SSH largos. En su lugar, crea un archivo de script local, súbelo a través de git y luego ejecútalo en el VPS con un comando SSH corto. Esto evita frustraciones por comandos largos o que se agoten el tiempo de espera.  
-- **Evitar múltiples comandos SSH secuenciales.** Utiliza scripts locales para simplificar la ejecución en el VPS.
-
+- Cuando el usuario diga "haz commit y push", ejecutar sin preguntar:cd C:\cristianos; git add -A; git commit -m "mensaje descriptivo"; git push origin main
 ## Relación con CentralChat
 - Proyecto INDEPENDIENTE de CentralChat. Reutiliza patrones (i18n, theme toggle, CSS variables, responsive) pero NO comparte archivos.
 - Repo CentralChat: `tecnocentersistemas/chatbot-centralchat` (separado).
 - Futuro: reutilizar lógica de RAG y OpenAI de CentralChat adaptada para selección de recursos multimedia.
 
 ## Mantenimiento de HTML
-- Al usar `multi_replace_string_in_file` para actualizar los cache busters en archivos HTML, verifica que las etiquetas HTML permanezcan intactas. Esto incluye asegurarse de que `<link rel="stylesheet" href="...">` y `<script src="..."></script>` no se conviertan en solo texto. Siempre revisa las líneas afectadas después de las actualizaciones de cache buster.
+- Al usar `multi_replace_string_in_file` para actualizar los cache busters en archivos HTML, verifica que las etiquetas HTML permanezcan intactas. Esto incluye asegurarse de que `<link rel="stylesheet" href="...">` y `<script src="..."></script>` no se conviertan en solo texto. Siempre revisa las líneas afectadas después de las actualizaciones de cache buster
