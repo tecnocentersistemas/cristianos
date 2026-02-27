@@ -514,7 +514,7 @@ function startSunoGeneration(userPrompt, videoData) {
   // Build an intelligent prompt using OpenAI's structured output
   var sunoPayload = {};
   var lang = (videoData && videoData.lang) || currentLang;
-  var langNames = { es: 'Spanish', en: 'English', pt: 'Portuguese' };
+  var langNames = { es:'Spanish',en:'English',pt:'Portuguese',de:'German',fr:'French',it:'Italian',pl:'Polish',ru:'Russian',uk:'Ukrainian',sv:'Swedish',fi:'Finnish',nb:'Norwegian',lv:'Latvian',sl:'Slovenian',ja:'Japanese',ko:'Korean',zh:'Chinese',ar:'Arabic',fa:'Persian',af:'Afrikaans',sw:'Swahili',zu:'Zulu',el:'Greek',km:'Khmer',hi:'Hindi' };
   var langName = langNames[lang] || 'Spanish';
 
   if (videoData && videoData.poem && videoData.poem.length > 0) {
@@ -677,6 +677,7 @@ function pollSunoStatus(taskId, elapsed) {
           body: JSON.stringify({
             audioUrl: saveUrl, title: song.title || '', lyrics: finalLyrics,
             tags: song.tags || '', duration: song.duration || 0,
+            genre: (window._pendingVideoData && window._pendingVideoData.genre) || '',
             imageUrl: song.imageUrl || '', taskId: taskId,
             slideImages: slideImgs, creator: '', songId: song.id || ''
           })

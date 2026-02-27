@@ -5,6 +5,7 @@ header('Access-Control-Allow-Origin: *');
 
 $metaDir = __DIR__ . '/../data/songs';
 $genre = strtolower($_GET['genre'] ?? '');
+$canonicalDomain = 'yeshuacristiano.com';
 
 $songs = [];
 $files = glob($metaDir . '/*.json');
@@ -20,16 +21,23 @@ foreach ($files as $f) {
         }
     }
     if ($genre && $songGenre !== $genre) continue;
+    // Fix old domain URLs
+    $fixUrl = function($url) use ($canonicalDomain) {
+        if ($url && strpos($url, $canonicalDomain) === false) {
+            return preg_replace('#https?://[^/]+/#', 'https://' . $canonicalDomain . '/', $url, 1);
+        }
+        return $url;
+    };
     $songs[] = [
         'id' => $d['id'],
         'title' => $d['title'] ?? '',
         'genre' => $songGenre,
         'tags' => $d['tags'] ?? '',
         'duration' => $d['duration'] ?? 0,
-        'audioUrl' => $d['audioUrl'] ?? '',
-        'videoUrl' => $d['videoUrl'] ?? '',
-        'imageUrl' => $d['imageUrl'] ?? '',
-        'shareUrl' => $d['shareUrl'] ?? '',
+        'audioUrl' => $fixUrl($d['audioUrl'] ?? ''),
+        'videoUrl' => $fixUrl($d['videoUrl'] ?? ''),
+        'imageUrl' => $fixUrl($d['imageUrl'] ?? ''),
+        'shareUrl' => $fixUrl($d['shareUrl'] ?? ''),
         'creator' => $d['creator'] ?? '',
     ];
 }

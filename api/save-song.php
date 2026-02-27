@@ -15,6 +15,7 @@ foreach ([$songsDir, $videosDir, $imgsDir, $metaDir] as $d) { if (!is_dir($d)) m
 
 $host = $_SERVER['HTTP_HOST'] ?? 'yeshuacristiano.com';
 $baseUrl = 'https://' . $host;
+$canonicalDomain = 'yeshuacristiano.com';
 
 // ===== GET: list all songs or get one =====
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -30,7 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             usort($files, function($a, $b) { return filemtime($b) - filemtime($a); });
             foreach ($files as $f) {
                 $s = json_decode(file_get_contents($f), true);
-                if ($s && !empty($s['id'])) $songs[] = $s;
+                if ($s && !empty($s['id'])) {
+                    // Fix URLs with old domains to canonical domain
+                    foreach (['audioUrl','videoUrl','imageUrl','shareUrl'] as $urlKey) {
+                        if (!empty($s[$urlKey]) && strpos($s[$urlKey], $canonicalDomain) === false) {
+                            $s[$urlKey] = preg_replace('#https?://[^/]+/#', 'https://' . $canonicalDomain . '/', $s[$urlKey], 1);
+                        }
+                    }
+                    $songs[] = $s;
+                }
             }
         }
         echo json_encode(['songs' => $songs], JSON_UNESCAPED_UNICODE);
@@ -41,7 +50,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!$id) { echo json_encode(['error'=>'id required']); exit; }
     $metaFile = $metaDir . '/' . $id . '.json';
     if (!file_exists($metaFile)) { echo json_encode(['error'=>'not found']); exit; }
-    echo file_get_contents($metaFile);
+    $s = json_decode(file_get_contents($metaFile), true);
+    if ($s) {
+        foreach (['audioUrl','videoUrl','imageUrl','shareUrl'] as $urlKey) {
+            if (!empty($s[$urlKey]) && strpos($s[$urlKey], $canonicalDomain) === false) {
+                $s[$urlKey] = preg_replace('#https?://[^/]+/#', 'https://' . $canonicalDomain . '/', $s[$urlKey], 1);
+            }
+        }
+        echo json_encode($s, JSON_UNESCAPED_UNICODE);
+    } else {
+        echo file_get_contents($metaFile);
+    }
     exit;
 }
 
@@ -52,6 +71,7 @@ $audioUrl = $input['audioUrl'] ?? '';
 $title = $input['title'] ?? 'FaithTunes Song';
 $lyrics = $input['lyrics'] ?? '';
 $tags = $input['tags'] ?? '';
+$genre = $input['genre'] ?? '';
 $duration = floatval($input['duration'] ?? 0);
 $imageUrl = $input['imageUrl'] ?? '';
 $taskId = $input['taskId'] ?? '';
@@ -124,6 +144,7 @@ $meta = [
     'title' => $title,
     'lyrics' => $lyrics,
     'tags' => $tags,
+    'genre' => $genre,
     'duration' => $duration,
     'audioUrl' => $baseUrl . '/media/audio/songs/' . $id . '.mp3',
     'videoUrl' => $videoPath ? $baseUrl . $videoPath : '',
